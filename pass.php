@@ -1,0 +1,161 @@
+<?php
+
+
+/*****************\
+ * Display Errors - code
+\*****************/
+
+ini_set('display_errors', 1);
+ ini_set('log_errors', 1);
+ ini_set('error_log', dirname(__FILE__) . '/error_log.txt');
+ error_reporting(E_ALL);
+ 
+ /*****************\
+ * XML DATA STRUCTURE - code $xml_data constains it all 
+  * 
+   replace the hard coded data with data bound fields 
+  * pulled from your data base
+  * web form  
+  * 
+  * example $_POST['STOREKEY'] or $_POST['LASTNAME']
+  * 
+\*****************/
+
+$xml_data = <<<XML
+<?xml version="1.0"?>
+<REQUEST>
+<REFERRAL>
+<STOREKEY>I5uHFVhfKGWpdXOr</STOREKEY>
+<REFURL>http://www.fscbb.com</REFURL>
+<IPADDRESS>98.160.229.122</IPADDRESS>
+<TIERKEY>I5uHFVhfKGWpdXOr</TIERKEY>
+<AFFID>southern</AFFID>
+<SUBID>northern</SUBID>
+<TEST>1</TEST>
+</REFERRAL>
+<CUSTOMER>
+<PERSONAL>
+<REQUESTEDAMOUNT>10000</REQUESTEDAMOUNT>
+<SSN>111224444</SSN>
+<DOB>01-04-1976</DOB>
+<GENDER>M</GENDER>
+<FIRSTNAME>Jonathan</FIRSTNAME>
+<MIDDLEINITIAL>m</MIDDLEINITIAL>
+<LASTNAME>Doever</LASTNAME>
+<ADDRESS>1343 NE Webster</ADDRESS>
+<ADDRESS2>1343 NE Webster</ADDRESS2>
+<CITY>Portland</CITY>
+<STATE>or</STATE>
+<ZIP>97211</ZIP>
+<HOMEPHONE>5032840599</HOMEPHONE>
+<OTHERPHONE>503284059</OTHERPHONE>
+<DLSTATE>OR</DLSTATE>
+<DLNUMBER>5189376</DLNUMBER>
+<CONTACTTIME>M</CONTACTTIME>
+<LENGTHATRESIDENCE>3</LENGTHATRESIDENCE>
+<RENTOROWN>O</RENTOROWN>
+<ISMILITARY>1</ISMILITARY>
+<ISCITIZEN>1</ISCITIZEN>
+<OTHEROFFERS>0</OTHEROFFERS>
+<EMAIL>Jonathan@ColumbiaOutdoorWear.gov</EMAIL>
+</PERSONAL>
+<EMPLOYMENT>
+<INCOMETYPE>E</INCOMETYPE>
+<PAYTYPE>p</PAYTYPE>
+<EMPMONTHS>11</EMPMONTHS>
+<EMPYEARS>6</EMPYEARS>
+<EMPNAME>ColumbiaOutdoorWear</EMPNAME>
+<EMPADDRESS>111 MAIN street </EMPADDRESS>
+<EMPADDRESS2>112 MAIN street </EMPADDRESS2>
+<EMPCITY>Portland</EMPCITY>
+<EMPSTATE>OR</EMPSTATE>
+<EMPZIP>97211</EMPZIP>
+<EMPPHONE>5035551212</EMPPHONE>
+<EMPPHONEEXT>312</EMPPHONEEXT>
+<EMPFAX>5035551214</EMPFAX>
+<SUPERVISORNAME>Kyle</SUPERVISORNAME>
+<SUPERVISORPHONE>5035551212</SUPERVISORPHONE>
+<SUPERVISORPHONEEXT>110</SUPERVISORPHONEEXT>
+<HIREDATE>07-29-2010</HIREDATE>
+<EMPTYPE>F</EMPTYPE>
+<JOBTITLE>Sales</JOBTITLE>
+<WORKSHIFT>S</WORKSHIFT>
+<PAYFREQUENCY>B</PAYFREQUENCY>
+<NETMONTHLY>1012</NETMONTHLY>
+<GROSSMONTHLY>1308</GROSSMONTHLY>
+<LASTPAYDATE>07-29-2012</LASTPAYDATE>
+<NEXTPAYDATE>07-13-2012</NEXTPAYDATE>
+<SECONDPAYDATE>07-27-2012</SECONDPAYDATE>
+</EMPLOYMENT>
+<BANK>
+<ACCOUNTHOLDER>Johnathan Doever</ACCOUNTHOLDER>
+<BANKNAME>First Interstate</BANKNAME>
+<BANKPHONE>5035551111</BANKPHONE>
+<ACCOUNTTYPE>C</ACCOUNTTYPE>
+<ROUTINGNUMBER>838583746</ROUTINGNUMBER>
+<ACCOUNTNUMBER>09290048000000011</ACCOUNTNUMBER>
+<LENGTHBANKING>0</LENGTHBANKING>
+<OUTSTANDINGAMT>0</OUTSTANDINGAMT>
+<ACTIVECHECKING>Y</ACTIVECHECKING>
+</BANK>
+<REFERENCES>
+<REFERENCE>
+<FIRSTNAME></FIRSTNAME>
+<LASTNAME></LASTNAME>
+<PHONE></PHONE>
+<RELATIONSHIP></RELATIONSHIP>
+</REFERENCE>
+<REFERENCE>
+<FIRSTNAME>Jane</FIRSTNAME>
+<LASTNAME>Doever</LASTNAME>
+<PHONE>5032840591</PHONE>
+<RELATIONSHIP>S</RELATIONSHIP>
+</REFERENCE>
+<REFERENCE>
+<FIRSTNAME></FIRSTNAME>
+<LASTNAME></LASTNAME>
+<PHONE></PHONE>
+<RELATIONSHIP></RELATIONSHIP>
+</REFERENCE>
+</REFERENCES>
+</CUSTOMER>
+</REQUEST>
+XML;
+ 
+$URL = "http://www.fsc-bb.com/dev/bbapi.bbx?";
+ 
+
+
+
+function post_xml($url, $xml) {
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, $url);
+  curl_setopt($ch, CURLOPT_HEADER, false);
+  curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+  curl_setopt($ch, CURLOPT_USERPWD, 'test:test');
+  curl_setopt($ch, CURLOPT_POST, 1);
+  curl_setopt($ch, CURLOPT_POSTFIELDS, array('apipassword'=>'test','apiusername'=>'test','apikey'=>'I5uHFVhfKGWpdXOr','revere'=>$xml));
+
+   curl_setopt($ch, CURLOPT_VERBOSE, 0);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+
+  $result = curl_exec($ch);
+  $info = curl_getinfo($ch);
+  curl_close($ch);
+  //echo($info['request_header']);
+
+  return $result;
+}
+
+//send data to black via the post_xml(parmam1 string, param2 xml string) function
+$result = post_xml($URL, $xml_data);//store results
+
+// output results or insert code here to insert a new record in your database.
+print_r($result); 
+
+
+?>
+

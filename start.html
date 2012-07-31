@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Tutorial: Hello Dojo!</title>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.7.2/dojo/dojo.js" data-dojo-config="async: true"></script>
+        <script type="text/javascript" src="./js/dojox/form/manager/_Mixin.js"></script>
+	<script type="text/javascript" src="./js/dojox/form/manager/_FormMixin.js"></script>
+	<script type="text/javascript" src="./js/dojox/form/manager/_ValueMixin.js"></script>
+	<script type="text/javascript" src="./js/dojox/form/manager/_EnableMixin.js"></script>
+	<script type="text/javascript" src="./js/dojox/form/manager/_DisplayMixin.js"></script>
+	<script type="text/javascript" src="./js/dojox/form/manager/_ClassMixin.js"></script>
+	<script type="text/javascript" src="./js/dojox/form/Manager.js"></script>
+        
+        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/resources/dojo.css" />
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.2/dijit/themes/digit.css" />
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.2/dijit/themes/tundra/tundra.css" />
+
+	<script type="text/javascript">
+		dojo.require("../../dojox.form.Manager");
+                dojo.require("dojo.dnd.Source");
+		dojo.require("dijit.dijit");			// optimize: load dijit layer
+		dojo.require("dijit.form.Button");
+		dojo.require("dijit.form.RadioButton");
+		dojo.require("dijit.form.TextBox");
+		dojo.require("dijit.form.ComboBox");
+		dojo.require("dijit.form.SimpleTextarea");
+		dojo.require("dijit.form.Select");
+
+		dojo.require("dijit.layout.BorderContainer");
+		dojo.require("dijit.layout.ContentPane");
+
+		dojo.require("dojo.parser");
+
+		dojo.addOnLoad(function(){
+			// show values the first time
+			dijit.byId("form").showValues();
+		});
+	</script>
+        
+</head>
+<body>
+	<h1 id="greeting">Hello</h1>
+</body>
+</html>
