@@ -1,22 +1,15 @@
 <?php
 session_start();
-
-$host = 'localhost'; // Host name Normally 'LocalHost'
-$user = 'root'; // MySQL login username
-$pass = 'Keyb0ard!'; // MySQL login password
-$database = 'BlackBox'; // Database name
+include("common/include/db_login.php");
+include("include/inc.countryCurrency.php");
 $table = 'Campaigns'; // Members name
- $row ="";
+$row ="";
  
     mysql_connect($host, $user, $pass);
     mysql_select_db($database);
 
  $result = mysql_query("SELECT LeadProviderID_Default FROM member WHERE username = '".$_SESSION["username"]."'");
      $leadprov = mysql_fetch_array($result) ;
-     
-     
-     mysql_connect($host, $user, $pass);
-     mysql_select_db($database);
     
      $SQL = "SELECT * FROM  `LeadProvider` WHERE `LeadProviderID` = '".$leadprov["LeadProviderID_Default"]."';";
      $leadprovNameResult = mysql_query($SQL);

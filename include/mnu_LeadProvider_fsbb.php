@@ -1,6 +1,6 @@
 <div class="box">
 <?php
-include('include/db_login.php');
+include('common/include/db_login.php');
 
 $table = 'LeadProvider'; // Members name
  $row ="";

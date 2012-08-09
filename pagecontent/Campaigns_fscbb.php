@@ -1,7 +1,6 @@
 <?php
 session_start();
-
-include("include/db_login.php");
+include("common/include/db_login.php");
 include("include/inc.countryCurrency.php");
 $table = 'Campaigns'; // Members name
 $row ="";
@@ -12,26 +11,16 @@ $leadprov = mysql_fetch_array($result);
 
 $sql = "SELECT * FROM  `LeadProvider` WHERE `LeadProviderID` = '" . $leadprov["LeadProviderID_Default"]."';";
 $sqlLeadProvider = "SELECT * FROM  `LeadProvider`;";
-echo $sqlLeadProvider;
 $resultLeadProvider = mysql_query($sqlLeadProvider);
 $leadprovName = mysql_fetch_array($leadprovNameResult);
-if(isset($_GET["Campaigns"]))
-{
+if(isset($_GET["Campaigns"])) {
 	$Campaigns = mysql_real_escape_string($_GET['Campaigns']);
 	$resultcamp = mysql_query("SELECT * FROM $table WHERE Name = '$Campaigns'");
-	if(mysql_num_rows($resultcamp ))
-	{
+	if(mysql_num_rows($resultcamp )) {
 		$row = mysql_fetch_array($resultcamp ) ;
 		$_SESSION["CampaignName"] = $row["Name"];
-	}else
-	{
+	} else {
 	}
-	/****\
-	mysql_connect($host, $user, $pass);
-	mysql_select_db($database);
-	$sql = "UPDATE `BlackBox`.`member` SET `LeadProviderID_Default` = '".$row["LeadProviderID"]."' WHERE `member`.`username` = '".$_SESSION["username"]."';";
-	mysql_query($sql);
-	\*****/
 } else {
 }
 ?>
@@ -50,8 +39,7 @@ if(isset($_GET["Campaigns"]))
                         <tr> 
                             <td>
                                 <?php
-                                    if($row["Active"] == 1)
-                                    {
+                                    if($row["Active"] == 1) {
                                         echo("Active <input type=\"checkbox\" name=\"active\" id=\"active\" value=\"1\" checked=\"checked\"/>");
                                     } else{
                                         echo("Active <input type=\"checkbox\" name=\"active\" id=\"active\" value=\"0\" />");
@@ -60,10 +48,9 @@ if(isset($_GET["Campaigns"]))
                             </td>
                             <td>
                                 <?php
-                                    if($row["Active"] == 0)
-                                    {
+                                    if($row["Active"] == 0) {
                                         // echo("Inactive <input type=\"radio\" name=\"Action_portfolio\" id=\"active\" value=\"0\" checked=\"checked\"/>");
-                                    } else{
+                                    } else {
                                         // echo("Inactive <input type=\"radio\" name=\"Action_portfolio\" id=\"active\" value=\"0\" />");
                                     }                      
                                 ?>
@@ -76,7 +63,7 @@ if(isset($_GET["Campaigns"]))
             <tr> </tr>
             <tr>
             	<td>Campaign Name</td>
-                <td>Default Lead Provider</td>
+                <td>Lead Provider</td>
             </tr>
                 <tr>
                 <td>                    
@@ -96,7 +83,7 @@ if(isset($_GET["Campaigns"]))
                     </select>
                     
 <?php
-// stuff I need out of the way but nto gone.
+// stuff I need out of the way but not gone.
 /*
                 	<input type="text" disabled="disabled" id="DefaultLeadProviderName" name="DefaultLeadProviderName" value="<?php echo $leadprovName["CompanyName"] ?>" />
                 	<input type="hidden" id="DefaultLeadProvider" name="DefaultLeadProvider" value="<?php echo $leadprov["LeadProviderID_Default"] ?>" /> 

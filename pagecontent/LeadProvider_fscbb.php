@@ -1,5 +1,5 @@
 <?php
-include("include/db_login.php");
+include("common/include/db_login.php");
 $table = 'LeadProvider'; // Members name
 $row ="";
 mysql_connect($host, $user, $pass);
@@ -50,12 +50,12 @@ if(isset($_GET["LeadProvider"]))
             </tr>
             <tr>
                 <td>
-                    <input intermediateChanges="true"  type="text" name="LeadProvider" value="<?php print_r($row["CompanyName"]); ?>" required="true" data-dojo-type="dijit.form.ValidationTextBox"  data-dojo-props="trim:true, propercase:true" id="LeadProvider"/>
+                    <input intermediateChanges="true"  type="text" name="LeadProvider" value="<?php if(isset($row["TechnicalPOCName"])) { print_r($row["CompanyName"]); } ?>" required="true" data-dojo-type="dijit.form.ValidationTextBox"  data-dojo-props="trim:true, propercase:true" id="LeadProvider"/>
                 </td>
                 <td> 
-                    <input type="hidden" name="phone" id="phone" value="<?php print_r( $row["LeadProviderID"] ); ?>"  />
+                    <input type="hidden" name="phone" id="phone" value="<?php if(isset($row["TechnicalPOCName"])) { print_r( $row["LeadProviderID"] ); } ?>"  />
                     <label for="phone">Phone number, no spaces:</label>
-                    <input type="text" name="phone" id="phone" value="<?php print_r($row["PrimaryPhoneNumebr"]); ?>" required="true"
+                    <input type="text" name="phone" id="phone" value="<?php if(isset($row["TechnicalPOCName"])) { print_r($row["PrimaryPhoneNumebr"]); } ?>" required="true"
                     data-dojo-type="dijit.form.ValidationTextBox"
                     data-dojo-props="regExp:'[\\d{10}][\\dw]+', invalidMessage:'Invalid Non-Space Text.'" />
                 </td>
@@ -65,11 +65,11 @@ if(isset($_GET["LeadProvider"]))
             </tr>
             <tr>
                 <td>
-                    <input type="text" name="TechnicalPOCName" value="<?php print_r($row["TechnicalPOCName"]); ?>" required="true" data-dojo-type="dijit.form.ValidationTextBox"  data-dojo-props="trim:true, propercase:true" id="TechnicalPOCName"/></td><td>             
+                    <input type="text" name="TechnicalPOCName" value="<?php if(isset($row["TechnicalPOCName"])) { print_r($row["TechnicalPOCName"]); } ?>" required="true" data-dojo-type="dijit.form.ValidationTextBox"  data-dojo-props="trim:true, propercase:true" id="TechnicalPOCName"/></td><td>             
                     <input id="TechnicalPOCEmailAddress" size="40" name="TechnicalPOCEmailAddress"
                     data-dojo-type="dijit.form.ValidationTextBox"
                     data-dojo-props="validator:dojox.validate.isEmailAddress,
-                    invalidMessage:'This is not a valid email!'" value="<?php print_r($row["TechnicalPOCEmailAddress"]); ?>"/>
+                    invalidMessage:'This is not a valid email!'" value="<?php if(isset($row["TechnicalPOCName"])) { print_r($row["TechnicalPOCEmailAddress"]); } ?>"/>
                 </td>
             </tr>
             <tr>
@@ -78,7 +78,7 @@ if(isset($_GET["LeadProvider"]))
             </tr>
             <tr>
                 <td>
-                    <input type="text" name="SalesPOCName" value="<?php print_r($row["SalesPOCName"]); ?>" required="true" data-dojo-type="dijit.form.ValidationTextBox"  data-dojo-props="trim:true, propercase:true" id="SalesPOCName"/>
+                    <input type="text" name="SalesPOCName" value="<?php if(isset($row["TechnicalPOCName"])) { print_r($row["SalesPOCName"]); } ?>" required="true" data-dojo-type="dijit.form.ValidationTextBox"  data-dojo-props="trim:true, propercase:true" id="SalesPOCName"/>
                 </td>
                 <td><input type="checkbox" onClick="Get_TechnicalPOCName();"/></td>
             </tr>
@@ -91,7 +91,7 @@ if(isset($_GET["LeadProvider"]))
                     <input id="SalesPOCemail" name="SalesPOCemail"
                     data-dojo-type="dijit.form.ValidationTextBox"
                     data-dojo-props="validator:dojox.validate.isEmailAddress,
-                    invalidMessage:'This is not a valid email!'" value="<?php print_r($row["SalesPOCEmailAddress"]); ?>" />
+                    invalidMessage:'This is not a valid email!'" value="<?php if(isset($row["TechnicalPOCName"])) { print_r($row["SalesPOCEmailAddress"]); } ?>" />
                 </td>
                 <td><input type="checkbox" onClick="Get_TechnicalPOCEmailAddress();"/></td>
             </tr>
@@ -102,7 +102,7 @@ if(isset($_GET["LeadProvider"]))
             <tr>
                 <td>
                     <label for="IntegrationDate">Drop down Date box:</label>
-                    <input type="text" name="IntegrationDate" id="IntegrationDate" value="<?php print_r($row["IntegrationDate"]); ?>"       dojoType="dijit.form.DateTextBox" required="true" />
+                    <input type="text" name="IntegrationDate" id="IntegrationDate" value="<?php if(isset($row["TechnicalPOCName"])) { print_r($row["IntegrationDate"]); } ?>"       dojoType="dijit.form.DateTextBox" required="true" />
                 </td>
             </tr>
             <tr>
@@ -114,8 +114,8 @@ if(isset($_GET["LeadProvider"]))
                 <td>(password or send Key)</td>
             </tr>
             <tr>
-                <td><input type="text" size="40" id="APIField1" name="APIField1" value="<?php print_r($row["APIField1"]); ?>"/></td>
-                <td><input type="text" size="40" id="APIField2" name="APIField2" value="<?php print_r($row["APIField2"]); ?>"/></td>
+                <td><input type="text" size="40" id="APIField1" name="APIField1" value="<?php if(isset($row["TechnicalPOCName"])) { print_r($row["APIField1"]); } ?>"/></td>
+                <td><input type="text" size="40" id="APIField2" name="APIField2" value="<?php if(isset($row["TechnicalPOCName"])) { print_r($row["APIField2"]); } ?>"/></td>
             </tr>
             <tr>
                 <td colspan="2">Sending URL or IP address to post to us (if we can use it)</td>
@@ -124,7 +124,7 @@ if(isset($_GET["LeadProvider"]))
             <tr>
                 <td colspan="2">
                     URL:// <input id="SendingURL" name="SendingURL" data-dojo-type="dijit.form.ValidationTextBox"
-                    data-dojo-props="validator:dojox.validate.isUrl,invalidMessage:'This is not a valid url!'" value="<?php print_r($row["SendingURL"]); ?>"/>
+                    data-dojo-props="validator:dojox.validate.isUrl,invalidMessage:'This is not a valid url!'" value="<?php if(isset($row["TechnicalPOCName"])) { print_r($row["SendingURL"]); } ?>"/>
                 </td>
                 <td></td>
             </tr>

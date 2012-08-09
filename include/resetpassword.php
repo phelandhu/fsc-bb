@@ -1,4 +1,6 @@
-
+<?php
+include("common/include/db_login.php");
+?>
 
 
          
@@ -57,11 +59,6 @@ if(isset($_POST["Resetpassword"]))
 {
 
  // Login
-
-$host = 'localhost'; // Host name Normally 'LocalHost'
-$user = 'root'; // MySQL login username
-$pass = 'Keyb0ard!'; // MySQL login password
-$database = 'BlackBox'; // Database name
 $table = 'member'; // Members name
  
 mysql_connect($host, $user, $pass);

@@ -1,6 +1,6 @@
 <div class="box">
 <?php
-	include('include/db_login.php');
+	include('common/include/db_login.php');
 	include('include/ctrl_CRUD.php');
 	
 	
@@ -26,6 +26,4 @@
 	} else {
 	}
 ?>
-
-
 </div>

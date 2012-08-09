@@ -1,9 +1,6 @@
 <?php
 session_start();
-$host = 'localhost'; // Host name Normally 'LocalHost'
-$user = 'root'; // MySQL login username
-$pass = 'Keyb0ard!'; // MySQL login password
-$database = 'BlackBox'; // Database name
+include("common/include/db_login.php");
 mysql_connect($host, $user, $pass);
 mysql_select_db($database);
 

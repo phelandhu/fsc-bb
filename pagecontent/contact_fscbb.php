@@ -62,7 +62,7 @@ Message What would you like to discuss?
 
 <div name="contact_message">
     <textarea cols="35" rows="5">
-</textarea>
+	</textarea>
 </div>
 
 <div>

@@ -1,13 +1,10 @@
 <?php
-$host       =   'localhost'; // Host name Normally 'LocalHost'
-$user       =   'root'; // MySQL login username
-$pass       =   'Keyb0ard!'; // MySQL login password
-$database   =   'BlackBox'; // Database name
-$table      =   'rules'; // Members name
-$row        =   "";
-
-mysql_connect($host, $user, $pass);
-mysql_select_db($database);
+	include("common/include/db_login.php");
+	$table      =   'rules'; // Members name
+	$row        =   "";
+	
+	mysql_connect($host, $user, $pass);
+	mysql_select_db($database);
 ?>
 
 
@@ -80,15 +77,15 @@ mysql_select_db($database);
             </td><td></td><td></td></tr>
         <tr><td>Buy Priority: <select name="BuyPriority" id="BuyPriority"   />
             <option>0</option>
-             <option>1</option>
-              <option>2</option>
-               <option>3</option>
-                <option>4</option>
-                 <option>5</option>
-                  <option>6</option>
-                   <option>7</option>
-                    <option>8</option>
-                     <option>9</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
                       
             </td><td></td><td></td></tr>
         <tr><td>Rules Engine Assigned <select id="RulesEngineAssigned" name="RulesEngineAssigned" >
@@ -96,24 +93,17 @@ mysql_select_db($database);
             <option>-- Rules Engine Not Assign --</option>
 
  <?php
- $sql = "SELECT * FROM `member` WHERE `username`= '".$_SESSION['username']."';";
- $results_member = mysql_query($sql);
- 
- 
-mysql_connect($host, $user, $pass);
-mysql_select_db($database);
-
- $row = mysql_fetch_array($results_member);
- $memberid = $row['id'];
- 
- 
- $sql = "SELECT DISTINCT `Title` FROM `RulesManagementSet` WHERE `memberID`= '".$memberid."';";
- $result_rules = mysql_query($sql);
- //echo $sql;
- while($rows = mysql_fetch_array($result_rules))
- {
-     echo("<option value='".$rows["rulesID"]."'>".$rows["Title"]."</option>");
- }
+	$sql = "SELECT * FROM `member` WHERE `username`= '".$_SESSION['username']."';";
+	$results_member = mysql_query($sql);
+	
+	$row = mysql_fetch_array($results_member);
+	$memberid = $row['id'];
+	$sql = "SELECT DISTINCT `Title` FROM `RulesManagementSet` WHERE `memberID`= '".$memberid."';";
+	$result_rules = mysql_query($sql);
+	//echo $sql;
+	while($rows = mysql_fetch_array($result_rules)) {
+		echo("<option value='".$rows["rulesID"]."'>".$rows["Title"]."</option>");
+	}
  ?>
 </select>
 
