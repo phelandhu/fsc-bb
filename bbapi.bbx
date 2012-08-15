@@ -1,7 +1,7 @@
 <?php
 error_reporting(-1);
 session_start();
-
+include ("common/include/db_login.php");
 header("Content-type: text/xml");
 print_r("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>");
 
@@ -45,179 +45,100 @@ function flatten_array($array, $preserve_keys = 2, &$out = array(), &$last_subar
         return $out;
 }
 
-if($_SERVER['REQUEST_METHOD'] == 'GET')
- {
-               $apiusername = $_GET["apiusername"];
-                $apipassword = $_GET["apipassword"];
-                $apikey      = $_GET["apikey"];
-                
-                $host = 'localhost'; // Host name Normally 'LocalHost'
-                $user = 'root'; // MySQL login username
-                $pass = 'Keyb0ard!'; // MySQL login password
-                $database = 'BlackBox'; // Database name
-                $table = 'member'; // Members name
-
-                mysql_connect($host, $user, $pass);
-                mysql_select_db($database);
-
-                $username = mysql_real_escape_string($_GET['apiusername']);
-                $password = hash('sha512', $_GET['apipassword']);
-
-                $result = mysql_query("SELECT * FROM $table WHERE username = '$username' AND password = '$password'");
-                
-                if(mysql_num_rows($result))
-                {
-                        
-                $leadproviderid = $row['LeadProviderID_Default'];
-                $_SESSION['username'] = htmlspecialchars($apiusername); // htmlspecialchars() sanitises XSS
-                
-               print_r('<code> 0 </code><msg>(Authorized), Authentication Successfull </msg>');
-            
-             
-               
-               
-               mysql_connect($host, $user, $pass);
-                       $result_rules = "SELECT rl.PHPLocation, rl.value, rl.FieldName FROM  `member` m LEFT JOIN  `RulesManagementSet` rm ON rm.`memberID` =  `m`.`id` LEFT JOIN  `rules` rl ON  `rl`.`rulesID` =  `rm`.`rulesID` WHERE username =  '".$username."' AND rm.Active = 1";
-              $result_rl =  mysql_query($result_rules);
-                     
-                            //echo '<sql>';
-                            //print_r($result_rules);
-                            //echo '</sql>';
-                       $rules_Array;
-                   
-                        while($row=mysql_fetch_array($result_rl))
-                        {
-                            
-                           
-                           
-                                $rules_Array[] = $row;
-                            
-                            
-                            
-                        }
-
-                        include('BBCORE.php');
-                        $bbcore = new BBCORE($_GET,$rules_Array);
-   
-                }
-                else
-                {
-                // Invalid username/password
-               print_r('<code> 401 </code><msg>(Not Authorized), Authentication Failed, Failure with 1 or more API Authentication Elements Supplied </msg>');
-
-                //echo $password;
-                //header('Location: http://20ae-fscbb-primary.hgsitebuilder.comindex.php');
-           
-                }
-           
-
- }else{
-     
-     if($_SERVER['REQUEST_METHOD'] == 'POST')
-        {
-         
-    
-         
-          if( isset($_POST["apiusername"]) && isset($_POST["apipassword"] ) )
-            {
-       
-              $xmlsource = $_POST['revere'];
-              
-            
-              
-      $array = XML2Array::createArray($xmlsource);
-  
-      $newarraytest = array();
-$last_subarray_found = "";
-  $array3 = flatten_array($array, 2, $newarraytest, $last_subarray_found);
-     // print_r($array3 );
-
-
-
-
-
-                $apiusername = $_POST["apiusername"];
-                $apipassword = $_POST["apipassword"];
-                $apikey      = $_POST["apikey"];
-                
-                $host = 'localhost'; // Host name Normally 'LocalHost'
-                $user = 'root'; // MySQL login username
-                $pass = 'Keyb0ard!'; // MySQL login password
-                $database = 'BlackBox'; // Database name
-                $table = 'member'; // Members name
-
-                mysql_connect($host, $user, $pass);
-                mysql_select_db($database);
-
-                $username = mysql_real_escape_string($_POST['apiusername']);
-                $password = hash('sha512', $_POST['apipassword']);
-
-                $result = mysql_query("SELECT * FROM $table WHERE username = '$username' AND password = '$password'");
-                
-                if(mysql_num_rows($result))
-                {
-                        
-                $leadproviderid = $row['LeadProviderID_Default'];
-                $_SESSION['username'] = htmlspecialchars($apiusername); // htmlspecialchars() sanitises XSS
-                
-               print_r('<code> 0 </code><msg>(Authorized), Authentication Successfull </msg>');
-               
-       
-               
-               
-               mysql_connect($host, $user, $pass);
-                       $result_rules = "SELECT rl.PHPLocation, rl.value, rl.FieldName FROM  `member` m LEFT JOIN  `RulesManagementSet` rm ON rm.`memberID` =  `m`.`id` LEFT JOIN  `rules` rl ON  `rl`.`rulesID` =  `rm`.`rulesID` WHERE username =  '".$username."' AND rm.Active = 1";
-              $result_rl =  mysql_query($result_rules);
-                     
-                            //echo '<sql>';
-                            //print_r($result_rules);
-                            //echo '</sql>';
-                       $rules_Array;
-                   
-                        while($row=mysql_fetch_array($result_rl))
-                        {
-                            
-                           
-                           
-                                $rules_Array[] = $row;
-                            
-                            
-                            
-                        }
-                //print_r($rules_Array);
-                        include('BBCORE.php');
-                        $bbcore = new BBCORE($array3,$rules_Array);
-   
-                }
-                else
-                {
-                // Invalid username/password
-               print_r('<code> 401 </code><msg>(Not Authorized), Authentication Failed, Failure with 1 or more API Authentication Elements Supplied </msg>');
-   
-                //echo $password;
-                //header('Location: http://20ae-fscbb-primary.hgsitebuilder.comindex.php');
-                }
-                
-             
-            }
-          
-             
-       
-        }else
-                {
-                // Invalid username/password
-               print_r('<code> 401 </code><msg>(Not Authorized), Authentication Failed, Failure with 1 or more API Authentication Elements Supplied </msg>');
-
-    
-                //echo $password;
-                //header('Location: http://20ae-fscbb-primary.hgsitebuilder.comindex.php');
-                }
-
- }
- 
- print_r("</result>");
- 
- 
+if($_SERVER['REQUEST_METHOD'] == 'GET') {
+	$apiusername = $_GET["apiusername"];
+	$apipassword = $_GET["apipassword"];
+	$apikey      = $_GET["apikey"];
+/*
+$host = 'localhost'; // Host name Normally 'LocalHost'
+$user = 'root'; // MySQL login username
+$pass = 'Keyb0ard!'; // MySQL login password
+$database = 'BlackBox'; // Database name
+$table = 'member'; // Members name
+mysql_connect($host, $user, $pass);
+mysql_select_db($database);
+*/
+	$username = mysql_real_escape_string($_GET['apiusername']);
+	$password = hash('sha512', $_GET['apipassword']);
+	$result = mysql_query("SELECT * FROM $table WHERE username = '$username' AND password = '$password'");
+	if(mysql_num_rows($result)) {
+		$leadproviderid = $row['LeadProviderID_Default'];
+		$_SESSION['username'] = htmlspecialchars($apiusername); // htmlspecialchars() sanitises XSS
+		print_r('<code> 0 </code><msg>(Authorized), Authentication Successfull </msg>');
+		mysql_connect($host, $user, $pass);
+		$result_rules = "SELECT rl.PHPLocation, rl.value, rl.FieldName FROM  `member` m LEFT JOIN  `RulesManagementSet` rm ON rm.`memberID` =  `m`.`id` LEFT JOIN  `rules` rl ON  `rl`.`rulesID` =  `rm`.`rulesID` WHERE username =  '".$username."' AND rm.Active = 1";
+		$result_rl =  mysql_query($result_rules);
+		//echo '<sql>';
+		//print_r($result_rules);
+		//echo '</sql>';
+		$rules_Array;
+		while($row=mysql_fetch_array($result_rl)) {
+			$rules_Array[] = $row;
+		}
+		include('BBCORE.php');
+		$bbcore = new BBCORE($_GET,$rules_Array);
+	} else {
+		// Invalid username/password
+		print_r('<code> 401 </code><msg>(Not Authorized), Authentication Failed, Failure with 1 or more API Authentication Elements Supplied </msg>');
+		//echo $password;
+		//header('Location: http://20ae-fscbb-primary.hgsitebuilder.comindex.php');
+	}
+} else {
+	if($_SERVER['REQUEST_METHOD'] == 'POST') {
+		if( isset($_POST["apiusername"]) && isset($_POST["apipassword"] ) ) {
+			$xmlsource = $_POST['revere'];
+			$array = XML2Array::createArray($xmlsource);
+			$newarraytest = array();
+			$last_subarray_found = "";
+			$array3 = flatten_array($array, 2, $newarraytest, $last_subarray_found);
+			// print_r($array3 );
+			$apiusername = $_POST["apiusername"];
+			$apipassword = $_POST["apipassword"];
+			$apikey      = $_POST["apikey"];
+			/*
+			$host = 'localhost'; // Host name Normally 'LocalHost'
+			$user = 'root'; // MySQL login username
+			$pass = 'Keyb0ard!'; // MySQL login password
+			$database = 'BlackBox'; // Database name
+			$table = 'member'; // Members name
+			mysql_connect($host, $user, $pass);
+			mysql_select_db($database);
+			*/
+			$username = mysql_real_escape_string($_POST['apiusername']);
+			$password = hash('sha512', $_POST['apipassword']);
+			$result = mysql_query("SELECT * FROM $table WHERE username = '$username' AND password = '$password'");
+			if(mysql_num_rows($result)) {
+				$leadproviderid = $row['LeadProviderID_Default'];
+				$_SESSION['username'] = htmlspecialchars($apiusername); // htmlspecialchars() sanitises XSS
+				print_r('<code> 0 </code><msg>(Authorized), Authentication Successfull </msg>');
+				mysql_connect($host, $user, $pass);
+				$result_rules = "SELECT rl.PHPLocation, rl.value, rl.FieldName FROM  `member` m LEFT JOIN  `RulesManagementSet` rm ON rm.`memberID` =  `m`.`id` LEFT JOIN  `rules` rl ON  `rl`.`rulesID` =  `rm`.`rulesID` WHERE username =  '".$username."' AND rm.Active = 1";
+				$result_rl =  mysql_query($result_rules);
+				//echo '<sql>';
+				//print_r($result_rules);
+				//echo '</sql>';
+				$rules_Array;
+				while($row=mysql_fetch_array($result_rl)) {
+					$rules_Array[] = $row;
+				}
+				//print_r($rules_Array);
+				include('BBCORE.php');
+				$bbcore = new BBCORE($array3,$rules_Array);
+			} else {
+				// Invalid username/password
+				print_r('<code> 401 </code><msg>(Not Authorized), Authentication Failed, Failure with 1 or more API Authentication Elements Supplied </msg>');
+				//echo $password;
+				//header('Location: http://20ae-fscbb-primary.hgsitebuilder.comindex.php');
+			}
+		}
+	} else {
+		// Invalid username/password
+		print_r('<code> 401 </code><msg>(Not Authorized), Authentication Failed, Failure with 1 or more API Authentication Elements Supplied </msg>');
+		//echo $password;
+		//header('Location: http://20ae-fscbb-primary.hgsitebuilder.comindex.php');
+	}
+}
+print_r("</result>");
 ?>
 <?php
 /**
@@ -358,7 +279,7 @@ class XML2Array {
         }
         return self::$xml;
     }
-}
+} // end of class: XML2Array
 ?>
 
 <?php
