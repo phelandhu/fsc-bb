@@ -9,7 +9,6 @@
 		}
 	}
 	
-	
 	function getRules($rulesId, $userId)
 	{
 		$qry = "SELECT * FROM RulesManagementSet WHERE Active = 1 AND memberID = " . $userId . " AND Title = '" . $rulesId . "';";
@@ -20,12 +19,9 @@
 			$return .= $row[rulesID] . ",";
 			$i++;
 		}
-		
 //		echo json_encode($return);
 		echo $return;
 	}
-	
-	
 ?>
 
 <?php

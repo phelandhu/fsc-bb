@@ -1,15 +1,19 @@
 <?php
+	include("common/include/site_setup.php");
+	include("common/include/db_login.php");
+
 	if(isset($_GET["logout"])):
 	    session_start();
 	    session_destroy();
 	  // header('Location: http://20ae-fscbb-primary.hgsitebuilder.com');
 			header('Location: index.bbx');
-			echo "test of the test";
 	endif;
+	
 ?>
 
 <?php
 session_start();
+	include("common/include/inc.login_check.php");
 ?>
 
 <!DOCTYPE html>

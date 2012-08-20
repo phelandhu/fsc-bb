@@ -7,12 +7,10 @@
 
 if(!isset($_SESSION["username"]))
 {
-include_once("include/login.php");
+	include_once("include/login.php");
 }else{
-
     include('include/nav_left_account.php');
-    
-include_once("include/logout.php");
+	include_once("include/logout.php");
 }
 ?>
 
