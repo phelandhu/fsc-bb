@@ -28,6 +28,7 @@ mysql_select_db($database);
 
 \**/
 
+file_put_contents("/tmp/stor.txt", print_r($_GET, true));
 
 if(isset($_GET["form"]))
 {
@@ -63,7 +64,7 @@ if(isset($_GET["form"]))
                     mysql_connect($host, $user, $pass);
                     mysql_select_db($database);
                     
-                $sql = "SELECT `Name` FROM `BlackBox`.`Campaigns` WHERE `Name` = '".$CampaignName."';";
+                $sql = "SELECT `Name` FROM `Campaigns` WHERE `Name` = '".$CampaignName."';";
                 $result342 = mysql_query($sql);
                 
                  mysql_query($sql);
@@ -77,11 +78,8 @@ if(isset($_GET["form"]))
                 {
                     
                 }else{
-                    
-                    mysql_connect($host, $user, $pass);
-                    mysql_select_db($database);
 
-                         $sql = "INSERT INTO `BlackBox`.`Campaigns` (`CampaingnID`, `Active`, `Name`, `LeadProviderID`, `PurchasePrice`, `StartDate`, 
+                         $sql = "INSERT INTO `Campaigns` (`CampaingnID`, `Active`, `Name`, `LeadProviderID`, `PurchasePrice`, `StartDate`, 
 `Currency`) VALUES (NULL, '".$active."', '".$CampaignName."', '".$DefaultLeadProvider."', '".$PurchasePrice."', '".$IntegrationDate."', '".$Currency."');";
            // print_r($sql);
             mysql_query($sql);
@@ -91,23 +89,23 @@ if(isset($_GET["form"]))
         
             }
             
-              if($_GET["intention"] == "update")
+			if($_GET["intention"] == "update")
             {
-                    $sql = "UPDATE `BlackBox`.`Campaigns` SET 
+					$sql = "UPDATE `Campaigns` SET 
                      `Active` = '".$active."', 
                      `Name` = '".$CampaignName."', 
                      `LeadProviderID` = '".$DefaultLeadProvider."', 
                      `PurchasePrice` = '".$PurchasePrice."', 
                      `StartDate` = '".$IntegrationDate."', 
                      `Currency` = '".$Currency."' 
-            WHERE `Campaigns`.`Name` = '".$_SESSION["CampaignName"]."';";
+            		WHERE `Campaigns`.`Name` = '".$_SESSION["CampaignName"]."';";
                    // print_r($sql);
                      mysql_query($sql);
             }
             
             if($_GET["intention"] == "delete")
             {
-                       $sql = "DELETE FROM `BlackBox`.`Campaigns` WHERE `Campaigns`.`Name` = '".$_SESSION["CampaignName"]."';";
+                       $sql = "DELETE FROM `Campaigns` WHERE `Campaigns`.`Name` = '".$_SESSION["CampaignName"]."';";
                 // print_r($sql);
                      mysql_query($sql);
             }
@@ -134,7 +132,7 @@ if(isset($_GET["form"]))
         if($_GET['Password_New'] != "")
         {
             
-        $sql = "UPDATE `BlackBox`.`member` SET 
+        $sql = "UPDATE `member` SET 
             `username` = '".$username."', 
             `password` = '".$password."', 
             `FirstName` = '".$firstname."', 
@@ -143,7 +141,7 @@ if(isset($_GET["form"]))
             `Cellphone` = '".$cellphone."' 
             WHERE `member`.`username` = '".$_SESSION["username"]."';";
         }else{
-               $sql = "UPDATE `BlackBox`.`member` SET 
+               $sql = "UPDATE `member` SET 
             `username` = '".$username."',  
             `FirstName` = '".$firstname."', 
             `LastName` = '".$lastname."', 
@@ -160,24 +158,17 @@ if(isset($_GET["form"]))
     
     
         if($_GET["form"] =="rulesmanagement")
-        {
-          
-                mysql_connect($host, $user, $pass);
-                mysql_select_db($database);
-             
-                $result_memberid = mysql_query("SELECT * FROM member WHERE username = '".$_SESSION["username"]."'");
-                $row_member = mysql_fetch_array($result_memberid);
-             
-                mysql_connect($host, $user, $pass);
-                mysql_select_db($database);
-             
-                
+        {        
+			    
+			$result_memberid = mysql_query("SELECT * FROM member WHERE username = '".$_SESSION["username"]."'");
+			$row_member = mysql_fetch_array($result_memberid);
+
             if($_GET["intention"] == "save" && $_GET["RuleSetTitle"] != "")
             {
-             
+			print("Save and rules");             
              // print_r($_GET);
              
-                $sql = "INSERT INTO  `BlackBox`.`RulesManagementSet` (`RulesManagementSetID` ,`Title` ,`rulesID` ,`Active` ,`memberID`)VALUES ";
+                $sql = "INSERT INTO `RulesManagementSet` (`RulesManagementSetID` ,`Title` ,`rulesID` ,`Active` ,`memberID`)VALUES ";
                 $records ="";
 
                 $array      = $_GET["rulesID"];
@@ -192,53 +183,28 @@ if(isset($_GET["form"]))
                 
                 $records = substr($records,0,-1).";";
                 $querymultiple = $sql.$records;
-               // print_r($querymultiple);
+	            print_r($querymultiple);
                 mysql_query($querymultiple);
             }
             
             
             $records ="";
             
-             if(    $_GET["intention"] == "update" && $_GET["RuleSetTitle"] != ""   )
-            {
-                 
-               // print_r($_GET);
-                mysql_connect( $host, $user, $pass );
-                mysql_select_db( $database );
-             
-                $result_memberid    = mysql_query( "SELECT * FROM member WHERE username = '".$_SESSION["username"]."'" );
-                $row_member         = mysql_fetch_array( $result_memberid );
-             
-           
-                
-                 
-                $array      = $_GET["rulesID"];
-                $ruletitle  = $_GET["RuleSetTitle"]; 
-                
-                   mysql_connect($host, $user, $pass);
-                    mysql_select_db($database);
-                    
-                    //	RulesManagementSetID	Title	rulesID	Active	memberID
-                
-                        
-                
- 
-$sql ="";
-
-                
-                foreach ($array as $key => $value) 
-                {
-                       mysql_connect($host, $user, $pass);
-                    $sql = "UPDATE RulesManagementSet SET ";
-                    $sql .= "Active = ".$value." WHERE Title = '".$ruletitle."' AND rulesID = ".$key ."; \n";
-                    mysql_query($sql);
-                }
-                
-       
-              
-                
-               // print_r($sql);
-               
+			if( $_GET["intention"] == "update" && $_GET["RuleSetTitle"] != "" )
+			{			
+				$result_memberid    = mysql_query( "SELECT * FROM member WHERE username = '".$_SESSION["username"]."'" );
+				$row_member         = mysql_fetch_array( $result_memberid );
+				$array      = $_GET["rulesID"];
+				$ruletitle  = $_GET["RuleSetTitle"]; 
+				//	RulesManagementSetID	Title	rulesID	Active	memberID
+				$sql ="";
+				foreach ($array as $key => $value) 
+				{
+					$sql = "UPDATE RulesManagementSet SET ";
+					$sql .= "Active = ".$value." WHERE Title = '".$ruletitle."' AND rulesID = ".$key ."; \n";
+					mysql_query($sql);
+				}
+				// print_r($sql);
             }
         }
     

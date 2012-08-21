@@ -100,7 +100,6 @@
 	function sendform(Obj)
 	{
 		var oform =  document.forms["form"];
-		alert('test');
 		oform.elements.length;
 		var str = '?intention='+Obj+'&';
 		var elem = oform.elements;
@@ -132,7 +131,6 @@
 				}
 			}
 		} 
-				alert('test');
 		alert(str);
 		makeRequest( "formprocessor.php" , str );
 	}

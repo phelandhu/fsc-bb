@@ -43,14 +43,14 @@
 							$sql = "SELECT * FROM `rules`";
 							$result_rules = mysql_query($sql);
 							//echo $sql;
-							$rulenumber = 0;
+							$ruleNumber = 0;
 							while($rows = mysql_fetch_array($result_rules))
 							{
-								$rulenumber = $rulenumber+1;
+								$ruleNumber += 1;
 								print_r("
 								<tr> 
 									<td>" . $rulenumber . "</td>
-									<td><input type=\"checkbox\" class=\"selsts\" name=\"selsts\"  id=\"" . $rows["rulesID"] . "\"  /></td> 	
+									<td><input type=\"checkbox\" class=\"selsts\" name=\"rulesID[" . $ruleNumber . "]\"  id=\"" . $rows["rulesID"] . "\"  /></td> 	
 									<td></td> 
 									<td>".$rows["Title"]."</td>  
 								</tr>");
