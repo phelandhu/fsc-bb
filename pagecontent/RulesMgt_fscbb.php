@@ -37,7 +37,7 @@
 						<td></td><td>Active</td><td></td><td>Rule Title</td>  
 					</tr>
                 </table>
-                <div  id="rulesmanager" name="rulesmanager" >  
+                <div  id="rulesmanager" name="rulesmanager" > 
                     <table id="ruleslist" CELLSPACING=5  style="height:480px;padding: 10px; width:630px">                        
                         <?php
 							$sql = "SELECT * FROM `rules`";

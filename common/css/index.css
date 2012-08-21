@@ -1,0 +1,29 @@
+@charset "utf-8";
+/* CSS Document */
+    #embed_btn{
+        height:24px;
+        width:90px;
+        text-align:center;
+        line-height:24px;
+        border-radius:5px;
+        background:#151515;
+        border:1px solid #666;
+        display:block;
+        margin-right:10px;
+        margin-bottom:10px;
+    }
+    a#embed_btn:hover{
+        text-decoration:none;
+        background:#212121
+    }
+	#embed_code{
+		width:500px;
+		margin-bottom:10px;
+	}
+	.embed_opt label{
+		margin-right:10px;
+	
+	}
+
+	#dialog { min-width: 200px; }
+
