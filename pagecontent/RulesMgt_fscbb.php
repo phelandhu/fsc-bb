@@ -21,8 +21,10 @@
                 
                 <option value="">-- Select Rule Set --</option>");
                 <?php
-					$sql = "SELECT DISTINCT Title FROM RulesManagementSet RMS, member m WHERE RMS.memberID = m.ID AND username = '" . $_SESSION['username'] . "'";
-					$result_rules = mysql_query($sql);
+					$sql = "SELECT DISTINCT title FROM rulesManagementSet RMS, member m WHERE RMS.memberId = m.id AND username = '" . $_SESSION['username'] . "'";
+					print_r($_SESSION);
+					$result_rules = $mysqli->query($sql);
+					print_r($result_rules);
 					//echo $sql;
 					while($rows = mysql_fetch_array($result_rules))
 					{

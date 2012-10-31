@@ -5,15 +5,15 @@
 	
 	if(isset($_REQUEST["method"])) {
 		if($_REQUEST["method"] == "getRulesList") {
-			getRules($_REQUEST["rulesId"], $_REQUEST["userId"]);
+			get_rules($_REQUEST["rulesId"], $_REQUEST["userId"]);
 		}
 	}
 	
 	
-	function getRules($rulesId, $userId)
+	function get_rules($rulesId, $userId)
 	{
 		$qry = "SELECT * FROM RulesManagementSet WHERE Active = 1 AND memberID = " . $userId . " AND Title = '" . $rulesId . "';";
-		$result = mysql_query($qry);
+		$result = $mysqli->query($qry);
 		$i = 0;
 		$return = '';
 		while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
@@ -24,11 +24,7 @@
 //		echo json_encode($return);
 		echo $return;
 	}
-	
-	
-?>
 
-<?php
     class ServiceResult {
 
         /**

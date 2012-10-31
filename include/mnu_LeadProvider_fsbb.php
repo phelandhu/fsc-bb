@@ -1,24 +1,20 @@
 <div class="box">
 <?php
 include('common/include/db_login.php');
+$table = 'leadProvider'; // Members name
 
-$table = 'LeadProvider'; // Members name
- $row ="";
-mysql_connect($host, $user, $pass);
-mysql_select_db($database);
+$result = $mysqli->query("SELECT * FROM " . $table);
 
-$LeadProvider = mysql_real_escape_string($_GET['LeadProvider']);
-//echo $LeadProvider . " Test of my worth";
-$result = mysql_query("SELECT * FROM $table ");
+if($result) {
+	print("<select name=\"leadprovider\" size=\"6\" style=\"width:165px\"  ONCHANGE=\"location = this.options[this.selectedIndex].value;\">");
 
-if(mysql_num_rows($result)) {
-	print_r("<select name=\"leadprovider\" size=\"6\" style=\"width:165px\"  ONCHANGE=\"location = this.options[this.selectedIndex].value;\">");
-
-	while($row = mysql_fetch_array($result)) {
-		print_r("<option value=\"index.bbx?page=LeadProvider&LeadProvider=".$row["CompanyName"]."\">".$row["CompanyName"]."</option>");
+	while($row = $result->fetch_array()) {
+		print_r($row);
+		printf("<option value=\"index.bbx?page=LeadProvider&leadProvider=%s&id=%s\">%s</option>", $row["companyName"], $row["id"], $row["companyName"]);
+		
 	}
-	//print_r($row);
-	print_r("<select>");
+	
+	print("<select>");
 }else {
 }
 ?>

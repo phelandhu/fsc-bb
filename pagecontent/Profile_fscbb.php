@@ -1,14 +1,9 @@
 <?php
 include("common/include/db_login.php");
 $table = 'member'; // Members name
-$row ="";
-mysql_connect($host, $user, $pass);
-mysql_select_db($database);
-$result = mysql_query("SELECT * FROM $table WHERE username = '".$_SESSION["username"]."'");
-if(mysql_num_rows($result)) {
-	$row = mysql_fetch_array($result) ;
-	// print_r($row);
-} else {
+$result = $mysqli->query("SELECT * FROM " . $table ."  WHERE username = '" . $_SESSION["username"] . "' AND id = " . $_SESSION['id']);
+if($result) {
+	$row = $result->fetch_array();
 }
 ?>
 <div>
@@ -19,19 +14,19 @@ if(mysql_num_rows($result)) {
         <table style="height:250px;padding: 10px; width:670px">
             <tr>
                 <td width="100px">First Name</td>
-                <td><input type="text" id="firstName" name="firstName" value="<?php echo $row["FirstName"] ?>"/></td>
+                <td><input type="text" id="firstName" name="firstName" value="<?php echo $row["firstName"] ?>"/></td>
             </tr>
             <tr>
                 <td>Last Name</td>
-                <td><input type="text" id="lastName" name="lastName" value="<?php echo $row["LastName"] ?>"/></td>
+                <td><input type="text" id="lastName" name="lastName" value="<?php echo $row["lastName"] ?>"/></td>
             </tr>
             <tr>
                 <td>Email Address</td>
-                <td><input type="text" id="EmailAddress" name="EmailAddress"  value="<?php echo $row["EmailAddress"] ?>"/></td>
+                <td><input type="text" id="EmailAddress" name="EmailAddress"  value="<?php echo $row["emailAddress"] ?>"/></td>
             </tr>
             <tr>
                 <td>Cell phone</td>
-                <td><input type="text" id="CellPhone" name="CellPhone" value="<?php echo $row["Cellphone"] ?>"/></td>
+                <td><input type="text" id="CellPhone" name="CellPhone" value="<?php echo $row["cellPhoneNumber"] ?>"/></td>
             </tr>
             <tr>
                 <td>Username</td>

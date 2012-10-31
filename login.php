@@ -44,7 +44,7 @@
                 $username = mysql_real_escape_string($_POST['username']);
                 $password = hash('sha512', $_POST['password']);
                 print_r($password);
-                $result = mysql_query("SELECT * FROM $table WHERE username = '$username' AND password = '$password'");
+          //      $result = mysql_query("SELECT * FROM $table WHERE username = '$username' AND password = '$password'");
                 if(mysql_num_rows($result))
                 {
                     $_SESSION['username'] = htmlspecialchars($username); // htmlspecialchars() sanitises XSS

@@ -1,22 +1,23 @@
 <?php
 include("common/include/db_login.php");
-$table = 'LeadProvider'; // Members name
+$table = 'leadProvider'; // Members name
 $row ="";
 mysql_connect($host, $user, $pass);
 mysql_select_db($database);
-if(isset($_GET["LeadProvider"]))
+if(isset($_GET["leadProvider"]))
 {
-	$LeadProvider = mysql_real_escape_string($_GET['LeadProvider']);
-	$result = mysql_query("SELECT * FROM $table WHERE CompanyName = '$LeadProvider'");
-	if(mysql_num_rows($result)) {
-		$row = mysql_fetch_array($result) ;
-		//print_r($row);
+	$leadProvider = $mysqli->real_escape_string($_GET['leadProvider']);
+	$query = sprintf("SELECT * FROM %s WHERE companyName = '%s' AND id = %s", $table, $leadProvider, $_GET['id']);
+	$result = $mysqli->query($query);
+	if($result) {
+		$row = $result->fetch_array() ;
+		print_r($row);
 	} else {
 	}
-	mysql_connect($host, $user, $pass);
-	mysql_select_db($database);
+/*
 	$sql = "UPDATE `BlackBox`.`member` SET `LeadProviderID_Default` = '".$row["LeadProviderID"]."' WHERE `member`.`username` = '".$_SESSION["username"]."';";
 	mysql_query($sql);
+	*/
 } else {
 /*
 	echo "Your Test";
@@ -50,12 +51,12 @@ if(isset($_GET["LeadProvider"]))
             </tr>
             <tr>
                 <td>
-                    <input intermediateChanges="true"  type="text" name="LeadProvider" value="<?php if(isset($row["TechnicalPOCName"])) { print_r($row["CompanyName"]); } ?>" required="true" data-dojo-type="dijit.form.ValidationTextBox"  data-dojo-props="trim:true, propercase:true" id="LeadProvider"/>
+                    <input intermediateChanges="true"  type="text" name="LeadProvider" value="<?php if(isset($row["technicalPocName"])) { echo $row["companyName"]; } ?>" required="true" data-dojo-type="dijit.form.ValidationTextBox"  data-dojo-props="trim:true, propercase:true" id="LeadProvider"/>
                 </td>
                 <td> 
-                    <input type="hidden" name="phone" id="phone" value="<?php if(isset($row["TechnicalPOCName"])) { print_r( $row["LeadProviderID"] ); } ?>"  />
+                    <input type="hidden" name="phone" id="phone" value="<?php if(isset($row["TechnicalPOCName"])) { echo $row["id"]; } ?>"  />
                     <label for="phone">Phone number, no spaces:</label>
-                    <input type="text" name="phone" id="phone" value="<?php if(isset($row["TechnicalPOCName"])) { print_r($row["PrimaryPhoneNumebr"]); } ?>" required="true"
+                    <input type="text" name="phone" id="phone" value="<?php if(isset($row["TechnicalPOCName"])) { echo $row["primaryPhoneNumber"]; } ?>" required="true"
                     data-dojo-type="dijit.form.ValidationTextBox"
                     data-dojo-props="regExp:'[\\d{10}][\\dw]+', invalidMessage:'Invalid Non-Space Text.'" />
                 </td>

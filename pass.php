@@ -1,6 +1,5 @@
 <?php
 
-
 /*****************\
  * Display Errors - code
 \*****************/
@@ -122,10 +121,7 @@ $xml_data = <<<XML
 </REQUEST>
 XML;
  
-$URL = "http://www.fsc-bb.com/dev/bbapi.bbx?";
- 
-
-
+$URL = "http://" . $_SERVER['SERVER_NAME'] . "/bbapi.bbx?";
 
 function post_xml($url, $xml) {
   $ch = curl_init();
