@@ -9,14 +9,36 @@
 * Mike Browne - phelandhu@gmail.com
 ***********************************************/
 
-class BB_Data {
-	protected static $dbConnectionInstance;
-	
-	public function __construct() {
+abstract class BB_Data {
+	protected $dbConnection;
+	protected $id;
+	protected $dateCreated;
+	protected $dateModified;
+	protected $name;
+	protected $comment;
 		
+	public function __construct($host, $user, $pass, $database) {
+		$this->dbConnection = new mysqli($host, $user, $pass, $database);
 	}
 	
-	public static function setConnection($host, $user, $pass, $database) {
-		self::$dbConnectionInstance = new mysqli($host, $user, $pass, $database);
+	public function getOneByID($id) {
+		return $this->dbConnection->query(sprintf("SELECT * FROM %s WHERE id = %s", $this->self, $id));
 	}
+	
+	public function getOneByNameAndId($name, $id) {
+		return $this->dbConnection->query(sprintf("SELECT * FROM %s WHERE name = '%s' AND id = %s", $this->self, $name, $id));
+	}
+	
+	public function delete($id) {
+		if(isset($id)) {
+			$this->dbConnection->query(sprintf("DELETE FROM %s WHERE id = %s", $this->self, $id));
+		}
+	}
+	
+	public function getNamedArray($data) {
+		return $data->fetch_array();
+	}
+	
+//	public abstract function save();
+	
 }

@@ -232,7 +232,7 @@ CREATE TABLE `member` (
   `lastName` varchar(64) NOT NULL,
   `emailAddress` varchar(64) NOT NULL,
   `cellPhoneNumber` varchar(16) NOT NULL,
-  `leadProviderId` int(11) NOT NULL,
+  `leadProviderIdDefault` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;

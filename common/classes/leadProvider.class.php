@@ -4,20 +4,24 @@
 * Created:            Oct 30, 2012 4:42:23 PM
 * Last Modified:      Oct 30, 2012 4:42:23 PM
 *
-* [LEFT BLANK FOR PROGRAM DISCRIPTION]
+* [LEFT BLANK FOR PROGRAM DESCRIPTION]
 *
 * Mike Browne - phelandhu@gmail.com
 ***********************************************/
 
 class LeadProvider extends BB_Data {
-	private $self = "leadProvider";
-	private $dbConnection;
-	
-	public function __construct($host, $user, $pass, $database) {
-		$this->dbConnection = new mysqli($host, $user, $pass, $database);
+	protected $self = "leadProvider";
+
+	public function getOneByUsernameAndId($userName, $id) {
+		return $this->dbConnection->query(sprintf("SELECT * FROM %s WHERE companyName = '%s' AND id = %s", $this->self, $userName, $id));
 	}
 	
-	public function getOneByNameAndId($userName, $id){
-		$this->dbConnection->query(sprintf("SELECT * FROM %s WHERE companyName = '%s' AND id = %s", $this->self, $userName, $id));
+	public function save($data) {
+		$qry = sprintf("INSERT INTO %s (`dateCreated`, `name`, `comment`, `companyName`, `primaryPhoneNumber`, `technicalPocName`, `technicalPocEmailAddress`, `salesPocName`, `salesPocEmailAddress`, `integrationDate`, `apiField1`, `apiField2`, `sendingUrl`)
+					VALUES( now(), '', '', '%s', '%s', '%s', '%s', '%s', '%s', now(), '%s', '%s', '%s')", 
+					$this->self, $data['companyName'], $data['primaryPhoneNumber'], $data['technicalPocName'], $data['technicalPocEmailAddress'], $data['salesPocName'], $data['salesPocEmailAddress'], $data['apiField1'], $data['apiField2'], $data['sendingUrl']
+				);
+		$this->dbConnection->query($qry);
 	}
+
 }
