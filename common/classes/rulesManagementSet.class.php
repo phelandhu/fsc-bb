@@ -11,6 +11,7 @@
 
 class RulesManagementSet extends BB_Data {
 	protected $self = "rulesManagementSet";
+	protected $xOver = "xRules_RulesManagementSet";
 	
 	public function save($data) { // not working yet.
 		// I am creating a xover table between this and rules.
@@ -20,33 +21,27 @@ class RulesManagementSet extends BB_Data {
 					`name` = '%s',
 					`comment` = '%s',
 					`title` = '%s',
-					`ruleDescription` = '%s',
-					`phpLocation` = '%s',
-					`value` = '%s',
-					`fieldName` = '%s'
+					`active` = %s,
+					`memberId` = %s,
 					WHERE id = %s",
 					$this->self,
 					$this->dbConnection->real_escape_string($data['name']),
 					$this->dbConnection->real_escape_string($data['comment']),
 					$this->dbConnection->real_escape_string($data['title']),
-					$this->dbConnection->real_escape_string($data['ruleDescription']),
-					$this->dbConnection->real_escape_string($data['phpLocation']),
-					$this->dbConnection->real_escape_string($data['value']),
-					$this->dbConnection->real_escape_string($data['fieldName']),
+					$this->dbConnection->real_escape_string($data['active']),
+					$this->dbConnection->real_escape_string($data['memberId']),
 					$data['id']);
 			$this->dbConnection->query($qry);
 			$returnId = $data['id'];
 		} else {
 			$qry = sprintf("INSERT INTO %s
-					(`dateCreated`, `name`, `comment`, `title`, `ruleDescription`, `phpLocation`, `value`, `fieldName`)
+					(`dateCreated`, `name`, `comment`, `title`, `active`, `memberId`)
 					VALUES
-					(now(), '', '', '%s', '%s', '%s', '%s', '%s')",
+					(now(), '', '', '%s', %s, %s)",
 					$this->self,
 					$this->dbConnection->real_escape_string($data['title']),
-					$this->dbConnection->real_escape_string($data['ruleDescription']),
-					$this->dbConnection->real_escape_string($data['phpLocation']),
-					$this->dbConnection->real_escape_string($data['value']),
-					$this->dbConnection->real_escape_string($data['fieldName']));
+					$this->dbConnection->real_escape_string($data['active']),
+					$this->dbConnection->real_escape_string($data['memberId']));
 			$this->dbConnection->query($qry);
 			// check for error
 			if(!$this->dbConnection->errno) {
@@ -57,5 +52,31 @@ class RulesManagementSet extends BB_Data {
 			}
 		}
 		return $returnId;
+	}
+	
+	public function saveSet($rulesManagementSetId, $rulesId) {
+		$rule = null;
+		if(isset($rulesManagementSetId) && isset($rulesId)) {
+			// find and delete all references to the RMS ID
+			$qry = sprintf("DELETE FROM %s WHERE rulesManagementSetId = %s", $this->xOver, $rulesManagementSetId);
+			$this->dbConnection->query($qry);
+			// Walk through the Rules Id and create and insert
+			$stmt = $this->dbConnection->prepare("INSERT INTO xRules_RulesManagementSet (rulesManagementSetId, rulesId) VALUES (?, ?)");
+			$stmt->bind_param("ii", $rulesManagementSetId, $rule);
+			foreach($rulesId as $rule) {
+				$stmt->execute();
+			}
+		}
+	}
+	
+	public function getSet($rulesManagementSetId) {
+		$qry = sprintf("SELECT rulesId FROM %s WHERE rulesManagementSetId = %s", $this->xOver, $rulesManagementSetId);
+		$result = $this->dbConnection->query($qry);
+				
+		if(isset($result)) {
+			return $result;
+		} else {
+			
+		} 
 	}
 }

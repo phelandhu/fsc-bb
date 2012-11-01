@@ -53,9 +53,36 @@ class RulesManagementSetTest extends PHPUnit_Framework_TestCase {
 	}
 */	
 	public function testSave() {
+		$data['title'] = "Test group five";
+		$data['active'] = 1;
+		$data['memberId'] = 1;
+		$result = $this->_rulesManagementSet->save($data);
+		echo "New RMS ID: ", $result, "\n";
+	}
+	
+	/*
+	public function testUpdateSave() {
 		$result = $this->_rulesManagementSet->getOneById(284);
 		$data = $result->fetch_array();
 		$data['comment'] = "This is the do";	
 		$result = $this->_rulesManagementSet->save($data);
+	}
+	*/
+	/*
+	public function testSaveSet() {
+		$rulesId = array(1, 2, 3, 4, 6, 10);
+		$rulesManagementSetId = 284;
+		$this->_rulesManagementSet->saveSet($rulesManagementSetId, $rulesId);
+	}
+*/	
+	public function testGetSet () {
+		$arrResult = array();
+		$rulesManagementSetId = 284;
+		$result = $this->_rulesManagementSet->getSet($rulesManagementSetId);
+		
+		while($row = $result->fetch_array()) {
+			$arrResult[] = $row['0'];
+		}
+		print_r($arrResult);
 	}
 }
