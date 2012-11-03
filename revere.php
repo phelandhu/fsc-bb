@@ -27,7 +27,7 @@ foreach( $REFERENCES as $refa) {
 		}
 	}
 }
-
+die('Everywhere');
 $urlstring .=       "http://" . $siteURL . "/bbapi.bbx?".'apiusername='.$apiusername.'&apipassword='.$apipassword;
 $urlstring .=       '&'.http_build_query($REFERRAL);
 $urlstring .=       '&'.http_build_query($PERSONAL);

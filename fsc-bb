@@ -1,0 +1,23 @@
+# /etc/apache2/sites-available/sandbox.localhost
+<VirtualHost *>
+
+    # Server name
+    ServerName fsc-bb
+
+    # Indexes + Directory Root
+    DirectoryIndex index.html
+
+    # Document root
+    DocumentRoot /home/mbrowne/workspace/fsc-bb/
+
+    # CGI Directory ?Really?
+    ScriptAlias /cgi-bin/ /var/www/sandbox/cgi-bin/
+    <Location /cgi-bin>
+	Options +ExecCGI
+    </Location>
+
+    # Custom log file locations
+    ErrorLog  /var/log/apache2/fsc-bb/error.log
+    CustomLog /var/log/apache2/fsc-bb/access.log combined
+
+</VirtualHost>
