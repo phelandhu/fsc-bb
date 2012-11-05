@@ -16,7 +16,7 @@ class PassGoodTest extends PHPUnit_Framework_TestCase {
 	
 	public function setUp()
 	{
-		$this->_passGood = new PassGood($GLOBALS["host"], $GLOBALS["user"], $GLOBALS["pass"], $GLOBALS["database"]);
+		$this->_passGood = new PassGood($GLOBALS["dbDataArr"]);
 	}
 	
 	public function tearDown()

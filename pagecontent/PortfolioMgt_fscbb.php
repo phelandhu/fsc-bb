@@ -1,5 +1,11 @@
 <?php
-	include("common/include/db_login.php");
+	include("bootstrap.php");
+	include("common/classes/member.class.php");
+	include("common/classes/rules.class.php");
+	include("common/classes/rulesManagementSet.class.php");
+	$member = new Member($dbDataArr);
+	$rules = new Rules($dbDataArr);
+	$rulesManagementSet = new RulesManagementSet($dbDataArr);
 	$table      =   'rules'; // Members name
 	$row        =   "";
 	
@@ -35,17 +41,13 @@
             <tr><td>    
                 <table>
                     
-                      <tr><td>SUN <input type="checkbox" name="portfoliostartdate_active" id="sunday"></td>
+                      <tr>
+                      <td>SUN <input type="checkbox" name="portfoliostartdate_active" id="sunday"></td>
                       <td>MON <input type="checkbox" name="portfoliostartdate_active" id="monday"></td>
-                          
                       <td>TUE <input type="checkbox" name="portfoliostartdate_active" id="tuesday"></td>
-                          
                       <td>WED <input type="checkbox" name="portfoliostartdate_active" id="wednesday"></td>
-                          
                       <td>THU <input type="checkbox" name="portfoliostartdate_active" id="thursday"></td>
-                          
                       <td>FRI <input type="checkbox" name="portfoliostartdate_active" id="friday"></td>
-                          
                       <td>SAT <input type="checkbox" name="portfoliostartdate_active" id="saturday"></td>
                       </tr>
                       <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
@@ -61,18 +63,15 @@
                       </tr>
                       <tr>
                        <td>Start Time<input type="text" name="StartTime_SUNDAY" id="StartTime_SUNDAY"   size="3"/> <br/>End Time<br/><input type="text" name="EndTime_SUNDAY" id="EndTime_SUNDAY"   size="3"/></td>
-                        <td>Start Time<input type="text" name="StartTime_MONDAY" id="StartTime_MONDAY"   size="3"/> <br/>End Time<br/><input type="text" name="EndTime_MONDAY" id="EndTime_MONDAY"   size="3"/></td>
-                         <td>Start Time<input type="text" name="StartTime_TUESDAY" id="StartTime_TUESDAY"   size="3"/> <br/>End Time<br/><input type="text" name="EndTime_TUESDAY" id="EndTime_TUESDAY"   size="3"/></td>
-                          <td>Start Time<input type="text" name="StartTime_WEDNESDAY" id="StartTime_WEDNESDAY"   size="3"/> <br/>End Time<br/><input type="text" name="EndTime_WEDNESDAY" id="EndTime_WEDNESDAY"   size="3"/></td>
-                           <td>Start Time<input type="text" name="StartTime_THURSDAY" id="StartTime_THURSDAY"   size="3"/> <br/>End Time<br/><input type="text" name="EndTime_THURSDAY" id="EndTime_THURSDAY"   size="3"/></td>
-                            <td>Start Time<input type="text" name="StartTime_FRIDAY" id="StartTime_FRIDAY"   size="3"/> <br/>End Time<br/><input type="text" name="EndTime_FRIDAY" id="EndTime_FRIDAY"   size="3"/></td>
-                             <td>Start Time<input type="text" name="StartTime_SATURDAY" id="StartTime_SATURDAY"   size="3"/> <br/>End Time<br/><input type="text" name="EndTime_SATURDAY" id="EndTime_SATURDAY"   size="3"/></td>
+                       <td>Start Time<input type="text" name="StartTime_MONDAY" id="StartTime_MONDAY"   size="3"/> <br/>End Time<br/><input type="text" name="EndTime_MONDAY" id="EndTime_MONDAY"   size="3"/></td>
+                       <td>Start Time<input type="text" name="StartTime_TUESDAY" id="StartTime_TUESDAY"   size="3"/> <br/>End Time<br/><input type="text" name="EndTime_TUESDAY" id="EndTime_TUESDAY"   size="3"/></td>
+                       <td>Start Time<input type="text" name="StartTime_WEDNESDAY" id="StartTime_WEDNESDAY"   size="3"/> <br/>End Time<br/><input type="text" name="EndTime_WEDNESDAY" id="EndTime_WEDNESDAY"   size="3"/></td>
+                       <td>Start Time<input type="text" name="StartTime_THURSDAY" id="StartTime_THURSDAY"   size="3"/> <br/>End Time<br/><input type="text" name="EndTime_THURSDAY" id="EndTime_THURSDAY"   size="3"/></td>
+                       <td>Start Time<input type="text" name="StartTime_FRIDAY" id="StartTime_FRIDAY"   size="3"/> <br/>End Time<br/><input type="text" name="EndTime_FRIDAY" id="EndTime_FRIDAY"   size="3"/></td>
+                       <td>Start Time<input type="text" name="StartTime_SATURDAY" id="StartTime_SATURDAY"   size="3"/> <br/>End Time<br/><input type="text" name="EndTime_SATURDAY" id="EndTime_SATURDAY"   size="3"/></td>
                       </tr>
                       <tr><td></td><td></td><td></td><td></td><td></td></td></td><td></td></tr>
-                      
                     </table>
-                
-                
                 
             </td><td></td><td></td></tr>
         <tr><td>Buy Priority: <select name="BuyPriority" id="BuyPriority"   />
@@ -93,12 +92,16 @@
             <option>-- Rules Engine Not Assign --</option>
 
  <?php
+/*
+ $result = $member->getOneByNameAndId($_SESSION['username'],$_SESSION['memberId']);
+ 	
 	$sql = "SELECT * FROM `member` WHERE `username`= '".$_SESSION['username']."';";
 	$results_member = mysql_query($sql);
 	
 	$row = mysql_fetch_array($results_member);
 	$memberid = $row['id'];
-	$sql = "SELECT DISTINCT `Title` FROM `RulesManagementSet` WHERE `memberID`= '".$memberid."';";
+*/	
+	$sql = "SELECT DISTINCT `Title` FROM `RulesManagementSet` WHERE `memberID`= '" . $_SESSION['memberId'] . "';";
 	$result_rules = mysql_query($sql);
 	//echo $sql;
 	while($rows = mysql_fetch_array($result_rules)) {

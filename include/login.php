@@ -1,5 +1,5 @@
 <?php 
-	include("common/include/db_login.php");
+	include("bootstrap.php");
 ?>
 <div class="box">
     <div class="box-header">

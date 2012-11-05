@@ -1,16 +1,13 @@
 <?php
-include("common/include/db_login.php");
-$table = 'leadProvider'; // Members name
-$row ="";
-mysql_connect($host, $user, $pass);
-mysql_select_db($database);
+include('bootstrap.php');
+include("common/classes/leadProvider.class.php");
+$leadProvider = new LeadProvider($dbDataArr);
+
 if(isset($_GET["leadProvider"]))
 {
-	$leadProvider = $mysqli->real_escape_string($_GET['leadProvider']);
-	$query = sprintf("SELECT * FROM %s WHERE companyName = '%s' AND id = %s", $table, $leadProvider, $_GET['id']);
-	$result = $mysqli->query($query);
-	if($result) {
-		$row = $result->fetch_array() ;
+	$result = $leadProvider->getOneByUsernameAndId($mysqli->real_escape_string($_GET['leadProvider']), $_GET['id']);
+	if($result->num_rows > 0) {
+		$row = $result->fetch_array();
 		print_r($row);
 	} else {
 	}

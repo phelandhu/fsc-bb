@@ -16,9 +16,14 @@ abstract class BB_Data {
 	protected $dateModified;
 	protected $name;
 	protected $comment;
-		
+		/*
 	public function __construct($host, $user, $pass, $database) {
 		$this->dbConnection = new mysqli($host, $user, $pass, $database);
+	}
+*/
+	public function __construct($dbData) {
+		$connectData = $dbData;
+		$this->dbConnection = new mysqli($connectData["hostName"], $connectData["userName"], $connectData["passWord"], $connectData["dataBase"]);
 	}
 	
 	public function getOneByID($id) {

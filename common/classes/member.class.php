@@ -64,5 +64,12 @@ class Member extends BB_Data {
 		$this->dbConnection->query($qry);
 	}
 	
+	public function getOneByUsernameAndPassword($username, $password){
+		$qry = sprintf("SELECT * FROM %s WHERE username = '%s' AND password = '%s'", $this->self, $username, $password);
+		return $this->dbConnection->query($qry);
+	}
 	
+	public function resetPassword() {
+		
+	}
 }

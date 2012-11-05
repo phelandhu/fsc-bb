@@ -14,15 +14,11 @@ include ("../common/classes/rulesManagementSet.class.php");
 
 class RulesManagementSetTest extends PHPUnit_Framework_TestCase {
 	private $_rulesManagementSet = null;
-	private $host = 'localhost'; // Host name Normally 'LocalHost'
-	private $user = 'bb_user'; // MySQL login username
-	private $pass = 'Keyb0ard!'; // MySQL login password
-	private $database = 'BlackBoxDev'; // Database name
 	
 	public function setUp()
 	{
 		global $ROOT_DIR;
-		$this->_rulesManagementSet = new RulesManagementSet($this->host, $this->user, $this->pass, $this->database);
+		$this->_rulesManagementSet = new RulesManagementSet($GLOBALS["dbDataArr"]);
 	}
 	
 	public function tearDown()
@@ -33,7 +29,7 @@ class RulesManagementSetTest extends PHPUnit_Framework_TestCase {
 	public function testGetOneById() {
 		$result = $this->_rulesManagementSet->getOneById(284);
 		$row = $result->fetch_array();
-		$this->assertEquals("Sample Rule Set D",$row['title']);
+		$this->assertEquals("Test Set",$row['title']);
 	}
 /*	
 	public function testSave() {

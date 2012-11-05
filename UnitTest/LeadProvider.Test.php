@@ -17,7 +17,7 @@ class LeadProviderTest extends PHPUnit_Framework_TestCase {
 	
 	public function setUp()
 	{
-		$this->_leadProvider = new LeadProvider($GLOBALS["host"], $GLOBALS["user"], $GLOBALS["pass"], $GLOBALS["database"]);
+		$this->_leadProvider = new LeadProvider($GLOBALS["dbDataArr"]);
 	}
 	
 	public function tearDown()
@@ -42,7 +42,7 @@ class LeadProviderTest extends PHPUnit_Framework_TestCase {
 		$row = $result->fetch_array();
 		$this->assertEquals("Montgomery",$row['companyName']);
 	}
-	
+/*	
 	public function testSave() {
 		$data['companyName'] = "Test Co.";
 		$data['primaryPhoneNumber'] = "555-1212";
@@ -56,6 +56,11 @@ class LeadProviderTest extends PHPUnit_Framework_TestCase {
 		$data['sendingUrl'] = "www.test.com/send";
 //		$result = $this->_leadProvider->save($data);
 	}
-	
+*/
+	public function testGetOneByMemberId() {
+		$result = $this->_leadProvider->getOneByMemberId(1);
+		$row = $result->fetch_array();
+		$this->assertEquals("Digimarc",$row['companyName']);
+	}	
 	
 }

@@ -57,4 +57,12 @@ class Rules extends BB_Data {
 		}
 		return $returnId;
 	}
+	
+	public function getRulesByMemberId($memberId) {
+		$qry = sprintf("SELECT rl.dateCreated, rl.dateModified, rl.name, rl.comment, rl.title, rl.ruleDescription, rl.phpLocation, rl.value, rl.fieldName
+				FROM rules rl INNER JOIN xRules_RulesManagementSet ON rl.id = xRules_RulesManagementSet.rulesId INNER JOIN rulesManagementSet ON xRules_RulesManagementSet.rulesManagementSetId = rulesManagementSet.id
+				WHERE rulesManagementSet.memberId = %s AND rulesManagementSet.active = 1;", $memberId);
+		return $this->dbConnection->query($qry);
+	
+	}
 }

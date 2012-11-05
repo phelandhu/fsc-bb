@@ -16,7 +16,7 @@ class PassFailTest extends PHPUnit_Framework_TestCase {
 	
 	public function setUp()
 	{
-		$this->_passFail = new PassFail($GLOBALS["host"], $GLOBALS["user"], $GLOBALS["pass"], $GLOBALS["database"]);
+		$this->_passFail = new PassFail($GLOBALS["dbDataArr"]);
 	}
 	
 	public function tearDown()

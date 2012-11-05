@@ -17,7 +17,7 @@ class RulesTest extends PHPUnit_Framework_TestCase {
 	
 	public function setUp()
 	{
-		$this->_rules = new Rules($GLOBALS["host"], $GLOBALS["user"], $GLOBALS["pass"], $GLOBALS["database"]);
+		$this->_rules = new Rules($GLOBALS["dbDataArr"]);
 	}
 	
 	public function tearDown()
@@ -39,12 +39,18 @@ class RulesTest extends PHPUnit_Framework_TestCase {
 		$data['fieldName'] = "email";
 		$result = $this->_rules->save($data);
 	}
-*/
+
 	public function testUpdateSave() {
 		$result = $this->_rules->getOneById(1);
 		$data = $result->fetch_array();
 		$data['comment'] = "Test of the do";
 		$result = $this->_rules->save($data);
 		echo "\n" . $result;
+	}
+*/	
+	public function testGetRulesByMemberId() {
+		$result = $this->_rules->getRulesByMemberId(1);
+		$row = $result->fetch_array();
+		$this->assertEquals("Reject loan if email includes .mil ",$row['title']);
 	}
 }

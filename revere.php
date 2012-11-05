@@ -2,6 +2,11 @@
 session_start();
 include("common/include/site_setup.php");
 include("common/include/db_login.php");
+include('common/classes/BBCORE.php');
+include('common/classes/member.class.php');
+include('common/classes/rules.class.php');
+$member = new Member($dbDataArr);
+$rules = new Rules($dbDataArr);
 $apiusername = $revere = $_POST['apiusername'];
 $apipassword = $revere = $_POST['apipassword'];
 $revere = $_POST['revere'];
@@ -62,30 +67,38 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 	$username = mysql_real_escape_string($_POST['apiusername']);
 	$password = hash('sha512', $_POST['apipassword']);
 	
-	$result = mysql_query("SELECT * FROM $table WHERE username = '$username' AND password = '$password'");
+//	$result = mysql_query("SELECT * FROM $table WHERE username = '$username' AND password = '$password'");
+	$result = $member->getOneByUsernameAndPassword($username, $password);
 	
-	if(mysql_num_rows($result))
+	
+	if($result->num_rows > 0)
 	{
-		$leadproviderid = $row['LeadProviderID_Default'];
+		$row = $result->fetch_array();
+		
+		$leadproviderid = $row['leadProviderId'];
 		$_SESSION['username'] = htmlspecialchars($apiusername); // htmlspecialchars() sanitises XSS
+		$session['memberId'] = $row["id"];
 		
 		print_r('<code> 0 </code><msg>(Authorized), Authentication Successfull </msg>');
 		print_r("</header>");
-		
+		/*
 		mysql_connect($host, $user, $pass);
 		$result_rules = "SELECT rl.PHPLocation, rl.value, rl.FieldName FROM  `member` m LEFT JOIN  `RulesManagementSet` rm ON rm.`memberID` =  `m`.`id` LEFT JOIN  `rules` rl ON  `rl`.`rulesID` =  `rm`.`rulesID` WHERE username =  '".$username."' AND rm.Active = 1";
 		$result_rl =  mysql_query($result_rules);
+		*/
+		$result_rl = $rules->getRulesByMemberId($memberId);
+		
 		
 		//echo '<sql>';
 		//print_r($result_rules);
 		//echo '</sql>';
-		$rules_Array;
+		$rules_Array = array();
 		
-		while($row=mysql_fetch_array($result_rl))
+		while($row = $result_rl->fetch_array())
 		{
 			$rules_Array[] = $row;
 		}
-		include('BBCORE.php');
+		
 		$bbcore = new BBCORE($urlstring,$rules_Array);
 		
 	}

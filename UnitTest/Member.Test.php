@@ -30,10 +30,16 @@ class MemberTest extends PHPUnit_Framework_TestCase {
 		$row = $result->fetch_array();
 		$this->assertEquals("Micheal",$row['firstName']);
 	}
-
+	
+	public function testGetOneByUsernameAndPassword() {
+		$result = $this->_member->getOneByUsernameAndPassword("TestMan", hash('sha512', 'test'));
+		$row = $result->fetch_array();
+		$this->assertEquals("Test",$row['firstName']);
+	}
+/*
 	public function testSave() {
 		$data['username'] = "TestMan";
-		$data['password'] = sha1('test');
+		$data['password'] = hash('sha512', 'test');
 		$data['cookie'] = '';
 		$data['session'] = '';
 		$data['ip'] = '';
@@ -48,7 +54,7 @@ class MemberTest extends PHPUnit_Framework_TestCase {
 	public function testUpdateSave() {
 		$data['id'] = 2;
 		$data['username'] = "TestV1";
-		$data['password'] = sha1('test');
+		$data['password'] = hash('sha512', 'test');
 		$data['cookie'] = '';
 		$data['session'] = '';
 		$data['ip'] = '';
@@ -59,5 +65,5 @@ class MemberTest extends PHPUnit_Framework_TestCase {
 		$data['leadProviderId'] = 4;
 		$result = $this->_member->save($data);
 	}
-	
+*/	
 }

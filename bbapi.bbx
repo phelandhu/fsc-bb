@@ -45,7 +45,7 @@ function flatten_array($array, $preserve_keys = 2, &$out = array(), &$last_subar
         return $out;
 }
 
-if($_SERVER['REQUEST_METHOD'] == 'GET') {
+if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["apiusername"]) && isset($_GET["apipassword"]) && isset($_GET["apikey"]) ) {
 	$apiusername = $_GET["apiusername"];
 	$apipassword = $_GET["apipassword"];
 	$apikey      = $_GET["apikey"];
@@ -83,9 +83,7 @@ mysql_select_db($database);
 		//echo $password;
 		//header('Location: http://20ae-fscbb-primary.hgsitebuilder.comindex.php');
 	}
-} else {
-	if($_SERVER['REQUEST_METHOD'] == 'POST') {
-		if( isset($_POST["apiusername"]) && isset($_POST["apipassword"] ) ) {
+} elseif($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST["apiusername"]) && isset($_POST["apipassword"]) ) {
 			$xmlsource = $_POST['revere'];
 			$array = XML2Array::createArray($xmlsource);
 			$newarraytest = array();
@@ -124,19 +122,20 @@ mysql_select_db($database);
 				//print_r($rules_Array);
 				include('BBCORE.php');
 				$bbcore = new BBCORE($array3,$rules_Array);
-			} else {
-				// Invalid username/password
-				print_r('<code> 401 </code><msg>(Not Authorized), Authentication Failed, Failure with 1 or more API Authentication Elements Supplied </msg>');
-				//echo $password;
-				//header('Location: http://20ae-fscbb-primary.hgsitebuilder.comindex.php');
-			}
 		}
+		/*
 	} else {
 		// Invalid username/password
 		print_r('<code> 401 </code><msg>(Not Authorized), Authentication Failed, Failure with 1 or more API Authentication Elements Supplied </msg>');
 		//echo $password;
 		//header('Location: http://20ae-fscbb-primary.hgsitebuilder.comindex.php');
 	}
+	*/
+} else {
+		// Invalid username/password
+		print_r('<code> 401 </code><msg>(Not Authorized), Authentication Failed, Failure with 1 or more API Authentication Elements Supplied </msg>');
+		//echo $password;
+		//header('Location: http://20ae-fscbb-primary.hgsitebuilder.comindex.php');
 }
 print_r("</result>");
 ?>

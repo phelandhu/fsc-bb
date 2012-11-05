@@ -1,6 +1,6 @@
 <div class="box">
 <?php
-	include('common/include/db_login.php');
+	include('bootstrap.php');
 	include('include/ctrl_CRUD.php');
 	
 	

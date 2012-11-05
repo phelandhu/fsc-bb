@@ -79,4 +79,11 @@ class RulesManagementSet extends BB_Data {
 			
 		} 
 	}
+	
+	public function getNamesByMemberId($memberId) {
+		// get the names of the sets from the table
+		// where the id is equal to $memberId
+		
+//		$qry = sprintf("SELECT * FROM %s WHERE ")
+	}
 }

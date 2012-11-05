@@ -8,9 +8,13 @@
 *
 * Mike Browne - phelandhu@gmail.com
 ***********************************************/
+include ("common/include/site-setup.php");
 include ("common/include/db_login.php");
 include("common/classes/bbData.class.php");
+$dbData = new DBData($host, $user, $pass, $database);
 
+//$dbDataArr = $dbData->getDBData();
+$dbDataArr = array("hostName"=>$host, "userName"=>$user, "passWord"=>$pass, "dataBase"=>$database);
 $ROOT_DIR = __DIR__;
 
 $mysqli = new mysqli($host, $user, $pass, $database);

@@ -2,66 +2,45 @@
 session_start();
 include("common/include/db_login.php");
 include("include/inc.countryCurrency.php");
+include("common/classes/leadProvider.class.php");
 $table = 'Campaigns'; // Members name
 $row ="";
  
-    mysql_connect($host, $user, $pass);
-    mysql_select_db($database);
 
- $result = mysql_query("SELECT LeadProviderID_Default FROM member WHERE username = '".$_SESSION["username"]."'");
-     $leadprov = mysql_fetch_array($result) ;
-    
-     $SQL = "SELECT * FROM  `LeadProvider` WHERE `LeadProviderID` = '".$leadprov["LeadProviderID_Default"]."';";
-     $leadprovNameResult = mysql_query($SQL);
-     
-      $leadprovName = mysql_fetch_array($leadprovNameResult) ;
-
-     mysql_connect($host, $user, $pass);
-     mysql_select_db($database);
-     
-
-
+	$leadProvider = new LeadProvider($dbDataArr);
+	$result = $leadProvider->getOneByMemberId($_SESSION["memberId"]);
+	$leadprovName = $result->fetch_array():
+/*	
+	mysql_connect($host, $user, $pass);
+	mysql_select_db($database);
+	$result = mysql_query("SELECT LeadProviderID_Default FROM member WHERE username = '".$_SESSION["username"]."'");
+	$leadprov = mysql_fetch_array($result) ;
+	$SQL = "SELECT * FROM  `LeadProvider` WHERE `LeadProviderID` = '".$leadprov["LeadProviderID_Default"]."';";
+	$leadprovNameResult = mysql_query($SQL);
+	$leadprovName = mysql_fetch_array($leadprovNameResult) ;
+	mysql_connect($host, $user, $pass);
+	mysql_select_db($database);
+*/
 
 if(isset($_GET["Campaigns"]))
 {
 
-$Campaigns = mysql_real_escape_string($_GET['Campaigns']);
-
-$resultcamp = mysql_query("SELECT * FROM $table WHERE Name = '$Campaigns'");
-
-
-        if(mysql_num_rows($resultcamp ))
-        {
-           $row = mysql_fetch_array($resultcamp ) ;
-          
-            
-          
-            $_SESSION["CampaignName"] = $row["Name"];
-      
-        }else
-            {
-
-            
-            }
-            /****\
-            mysql_connect($host, $user, $pass);
-mysql_select_db($database);
-$sql = "UPDATE `BlackBox`.`member` SET `LeadProviderID_Default` = '".$row["LeadProviderID"]."' WHERE `member`.`username` = '".$_SESSION["username"]."';";
- mysql_query($sql);
- \*****/
- 
-}else{
-    
-
+	$Campaigns = mysql_real_escape_string($_GET['Campaigns']);
+	$resultcamp = mysql_query("SELECT * FROM $table WHERE Name = '$Campaigns'");
+	if(mysql_num_rows($resultcamp ))
+	{
+		$row = mysql_fetch_array($resultcamp ) ;
+		$_SESSION["CampaignName"] = $row["Name"];
+	}
+	/****\
+	mysql_connect($host, $user, $pass);
+	mysql_select_db($database);
+	$sql = "UPDATE `BlackBox`.`member` SET `LeadProviderID_Default` = '".$row["LeadProviderID"]."' WHERE `member`.`username` = '".$_SESSION["username"]."';";
+	mysql_query($sql);
+	\*****/
 }
-
-
-
-
 ?>
-
 <div>
-    
 <div style="color:#359ed5;font-size: 2em">
  Campaigns
 </div>

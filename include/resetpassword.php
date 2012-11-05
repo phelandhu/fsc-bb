@@ -1,5 +1,6 @@
 <?php
-include("common/include/db_login.php");
+include('bootstrap.php');
+include("common/classes/member.class.php");
 ?>
 
 
@@ -63,11 +64,10 @@ $table = 'member'; // Members name
  
 mysql_connect($host, $user, $pass);
 mysql_select_db($database);
-
 $trueusername = mysql_real_escape_string($_POST['trueusername']);
-
- 
 $result = mysql_query("SELECT * FROM $table WHERE username = '$trueusername'");
+
+
 
 if(mysql_num_rows($result))
 {

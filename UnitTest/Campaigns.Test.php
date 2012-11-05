@@ -17,7 +17,7 @@ class CampaignsTest extends PHPUnit_Framework_TestCase {
 	
 	public function setUp()
 	{
-		$this->_campaigns = new Campaigns($GLOBALS["host"], $GLOBALS["user"], $GLOBALS["pass"], $GLOBALS["database"]);
+		$this->_campaigns = new Campaigns($GLOBALS["dbDataArr"]);
 	}
 	
 	public function tearDown()

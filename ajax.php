@@ -1,5 +1,5 @@
 <?php
-	include("common/include/db_login.php");
+	include("bootstrap.php");
 	$connection = mysql_connect($host, $user, $pass);
 	mysql_select_db($database);
 	
@@ -13,10 +13,11 @@
 	function get_rules($rulesId, $userId)
 	{
 		$qry = "SELECT * FROM RulesManagementSet WHERE Active = 1 AND memberID = " . $userId . " AND Title = '" . $rulesId . "';";
+		
 		$result = $mysqli->query($qry);
 		$i = 0;
 		$return = '';
-		while($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+		while($row = $result->fetch_array()) {
 			$return .= $row[rulesID] . ",";
 			$i++;
 		}

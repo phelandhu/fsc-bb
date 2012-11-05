@@ -23,5 +23,12 @@ class LeadProvider extends BB_Data {
 				);
 		$this->dbConnection->query($qry);
 	}
+	
+	public function getOneByMemberId($memberId) {
+		$qry = sprintf("SELECT * FROM BlackBoxDev.leadProvider 
+				INNER JOIN member ON leadProvider.id = member.leadproviderId
+				WHERE member.id = 2;", $memberId);
+		return $this->dbConnection->query($qry);
+	}
 
 }
