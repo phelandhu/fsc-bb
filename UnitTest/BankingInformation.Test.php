@@ -33,9 +33,9 @@ class BankingInformationTest extends PHPUnit_Framework_TestCase {
 	public function testGetOneById() {
 		$result = $this->_bankingInformation->getOneById(1);
 		$row = $result->fetch_array();
-		$this->assertEquals("Test Fargo",$row['bankName']);
+		$this->assertEquals("Test Fargo",$row['BANKNAME']);
 	}
-/*	
+/*
 	public function testSave() {
 		$data['personalInformationId'] = 12;
 		$data['accountHolder'] = "Test Account";
@@ -51,7 +51,6 @@ class BankingInformationTest extends PHPUnit_Framework_TestCase {
 		
 		
 		$result = $this->_bankingInformation->save($data);
-	}
+	}	
 */	
-	
 }

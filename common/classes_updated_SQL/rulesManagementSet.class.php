@@ -10,7 +10,7 @@
 ***********************************************/
 
 class RulesManagementSet extends BB_Data {
-	protected $self = "RulesManagementSet";
+	protected $self = "rulesManagementSet";
 	protected $xOver = "xRules_RulesManagementSet";
 	
 	public function save($data) { // not working yet.
@@ -85,10 +85,5 @@ class RulesManagementSet extends BB_Data {
 		// where the id is equal to $memberId
 		
 //		$qry = sprintf("SELECT * FROM %s WHERE ")
-	}
-	
-	
-	public function getOneByID($id) {
-		return $this->dbConnection->query(sprintf("SELECT * FROM %s WHERE RulesManagementSetID = %s", $this->self, $id));
 	}
 }

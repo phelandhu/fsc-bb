@@ -10,20 +10,22 @@
 ***********************************************/
 
 class Campaigns extends BB_Data {
-	protected $self = "Campaigns";
+	protected $self = "campaigns";
 	
 	public function save($data) {
 		if(isset($data['id'])) {
 			$qry = sprintf(" UPDATE %s  SET
-				`Name` = '%s',
-				`Active` = '%s',
-				`LeadProviderID` = %s,
-				`PurchasePrice` = %s,
-				`StartDate` = '%s',
-				`Currency` = '%s'
-				WHERE CampaingnID = %s",
+				`name` = '%s',
+				`comment` = '%s',
+				`active` = '%s',
+				`leadProviderId` = %s,
+				`purchasePrice` = %s,
+				`startDate` = '%s',
+				`currency` = '%s'
+				WHERE id = %s",
 				$this->self,
 					$data['name'],
+					$data['comment'],
 					$data['active'],
 					$data['leadProviderId'],
 					$data['purchasePrice'],
@@ -33,12 +35,12 @@ class Campaigns extends BB_Data {
 			echo $qry;
 		} else {
 			$qry = sprintf("INSERT INTO %s
-					(`Active`, `Name`, `LeadProviderID`, `PurchasePrice`, `StartDate`, `Currency`)
+					(`dateCreated`, `name`, `comment`, `active`, `leadProviderId`, `purchasePrice`, `startDate`, `currency`)
 					VALUES
-					(%s, '%s', %s, '%s', '%s', '%s')",
+					(now(), '%s', '', %s, %s, %s, '%s', '%s')",
 					$this->self,
-					$data['active'],
 					$data['name'],
+					$data['active'],
 					$data['leadProviderId'],
 					$data['purchasePrice'],
 					$data['startDate'],
@@ -66,8 +68,4 @@ class Campaigns extends BB_Data {
 		}	
 	}
 	
-	public function getOneByID($id) {
-		
-		return $this->dbConnection->query(sprintf("SELECT * FROM %s WHERE CampaingnID = %s", $this->self, $id));
-	}	
 }

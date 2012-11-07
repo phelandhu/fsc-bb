@@ -28,7 +28,7 @@ class RulesTest extends PHPUnit_Framework_TestCase {
 	public function testGetOneById() {
 		$result = $this->_rules->getOneById(1);
 		$row = $result->fetch_array();
-		$this->assertEquals("Reject loan if email includes .mil ",$row['title']);
+		$this->assertEquals("Reject loan if email includes .mil ",$row['Title']);
 	}
 /*	
 	public function testSave() {
@@ -51,6 +51,6 @@ class RulesTest extends PHPUnit_Framework_TestCase {
 	public function testGetRulesByMemberId() {
 		$result = $this->_rules->getRulesByMemberId(1);
 		$row = $result->fetch_array();
-		$this->assertEquals("Reject loan if email includes .mil ",$row['title']);
+		$this->assertEquals("Reject loan if email includes .mil ",$row['Title']);
 	}
 }

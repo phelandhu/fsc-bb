@@ -15,14 +15,18 @@ class Rules extends BB_Data {
 	public function save($data) {
 		$returnId = null;
 		if(isset($data['id'])) {
-			$qry = sprintf(" UPDATE %s SET
+			$qry = sprintf(" UPDATE %s  SET
+				`name` = '%s',
+				`comment` = '%s',
 				`title` = '%s',
 				`ruleDescription` = '%s',
 				`phpLocation` = '%s',
 				`value` = '%s',
 				`fieldName` = '%s'
-				WHERE rulesID = %s",
+				WHERE id = %s",
 					$this->self,
+					$this->dbConnection->real_escape_string($data['name']),
+					$this->dbConnection->real_escape_string($data['comment']),
 					$this->dbConnection->real_escape_string($data['title']),
 					$this->dbConnection->real_escape_string($data['ruleDescription']),
 					$this->dbConnection->real_escape_string($data['phpLocation']),
@@ -33,9 +37,9 @@ class Rules extends BB_Data {
 			$returnId = $data['id'];
 		} else {
 			$qry = sprintf("INSERT INTO %s
-					(`Title`, `RuleDescription`, `PHPLocation`, `value`, `FieldName`)
+					(`dateCreated`, `name`, `comment`, `title`, `ruleDescription`, `phpLocation`, `value`, `fieldName`)
 					VALUES
-					('%s', '%s', '%s', '%s', '%s')",
+					(now(), '', '', '%s', '%s', '%s', '%s', '%s')",
 					$this->self,
 					$this->dbConnection->real_escape_string($data['title']),
 					$this->dbConnection->real_escape_string($data['ruleDescription']),
@@ -55,27 +59,10 @@ class Rules extends BB_Data {
 	}
 	
 	public function getRulesByMemberId($memberId) {
-		$qry = sprintf("SELECT rl.* FROM rules rl
-				INNER JOIN RulesManagementSet ON rules.RulesID = RulesManagementSet.rulesID
-				WHERE memberID = %s AND active = 1;", $memberId);
-		return $this->dbConnection->query($qry);	
-	}
-
-	public function getRulesByMemberIdAndTitle($memberId, $RMSTitle) {
-		$qry = sprintf("SELECT rl.* FROM rules rl
-				INNER JOIN RulesManagementSet ON rules.RulesID = RulesManagementSet.rulesID
-				WHERE memberID = %s AND active = 1 AND RulesManagementSet.title = '%s';", $memberId, $RMSTitle);
+		$qry = sprintf("SELECT rl.dateCreated, rl.dateModified, rl.name, rl.comment, rl.title, rl.ruleDescription, rl.phpLocation, rl.value, rl.fieldName
+				FROM rules rl INNER JOIN xRules_RulesManagementSet ON rl.id = xRules_RulesManagementSet.rulesId INNER JOIN rulesManagementSet ON xRules_RulesManagementSet.rulesManagementSetId = rulesManagementSet.id
+				WHERE rulesManagementSet.memberId = %s AND rulesManagementSet.active = 1;", $memberId);
 		return $this->dbConnection->query($qry);
-	}
 	
-	public function getRulesByUsername($username) {
-		$qry = sprintf("SELECT rl.PHPLocation, rl.value, rl.FieldName 
-				FROM `member` m LEFT JOIN  `RulesManagementSet` rm ON rm.`memberID` = `m`.`id` LEFT JOIN `rules` rl ON  `rl`.`rulesID` =  `rm`.`rulesID` 
-				WHERE username = '%s' AND rm.Active = 1", $username);
-		return $this->dbConnection->query($qry);
-	}
-	
-	public function getOneByID($id) {
-		return $this->dbConnection->query(sprintf("SELECT * FROM %s WHERE rulesID = %s", $this->self, $id));
 	}
 }

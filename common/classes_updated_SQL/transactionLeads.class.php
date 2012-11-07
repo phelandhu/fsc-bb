@@ -10,7 +10,7 @@
 ***********************************************/
 
 class TransactionLeads extends BB_Data {
-	protected $self = "Transactions_Leads";
+	protected $self = "transactionLeads";
 
 	public function save($data) { // not working yet.
 		// I am creating a xover table between this and rules.
@@ -28,7 +28,7 @@ class TransactionLeads extends BB_Data {
 `lastPayDate` = '%s', `nextPayDate` = '%s', `secondPayDate` = '%s', `accountHolder` = '%s', `bankName` = '%s', `bankPhone` = '%s', `accountType` = '%s', `routingNumber` = '%s',
 `accountNumber` = '%s', `bankMonths` = '%s', `bankYears` = '%s', `outStandingAmt` = '%s', `activeChecking` = '%s', `refFirstName` = '%s', `refLastName` = '%s', `phone` = '%s',
 `relationship` = '%s', `flag` = '%s', `results` = '%s', `code` = '%s'
-					WHERE LeadsTransaction_PASSID = %s",
+					WHERE id = %s",
 					$this->self,
 $this->dbConnection->real_escape_string($data['name']), $this->dbConnection->real_escape_string($data['comment']),
 $this->dbConnection->real_escape_string($data['apiUserName']), $this->dbConnection->real_escape_string($data['apiPassWord']), $this->dbConnection->real_escape_string($data['storeKey']), $this->dbConnection->real_escape_string($data['refUrl']), $this->dbConnection->real_escape_string($data['ipAddress']),   
@@ -47,9 +47,18 @@ $this->dbConnection->real_escape_string($data['relationship']), $this->dbConnect
 			$returnId = $data['id'];
 		} else {
 			$qry = sprintf("INSERT INTO %s
-  ( `apiusername`, `apipassword`, `STOREKEY`, `REFURL`, `IPADDRESS`, `TIERKEY`, `AFFID`, `SUBID`, `TEST`, `REQUESTEDAMOUNT`, `SSN`, `DOB`, `GENDER`, `FIRSTNAME`, `LASTNAME`, `ADDRESS`, `CITY`, `STATE`, `HOMEPHONE`, `OTHERPHONE`, `DLSTATE`, `DLNUMBER`, `CONTACTTIME`, `ADDRESSMONTHS`, `ADDRESSYEARS`, `RENTOROWN`, `ISMILITARY`, `ISCITIZEN`, `OTHEROFFERS`, `EMAIL`, `INCOMETYPE`, `PAYTYPE`, `EMPMONTHS`, `EMPYEARS`, `EMPNAME`, `EMPADDRESS`, `EMPADDRESS2`, `EMPCITY`, `EMPSTATE`, `EMPZIP`, `EMPPHONE`, `EMPPHONEEXT`, `EMPFAX`, `SUPERVISORNAME`, `SUPERVISORPHONE`, `SUPERVISORPHONEEXT`, `HIREDATE`, `EMPTYPE`, `JOBTITLE`, `WORKSHIFT`, `PAYFREQUENCY`, `NETMONTHLY`, `GROSSMONTHLY`, `LASTPAYDATE`, `NEXTPAYDATE`, `SECONDPAYDATE`, `ACCOUNTHOLDER`, `BANKNAME`, `BANKPHONE`, `ACCOUNTTYPE`, `ROUTINGNUMBER`, `ACCOUNTNUMBER`, `BANKMONTHS`, `BANKYEARS`, `OUTSTANDINGAMT`, `ACTIVECHECKING`, `REFFIRSTNAME`, `REFLASTNAME`, `PHONE`, `RELATIONSHIP`, `FLAG`, `DATETIME`, `RESULTS`, `CODE`)
+  ( `dateCreated`, `name`, `comment`, `apiUserName`, `apiPassWord`, `storeKey`, `refUrl`, `ipAddress`,
+	`tierKey`, `affId`, `subId`, `test`, `requestedAmount`, `ssn`, `dob`, `gender`,
+	`firstName`, `lastName`, `address`, `city`, `state`, `homePhone`, `otherPhone`, `dlState`,
+	`dlNumber`, `contactTime`, `addressMonths`, `addressYears`, `rentOrOwn`, `isMilitary`, `isCitizen`, `otherOffers`,
+	`email`, `incomeType`, `payType`, `empMonths`, `empYears`, `empName`, `empAddress`, `empAddress2`,
+	`empCity`, `empState`, `empZip`, `empPhone`, `empPhoneExt`, `empFax`, `supervisorName`, `supervisorPhone`,
+	`supervisorPhoneExt`, `hireDate`, `empType`, `jobTitle`, `workShift`, `payFrequency`, `netMonthly`, `grossMonthly`,
+	`lastPayDate`, `nextPayDate`, `secondPayDate`, `accountHolder`, `bankName`, `bankPhone`, `accountType`, `routingNumber`,
+	`accountNumber`, `bankMonths`, `bankYears`, `outStandingAmt`, `activeChecking`, `refFirstName`, `refLastName`, `phone`,
+	`relationship`, `flag`, `results`, `code`)
 VALUES
-  ( '%s', '%s', '%s', '%s', '%s',
+  ( now(), '', '', '%s', '%s', '%s', '%s', '%s',
 	'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
 	'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
 	'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
@@ -58,7 +67,7 @@ VALUES
 	'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
 	'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
 	'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s',
-	'%s', '%s', now(), '%s', '%s')",
+	'%s', '%s', '%s', '%s')",
 					$this->self,
 $this->dbConnection->real_escape_string($data['apiUserName']), $this->dbConnection->real_escape_string($data['apiPassWord']), $this->dbConnection->real_escape_string($data['storeKey']), $this->dbConnection->real_escape_string($data['refUrl']), $this->dbConnection->real_escape_string($data['ipAddress']),   
 $this->dbConnection->real_escape_string($data['tierKey']), $this->dbConnection->real_escape_string($data['affId']), $this->dbConnection->real_escape_string($data['subId']), $this->dbConnection->real_escape_string($data['test']), $this->dbConnection->real_escape_string($data['requestedAmount']), $this->dbConnection->real_escape_string($data['ssn']), $this->dbConnection->real_escape_string($data['dob']), $this->dbConnection->real_escape_string($data['gender']),
@@ -83,8 +92,5 @@ $this->dbConnection->real_escape_string($data['relationship']), $this->dbConnect
 		return $returnId;
 	}
 	
-	public function getOneByID($id) {
-		return $this->dbConnection->query(sprintf("SELECT * FROM %s WHERE LeadsTransaction_PASSID = %s", $this->self, $id));
-	}
 
 }

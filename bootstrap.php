@@ -8,7 +8,7 @@
 *
 * Mike Browne - phelandhu@gmail.com
 ***********************************************/
-include ("common/include/site-setup.php");
+include ("common/include/site_setup.php");
 include ("common/include/db_login.php");
 include("common/classes/bbData.class.php");
 $dbData = new DBData($host, $user, $pass, $database);

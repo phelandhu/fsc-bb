@@ -27,10 +27,10 @@ class PassGoodTest extends PHPUnit_Framework_TestCase {
 	public function testGetOneById() {
 		$result = $this->_passGood->getOneById(1);
 		$row = $result->fetch_array();
-		$this->assertEquals(2,$row['leadProviderId']);
+		$this->assertEquals(2,$row['LeadProviderID']);
 	}
 	
-/*	
+/*
 	public function testSave() {
 		$data['personalInformationId'] = 0;
 		$data['leadProviderId'] = 2;
@@ -47,7 +47,7 @@ class PassGoodTest extends PHPUnit_Framework_TestCase {
 		$result = $this->_passGood->save($data);
 	}
 */
-
+/*
 	public function testUpdateSave() {
 		$result = $this->_passGood->getOneById(1);
 		$data = $result->fetch_array();
@@ -55,5 +55,5 @@ class PassGoodTest extends PHPUnit_Framework_TestCase {
 		$data['comment'] = "Just set to fail";
 		$result = $this->_passGood->save($data);
 	}
-
+*/
 }

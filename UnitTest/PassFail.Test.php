@@ -27,10 +27,10 @@ class PassFailTest extends PHPUnit_Framework_TestCase {
 	public function testGetOneById() {
 		$result = $this->_passFail->getOneById(1);
 		$row = $result->fetch_array();
-		$this->assertEquals(2,$row['leadProviderId']);
+		$this->assertEquals(2,$row['LeadProviderID']);
 	}
-	
 /*	
+
 	public function testSave() {
 		$data['personalInformationId'] = 0;
 		$data['leadProviderId'] = 2;
@@ -47,6 +47,7 @@ class PassFailTest extends PHPUnit_Framework_TestCase {
 		$result = $this->_passFail->save($data);
 	}
 */
+/*
 
 	public function testUpdateSave() {
 		$result = $this->_passFail->getOneById(1);
@@ -55,5 +56,5 @@ class PassFailTest extends PHPUnit_Framework_TestCase {
 		$data['memberId'] = 1;
 		$result = $this->_passFail->save($data);
 	}
-
+*/
 }

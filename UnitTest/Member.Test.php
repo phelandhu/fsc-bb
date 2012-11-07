@@ -17,7 +17,7 @@ class MemberTest extends PHPUnit_Framework_TestCase {
 	
 	public function setUp()
 	{
-		$this->_member = new Member($GLOBALS["host"], $GLOBALS["user"], $GLOBALS["pass"], $GLOBALS["database"]);
+		$this->_member = new Member($GLOBALS["dbDataArr"]);
 	}
 	
 	public function tearDown()
@@ -28,13 +28,13 @@ class MemberTest extends PHPUnit_Framework_TestCase {
 	public function testGetOneById() {
 		$result = $this->_member->getOneById(1);
 		$row = $result->fetch_array();
-		$this->assertEquals("Micheal",$row['firstName']);
+		$this->assertEquals("Micheal",$row['FirstName']);
 	}
-	
+
 	public function testGetOneByUsernameAndPassword() {
 		$result = $this->_member->getOneByUsernameAndPassword("TestMan", hash('sha512', 'test'));
 		$row = $result->fetch_array();
-		$this->assertEquals("Test",$row['firstName']);
+		$this->assertEquals("Test",$row['FirstName']);
 	}
 /*
 	public function testSave() {

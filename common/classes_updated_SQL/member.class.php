@@ -15,16 +15,18 @@ class Member extends BB_Data {
 	public function save($data) {
 		if(isset($data['id'])) {
 			$qry = sprintf(" UPDATE %s  SET
+				`name` = '%s',
+				`comment` = '%s',
 				`username` = '%s',
 				`password` = '%s',
 				`cookie` = '%s',
 				`session` = '%s',
 				`ip` = '%s',
-				`FirstName` = '%s',
-				`LastName` = '%s',
-				`EmailAddress` = '%s',
-				`Cellphone` = '%s',
-				`LeadProviderID_Default` = %s
+				`firstName` = '%s',
+				`lastName` = '%s',
+				`emailAddress` = '%s',
+				`cellPhoneNumber` = '%s',
+				`leadProviderId` = %s
 				WHERE id = %s",
 					$this->self,
 					'',
@@ -43,9 +45,9 @@ class Member extends BB_Data {
 			echo $qry;
 		} else {
 			$qry = sprintf("INSERT INTO %s
-					(`username`, `password`, `cookie`, `session`, `ip`, `FirstName`, `LastName`, `EmailAddress`, `Cellphone`, `LeadProviderID_Default`)
+					(`dateCreated`, `name`, `comment`, `username`, `password`, `cookie`, `session`, `ip`, `firstName`, `lastName`, `emailAddress`, `cellPhoneNumber`, `leadProviderId`)
 				VALUES
-					('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+					( now(), '', '', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
 					$this->self,
 					$data['username'],
 					$data['password'],
@@ -69,10 +71,5 @@ class Member extends BB_Data {
 	
 	public function resetPassword() {
 		
-	}
-	
-	
-	public function getOneByID($id) {
-		return $this->dbConnection->query(sprintf("SELECT * FROM %s WHERE id = %s", $this->self, $id));
 	}
 }

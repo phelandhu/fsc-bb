@@ -28,7 +28,7 @@ class CampaignsTest extends PHPUnit_Framework_TestCase {
 	public function testGetOneById() {
 		$result = $this->_campaigns->getOneById(26);
 		$row = $result->fetch_array();
-		$this->assertEquals("Mike Test",$row['name']);
+		$this->assertEquals("Mike Test",$row['Name']);
 	}
 /*
 	public function testSetInactive() {
@@ -40,16 +40,16 @@ class CampaignsTest extends PHPUnit_Framework_TestCase {
 	}
 	
 */
+	
 	public function testSave() {
 		$data['name'] = "Test Campaign";
 		$data['active'] = 1;
 		$data['leadProviderId'] = 1;
 		$data['purchasePrice'] = .54;
 		$data['startDate'] = 'now()';
-		$data['currency'] = 45;
+		$data['currency'] = 'USD';
 	
 		$result = $this->_campaigns->save($data);
 	}
-
 	
 }

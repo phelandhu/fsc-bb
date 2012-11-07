@@ -9,7 +9,7 @@ $row ="";
 
 	$leadProvider = new LeadProvider($dbDataArr);
 	$result = $leadProvider->getOneByMemberId($_SESSION["memberId"]);
-	$leadprovName = $result->fetch_array():
+	$leadprovName = $result->fetch_array();
 /*	
 	mysql_connect($host, $user, $pass);
 	mysql_select_db($database);

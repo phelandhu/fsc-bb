@@ -30,9 +30,9 @@ class TransactionLeadsTest extends PHPUnit_Framework_TestCase {
 	public function testGetOneById() {
 		$result = $this->_transactionLeads->getOneById(2);
 		$row = $result->fetch_array();
-		$this->assertEquals("I5uHFVhfKGWpdXOr",$row['storeKey']);
+		$this->assertEquals("I5uHFVhfKGWpdXOr",$row['STOREKEY']);
 	}
-	
+/*	
 	public function testUpdateSave() {
 		$result = $this->_transactionLeads->getOneById(16);
 		$data = $result->fetch_array();
@@ -42,7 +42,7 @@ class TransactionLeadsTest extends PHPUnit_Framework_TestCase {
 		$data['dlNumber'] = "B265818";		
 		$result = $this->_transactionLeads->save($data);
 	}
-/*	
+*/
 	public function testSave() {
 		$data['apiUserName'] = "TestunAPI";
 		$data['apiPassWord'] = "TestpwAPI";
@@ -118,8 +118,11 @@ class TransactionLeadsTest extends PHPUnit_Framework_TestCase {
 		$data['results'] = "";
 		$data['code'] = "123456";
 		
-		$result = $this->_transactionLeads->save($data);
+		$resultId = $this->_transactionLeads->save($data);
+		$result = $this->_transactionLeads->getOneById($resultId);
+		$row = $result->fetch_array();
+		$this->assertEquals("sd56f4",$row['STOREKEY']);
 	}
-*/	
+
 	
 }

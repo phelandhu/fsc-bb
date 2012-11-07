@@ -10,16 +10,18 @@
 ***********************************************/
 
 class PassGood extends BB_Data {
-	protected $self = "PassGood";
+	protected $self = "passGood";
 	
 	public function save($data) {
 		if(isset($data['id'])) {
 			$qry = sprintf(" UPDATE %s  SET
-				`PersonalinformationID` = '%s',
-				`LeadProviderID` = %s,
-				`memberID` = %s,
-				`ResultXML` = '%s'
-				WHERE PassGoodID = %s",
+				`name` = '%s',
+				`comment` = '%s',
+				`personalInformationId` = '%s',
+				`leadProviderId` = %s,
+				`memberId` = %s,
+				`resultXml` = '%s'
+				WHERE id = %s",
 				$this->self,
 					$data['name'],
 					$data['comment'],
@@ -30,9 +32,9 @@ class PassGood extends BB_Data {
 					$data['id']);
 		} else {
 			$qry = sprintf("INSERT INTO %s
-					(`PersonalinformationID`, `LeadProviderID`, `memberID`, `ResultXML`, `DateTime`)
+					(`dateCreated`, `name`, `comment`, `personalInformationId`, `leadProviderId`, `memberId`, `resultXml`)
 					VALUES
-					(%s, %s, %s, '%s', now())",
+					(now(), '', '', %s, %s, %s, '%s')",
 					$this->self,
 					$data['personalInformationId'],
 					$data['leadProviderId'],
@@ -42,7 +44,4 @@ class PassGood extends BB_Data {
 		$this->dbConnection->query($qry);
 	}
 	
-	public function getOneByID($id) {
-		return $this->dbConnection->query(sprintf("SELECT * FROM %s WHERE PassGoodID = %s", $this->self, $id));
-	}
 }

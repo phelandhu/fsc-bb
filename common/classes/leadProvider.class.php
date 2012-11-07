@@ -10,25 +10,38 @@
 ***********************************************/
 
 class LeadProvider extends BB_Data {
-	protected $self = "leadProvider";
+	protected $self = "LeadProvider";
 
 	public function getOneByUsernameAndId($userName, $id) {
-		return $this->dbConnection->query(sprintf("SELECT * FROM %s WHERE companyName = '%s' AND id = %s", $this->self, $userName, $id));
+		$qry = sprintf("SELECT * FROM %s WHERE CompanyName = '%s' AND id = %s", $this->self, $userName, $id);
+		return $this->dbConnection->query($qry);
 	}
 	
 	public function save($data) {
-		$qry = sprintf("INSERT INTO %s (`dateCreated`, `name`, `comment`, `companyName`, `primaryPhoneNumber`, `technicalPocName`, `technicalPocEmailAddress`, `salesPocName`, `salesPocEmailAddress`, `integrationDate`, `apiField1`, `apiField2`, `sendingUrl`)
-					VALUES( now(), '', '', '%s', '%s', '%s', '%s', '%s', '%s', now(), '%s', '%s', '%s')", 
-					$this->self, $data['companyName'], $data['primaryPhoneNumber'], $data['technicalPocName'], $data['technicalPocEmailAddress'], $data['salesPocName'], $data['salesPocEmailAddress'], $data['apiField1'], $data['apiField2'], $data['sendingUrl']
+		$qry = sprintf("INSERT INTO %s (`CompanyName`, `PrimaryPhoneNumebr`, `TechnicalPOCName`, `TechnicalPOCEmailAddress`, `SalesPOCName`, `SalesPOCEmailAddress`, `IntegrationDate`, `APIField1`, `APIField2`, `SendingURL`)
+					VALUES( '%s', '%s', '%s', '%s', '%s', '%s', now(), '%s', '%s', '%s')", 
+					$this->self, 
+				$data['companyName'], 
+				$data['primaryPhoneNumber'], 
+				$data['technicalPocName'], 
+				$data['technicalPocEmailAddress'], 
+				$data['salesPocName'], 
+				$data['salesPocEmailAddress'], 
+				$data['apiField1'], 
+				$data['apiField2'], 
+				$data['sendingUrl']
 				);
 		$this->dbConnection->query($qry);
 	}
 	
 	public function getOneByMemberId($memberId) {
-		$qry = sprintf("SELECT * FROM BlackBoxDev.leadProvider 
-				INNER JOIN member ON leadProvider.id = member.leadproviderId
-				WHERE member.id = 2;", $memberId);
+		$qry = sprintf("SELECT * FROM LeadProvider 
+				INNER JOIN member ON LeadProvider.LeadProviderID = member.LeadProviderID_Default
+				WHERE member.id = %s;", $memberId);
 		return $this->dbConnection->query($qry);
 	}
-
+	
+	public function getOneByID($id) {
+		return $this->dbConnection->query(sprintf("SELECT * FROM %s WHERE LeadProviderID = %s", $this->self, $id));
+	}
 }

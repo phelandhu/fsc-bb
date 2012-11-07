@@ -4,7 +4,8 @@ session_start();
 include ("bootstrap.php");
 include ("common/classes/member.class.php");
 include ("common/classes/rules.class.php");
-include('common/classes/BBCORE.php');
+include ('common/classes/BBCORE.php');
+include ("common/external/xml2Array.php");
 $member = new Member($dbDataArr);
 $rules = new Rules($dbDataArr);
 
@@ -177,7 +178,7 @@ mysql_select_db($database);
 		while($row = $rules_result->fetch_array()) {
 			$rules_Array[] = $row;
 		}
-		$bbcore = new BBCORE($_GET,$rules_Array, $dbDataArr);
+		$bbcore = new BBCORE($_GET, $rules_Array, $dbDataArr);
 	} else {
 		// Invalid username/password
 		print_r('<code> 401 </code><msg>(Not Authorized), Authentication Failed, Failure with 1 or more API Authentication Elements Supplied </msg>');
@@ -186,7 +187,10 @@ mysql_select_db($database);
 	}
 } elseif($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST["apiusername"]) && isset($_POST["apipassword"]) ) {
 			$xmlsource = $_POST['revere'];
-			$array = XML2Array::createArray($xmlsource);
+//			$array = XML2Array::createArray($xmlsource);
+//echo $xmlsource;
+
+			$array = json_decode(json_encode((array) simplexml_load_string($xmlsource)), 1);
 			$newarraytest = array();
 			$last_subarray_found = "";
 			$array3 = flatten_array($array, 2, $newarraytest, $last_subarray_found);
@@ -205,27 +209,33 @@ mysql_select_db($database);
 			*/
 			$username = mysql_real_escape_string($_POST['apiusername']);
 			$password = hash('sha512', $_POST['apipassword']);
-			$member->getOneByUsernameAndPassword($username, $password);
+			$result = $member->getOneByUsernameAndPassword($username, $password);
 			$row = $result->fetch_array();
 			$memberId = $row['id'];
 			
-			if(mysql_num_rows($result)) {
+			if($result->num_rows > 0) {
 				$leadproviderid = $row['LeadProviderID_Default'];
 				$_SESSION['username'] = htmlspecialchars($apiusername); // htmlspecialchars() sanitises XSS
 				$_SESSION['id'] = $memberId;
 				print_r('<code> 0 </code><msg>(Authorized), Authentication Successfull </msg>');
+				$result_rules = $rules->getRulesByUsername($username);
+				echo "Results returned: ", $result_rules->num_rows;
+				/*
 				mysql_connect($host, $user, $pass);
 				$result_rules = "SELECT rl.PHPLocation, rl.value, rl.FieldName FROM  `member` m LEFT JOIN  `RulesManagementSet` rm ON rm.`memberID` =  `m`.`id` LEFT JOIN  `rules` rl ON  `rl`.`rulesID` =  `rm`.`rulesID` WHERE username =  '".$username."' AND rm.Active = 1";
+				echo $result_rules;
+				die();
 				$result_rl =  mysql_query($result_rules);
 				//echo '<sql>';
 				//print_r($result_rules);
 				//echo '</sql>';
-				$rules_Array;
-				while($row=mysql_fetch_array($result_rl)) {
+				 */
+				$rules_Array = array();
+				while($row=$result_rules->fetch_array()) {
 					$rules_Array[] = $row;
 				}
 				//print_r($rules_Array);
-				$bbcore = new BBCORE($array3,$rules_Array);
+				$bbcore = new BBCORE($array3, $rules_Array, $dbDataArr);
 		}
 		/*
 	} else {

@@ -4,20 +4,19 @@
 * Created:            Oct 31, 2012 10:55:29 AM
 * Last Modified:      Oct 31, 2012 10:55:29 AM
 *
-* V1.0
-* Changes to the DB have been removed, I need to create the classes first and test with them, then make the DB changes. 
+* [LEFT BLANK FOR PROGRAM DESCRIPTION]
 *
 * Mike Browne - phelandhu@gmail.com
 ***********************************************/
 
 class BankingInformation extends BB_Data {
-	protected $self = "Bankinginformation";
+	protected $self = "bankingInformation";
 	
 	public function save($data) {
 		$qry = sprintf("INSERT INTO %s
-(`PersonalinformationID`, `ACCOUNTHOLDER`, `BANKNAME`, `BANKPHONE`, `ACCOUNTTYPE`, `ROUTINGNUMBER`, `ACCOUNTNUMBER`, `BANKMONTHS`, `BANKYEARS`, `OUTSTANDINGAMT`, `ACTIVECHECKING` )
+(`dateCreated`, `name`, `comment`, `personalInformationId`, `accountHolder`, `bankName`, `bankPhone`, `accountType`, `routingNumber`, `accountNumber`, `bankMonths`, `bankYears`, `outstandingAmt`, `activeChecking` )
 VALUES
-( %s, '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, %s, %s )", 
+( now(), '', '', %s, '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, %s, %s )", 
 		$this->self,
 		$data['personalInformationId'],
 		$data['accountHolder'],
@@ -32,10 +31,6 @@ VALUES
 		$data['activeChecking']
 		);
 		$this->dbConnection->query($qry);
-	}
-	
-	public function getOneByID($id) {
-		return $this->dbConnection->query(sprintf("SELECT * FROM %s WHERE BankinginformationID = %s", $this->self, $id));
 	}
 	
 }

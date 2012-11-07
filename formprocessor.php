@@ -35,13 +35,14 @@ if(isset($_GET["form"]))
    
         if($_GET["form"] == "Campaigns")
         {
-            $result_LEADPROVIDERID = mysql_query("SELECT LeadProviderID_Default FROM member WHERE username = '".$_SESSION["username"]."'");
+        	// returns the lead Provider Id from the member table
+            $result_LEADPROVIDERID = mysql_query("SELECT leadProviderId FROM member WHERE username = '".$_SESSION["username"]."'");
          
             
                     if(mysql_num_rows($result_LEADPROVIDERID))
                     {
                             $row = mysql_fetch_array($result_LEADPROVIDERID);
-                            $_SESSION["LeadProviderID"] = $row["LeadProviderID"];
+                            $_SESSION["LeadProviderID"] = $row["leadProviderId"];
                     }
             
                     mysql_connect($host, $user, $pass);
@@ -63,25 +64,27 @@ if(isset($_GET["form"]))
             {
                     mysql_connect($host, $user, $pass);
                     mysql_select_db($database);
-                    
-                $sql = "SELECT `Name` FROM `Campaigns` WHERE `Name` = '".$CampaignName."';";
+                // umm...selects the name from the campaign where the name equals the name.  
+                $sql = "SELECT `name` FROM `campaigns` WHERE `name` = '".$CampaignName."';";
+                // runs the query and returns the result
                 $result342 = mysql_query($sql);
-                
+                // runs the query...wtf?
                  mysql_query($sql);
                  
-               
+               // copies the count of rows returned to a variable
                 $num_rows = mysql_num_rows($result342);
                 
                 // print_r("---------------------------NUMBER OF ROWS --------------------".$num_rows);
-                 
-                if($num_rows >0)
-                {
-                    
-                }else{
-
-                         $sql = "INSERT INTO `Campaigns` (`CampaingnID`, `Active`, `Name`, `LeadProviderID`, `PurchasePrice`, `StartDate`, 
-`Currency`) VALUES (NULL, '".$active."', '".$CampaignName."', '".$DefaultLeadProvider."', '".$PurchasePrice."', '".$IntegrationDate."', '".$Currency."');";
+                 // checks if it is greater than 0, that there is a record, and does nothing if there is.
+                if($num_rows >0) {
+                } else {
+                	// so there is no record now you want to save it.
+					$sql = "INSERT INTO `campaigns` ('active`, `name`, `leadProviderId`, `purchasePrice`, `startDate`, `Currency`) 
+						VALUES 
+						('" . $active . "', '" . $CampaignName . "', '" . $DefaultLeadProvider . "', '" . $PurchasePrice . "', '" . $IntegrationDate . "', '" . $Currency . "');";
+					// now some fancy SQL to redo what is in the class.
            // print_r($sql);
+           // run it!!
             mysql_query($sql);
                 }
                 
@@ -91,21 +94,22 @@ if(isset($_GET["form"]))
             
 			if($_GET["intention"] == "update")
             {
-					$sql = "UPDATE `Campaigns` SET 
-                     `Active` = '".$active."', 
-                     `Name` = '".$CampaignName."', 
-                     `LeadProviderID` = '".$DefaultLeadProvider."', 
-                     `PurchasePrice` = '".$PurchasePrice."', 
-                     `StartDate` = '".$IntegrationDate."', 
-                     `Currency` = '".$Currency."' 
-            		WHERE `Campaigns`.`Name` = '".$_SESSION["CampaignName"]."';";
+            		// So update the campaign
+					$sql = "UPDATE `campaigns` SET 
+                     `active` = '".$active."', 
+                     `name` = '".$CampaignName."', 
+                     `leadProviderId` = '".$DefaultLeadProvider."', 
+                     `purchasePrice` = '".$PurchasePrice."', 
+                     `startDate` = '".$IntegrationDate."', 
+                     `currency` = '".$Currency."' 
+            		WHERE `campaigns`.`name` = '".$_SESSION["CampaignName"]."';";
                    // print_r($sql);
                      mysql_query($sql);
             }
             
             if($_GET["intention"] == "delete")
             {
-                       $sql = "DELETE FROM `Campaigns` WHERE `Campaigns`.`Name` = '".$_SESSION["CampaignName"]."';";
+                       $sql = "DELETE FROM `campaigns` WHERE `campaigns`.`name` = '".$_SESSION["CampaignName"]."';";
                 // print_r($sql);
                      mysql_query($sql);
             }
@@ -131,29 +135,24 @@ if(isset($_GET["form"]))
         
         if($_GET['Password_New'] != "")
         {
-            
-        $sql = "UPDATE `member` SET 
-            `username` = '".$username."', 
-            `password` = '".$password."', 
-            `FirstName` = '".$firstname."', 
-            `LastName` = '".$lastname."', 
-            `EmailAddress` = '".$emailaddress."', 
-            `Cellphone` = '".$cellphone."' 
-            WHERE `member`.`username` = '".$_SESSION["username"]."';";
+			$sql = "UPDATE `member` SET 
+            `username` = '" . $username . "', 
+            `password` = '" . $password . "', 
+            `firstName` = '" . $firstname . "',  
+            `lastName` = '" . $lastname . "', 
+            `emailAddress` = '" . $emailaddress . "',  
+            `cellphone` = '" . $cellphone . "' 
+            WHERE `member`.`username` = '" . $_SESSION["username"] . "';";
         }else{
-               $sql = "UPDATE `member` SET 
-            `username` = '".$username."',  
-            `FirstName` = '".$firstname."', 
-            `LastName` = '".$lastname."', 
-            `EmailAddress` = '".$emailaddress."', 
-            `Cellphone` = '".$cellphone."' 
-            WHERE `member`.`username` = '".$_SESSION["username"]."';";
-            
+			$sql = "UPDATE `member` SET 
+            `username` = '" . $username . "',  
+            `firstName` = '" . $firstname . "', 
+            `lastName` = '" . $lastname . "', 
+            `emailAddress` = '" . $emailaddress . "', 
+            `cellphone` = '" . $cellphone . "' 
+            WHERE `member`.`username` = '" . $_SESSION["username"] . "';";
         }
-
-
         mysql_query($sql);
-
     }
     
     

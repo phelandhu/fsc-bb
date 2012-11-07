@@ -87,7 +87,8 @@
 			rulesId : selectedvalue.options[selectedvalue.selectedIndex].text},
 			type: 'post',
 			success: function(output) {
-				var strArray = output.split(",");			
+				var strArray = output.split(",");
+				var i;
 				for (i = 0; i < strArray.length; i++) {
 					$('#' + strArray[i]).attr('checked', true);
 				}

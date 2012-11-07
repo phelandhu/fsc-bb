@@ -1,5 +1,6 @@
 <?php
 	include("bootstrap.php");
+	include("common/classes/rulesManagementSet.class.php");
 	$connection = mysql_connect($host, $user, $pass);
 	mysql_select_db($database);
 	
@@ -12,6 +13,9 @@
 	
 	function get_rules($rulesId, $userId)
 	{
+		
+		// This query should be changed to using ID, rather than title.
+		 
 		$qry = "SELECT * FROM RulesManagementSet WHERE Active = 1 AND memberID = " . $userId . " AND Title = '" . $rulesId . "';";
 		
 		$result = $mysqli->query($qry);

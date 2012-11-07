@@ -29,7 +29,7 @@ class RulesManagementSetTest extends PHPUnit_Framework_TestCase {
 	public function testGetOneById() {
 		$result = $this->_rulesManagementSet->getOneById(284);
 		$row = $result->fetch_array();
-		$this->assertEquals("Test Set",$row['title']);
+		$this->assertEquals("Sample Rule Set D",$row['Title']);
 	}
 /*	
 	public function testSave() {

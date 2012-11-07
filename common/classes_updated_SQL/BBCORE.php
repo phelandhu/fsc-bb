@@ -74,7 +74,7 @@ class BBCORE
 	private $subject;
 	private $value;
 
-	public function __construct($LeadPacket, $RuleSet, $connectData) 
+	public function __construct($LeadPacket,$RuleSet, $connectData) 
 	{
 		$this->configure( 'localhost' , 'root' , 'Keyb0ard!' , 'BlackBox' , 0 );
 		

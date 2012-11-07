@@ -2,7 +2,8 @@
 	$host = 'localhost'; // Host name Normally 'LocalHost'
 	$user = 'bb_user'; // MySQL login username
 	$pass = 'Keyb0ard!'; // MySQL login password
-	$database = 'BlackBoxDev'; // Database name
+//	$database = 'BlackBoxDev'; // Database name
+	$database = 'BB_Dev'; // Database name
 	
 	class DBData {
 		private $hostName = null;
