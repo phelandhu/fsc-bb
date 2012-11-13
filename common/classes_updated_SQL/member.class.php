@@ -6,6 +6,10 @@
 *
 * [LEFT BLANK FOR PROGRAM DESCRIPTION]
 *
+* /bootstrap.php will include the bbData.class.php file,
+* but if you are calling this outside of that file or for unit testing you
+* must include it explicitly.
+* 
 * Mike Browne - phelandhu@gmail.com
 ***********************************************/
 
@@ -71,5 +75,10 @@ class Member extends BB_Data {
 	
 	public function resetPassword() {
 		
+	}
+	
+	public function getOneByAPIRef($apiRef) {
+		$qry = sprintf("SELECT * FROM %s WHERE apiRef = %s", $this->self, $apiRef);
+		return $this->dbConnection->query($qry);
 	}
 }

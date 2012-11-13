@@ -6,6 +6,10 @@
 *
 * [LEFT BLANK FOR PROGRAM DESCRIPTION]
 *
+* /bootstrap.php will include the bbData.class.php file,
+* but if you are calling this outside of that file or for unit testing you
+* must include it explicitly.
+* 
 * Mike Browne - phelandhu@gmail.com
 ***********************************************/
 
@@ -30,5 +34,8 @@ class LeadProvider extends BB_Data {
 				WHERE member.id = 2;", $memberId);
 		return $this->dbConnection->query($qry);
 	}
-
+	
+	public function getOneByAPIIdAndKey($apiId, $apiKey) {
+		return $this->dbConnection->query(sprintf("SELECT * FROM %s WHERE apiField1 = '%s' AND apiField2 = '%s'",$this->self,$apiId, $apiKey));
+	}
 }

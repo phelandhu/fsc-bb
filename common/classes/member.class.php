@@ -75,4 +75,9 @@ class Member extends BB_Data {
 	public function getOneByID($id) {
 		return $this->dbConnection->query(sprintf("SELECT * FROM %s WHERE id = %s", $this->self, $id));
 	}
+	
+	public function getOneByAPIRef($apiRef) {
+		return $this->dbConnection->query(sprintf("SELECT * FROM %s WHERE APIref = '%s'", $this->self, $apiRef));
+	}	
+
 }

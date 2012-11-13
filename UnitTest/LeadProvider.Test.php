@@ -62,6 +62,11 @@ class LeadProviderTest extends PHPUnit_Framework_TestCase {
 		$result = $this->_leadProvider->getOneByMemberId(1);
 		$row = $result->fetch_array();
 		$this->assertEquals("Digimarc",$row['CompanyName']);
-	}	
+	}
 	
+	public function testGetOneByAPIIdAndKey() {
+		$result = $this->_leadProvider->getOneByAPIIdAndKey('jjOku930uroLJKsdur093ioprjekpkfe923i', 'JJFIOJIEjioej9089I90FKDKKLDSKkldks');
+		$row = $result->fetch_array();
+		$this->assertEquals("Digimarc",$row['CompanyName']);
+	}	
 }

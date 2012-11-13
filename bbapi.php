@@ -4,10 +4,12 @@ session_start();
 include ("bootstrap.php");
 include ("common/classes/member.class.php");
 include ("common/classes/rules.class.php");
+include ("common/classes/leadProvider.class.php");
 include ('common/classes/BBCORE.php');
 include ("common/external/xml2Array.php");
 $member = new Member($dbDataArr);
 $rules = new Rules($dbDataArr);
+$leadProvider = new LeadProvider($dbDataArr);
 
 header("Content-type: text/xml\n");
 print_r("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n");
@@ -152,6 +154,8 @@ if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["apiusername"]) && isset($
 	$apiusername = $_GET["apiusername"];
 	$apipassword = $_GET["apipassword"];
 	$apikey      = $_GET["apikey"];
+	$apiId		 = $_GET["apiId"];
+	$apiKey		 = $_GET["apiKey"];
 	
 /*
 $host = 'localhost'; // Host name Normally 'LocalHost'
@@ -163,9 +167,24 @@ mysql_connect($host, $user, $pass);
 mysql_select_db($database);
 */
 	
+	
+	$result = $leadProvider->getOneByAPIIdAndKey($apiId, $apiKey);
+	if($result->num_rows == 1) {
+		$result = $member->getOneByAPIRef($apiRef);
+		if($result->num_rows == 1) {
+			$row = $result->fetch_array();
+			$rules_result = $rules->getRulesByMemberId($row['id']);
+			$rules_Array = array();
+			while($row = $rules_result->fetch_array()) {
+				$rules_Array[] = $row;
+			}
+			$bbcore = new BBCORE($_GET, $rules_Array, $dbDataArr);
+		}
+/*	
 	$table = 'member'; // Members name
 	$username = mysql_real_escape_string($apiusername);
 	$password = hash('sha512', $apipassword);
+	// 1. change this so that it gets the data using username and apikey, little more secure
 	$result = $member->getOneByUsernameAndPassword($username, $password);
 	if($result->num_rows == 1) {
 		$row = $result->fetch_array();
@@ -179,6 +198,8 @@ mysql_select_db($database);
 			$rules_Array[] = $row;
 		}
 		$bbcore = new BBCORE($_GET, $rules_Array, $dbDataArr);
+		
+		*/
 	} else {
 		// Invalid username/password
 		print_r('<code> 401 </code><msg>(Not Authorized), Authentication Failed, Failure with 1 or more API Authentication Elements Supplied </msg>');
@@ -209,6 +230,7 @@ mysql_select_db($database);
 			*/
 			$username = mysql_real_escape_string($_POST['apiusername']);
 			$password = hash('sha512', $_POST['apipassword']);
+			// see 1. above
 			$result = $member->getOneByUsernameAndPassword($username, $password);
 			$row = $result->fetch_array();
 			$memberId = $row['id'];

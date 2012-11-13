@@ -36,6 +36,20 @@ class MemberTest extends PHPUnit_Framework_TestCase {
 		$row = $result->fetch_array();
 		$this->assertEquals("Test",$row['FirstName']);
 	}
+	
+	public function testGetOneByUsernameAndPasswordClear() {
+		// change this so it is passing the hashed in the static text, instead of hashing it.
+		$result = $this->_member->getOneByUsernameAndPassword("TestMan", hash('sha512', 'test'));
+		$row = $result->fetch_array();
+		$this->assertEquals("Test",$row['FirstName']);
+	}
+	
+	
+	public function testGetOneByAPIRef() {
+		$result = $this->_member->getOneByAPIRef("c4ca4238a0b923820dcc509a6f75849b");
+		$row = $result->fetch_array();
+		$this->assertEquals("Micheal",$row['FirstName']);
+	}
 /*
 	public function testSave() {
 		$data['username'] = "TestMan";

@@ -44,4 +44,8 @@ class LeadProvider extends BB_Data {
 	public function getOneByID($id) {
 		return $this->dbConnection->query(sprintf("SELECT * FROM %s WHERE LeadProviderID = %s", $this->self, $id));
 	}
+	
+	public function getOneByAPIIdAndKey($apiId, $apiKey) {
+		return $this->dbConnection->query(sprintf("SELECT * FROM %s WHERE APIField1 = '%s' AND APIField2 = '%s'",$this->self,$apiId, $apiKey));
+	}
 }
