@@ -11,10 +11,104 @@ $member = new Member($dbDataArr);
 $rules = new Rules($dbDataArr);
 $leadProvider = new LeadProvider($dbDataArr);
 
+$bolUnAuth = true;
+
 header("Content-type: text/xml\n");
 print_r("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n");
-
 print_r("<result>\n");
+
+if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["apiusername"]) && isset($_GET["apipassword"]) && isset($_GET["apikey"]) ) {
+	$bolUnAuth = false;
+	$apiusername = $_GET["apiusername"];
+	$apipassword = $_GET["apipassword"];
+	$apikey      = $_GET["apikey"];
+	$apiId		 = $_GET["apiId"];
+	$apiKey		 = $_GET["apiKey"];
+
+	$result = $leadProvider->getOneByAPIIdAndKey($apiId, $apiKey);
+	if($result->num_rows == 1) {
+		$result = $member->getOneByAPIRef($apiRef);
+		if($result->num_rows == 1) {
+			$row = $result->fetch_array();
+			$rules_result = $rules->getRulesByMemberId($row['id']);
+			$rules_Array = array();
+			while($row = $rules_result->fetch_array()) {
+				$rules_Array[] = $row;
+			}
+			$bbcore = new BBCORE($_GET, $rules_Array, $dbDataArr);
+		}
+		/*
+		 $table = 'member'; // Members name
+		$username = mysql_real_escape_string($apiusername);
+		$password = hash('sha512', $apipassword);
+		// 1. change this so that it gets the data using username and apikey, little more secure
+		$result = $member->getOneByUsernameAndPassword($username, $password);
+		if($result->num_rows == 1) {
+		$row = $result->fetch_array();
+		$memberId = $row['id'];
+		$leadproviderid = $row['leadProviderId'];
+		$_SESSION['username'] = htmlspecialchars($apiusername); // htmlspecialchars() sanitises XSS
+		print_r('<code> 0 </code><msg>(Authorized), Authentication Successful </msg>');
+		$rules_result = $rules->getRulesByMemberId($memberId);
+		$rules_Array = array();
+		while($row = $rules_result->fetch_array()) {
+		$rules_Array[] = $row;
+		}
+		$bbcore = new BBCORE($_GET, $rules_Array, $dbDataArr);
+
+		*/
+	} else {
+		$bolUnAuth = true;
+	}
+} elseif($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST["apiusername"]) && isset($_POST["apipassword"])   ) {
+	$bolUnAuth = false;
+	$xmlsource = $_POST['revere'];
+	//			$array = XML2Array::createArray($xmlsource);
+	//echo $xmlsource;
+
+	$array = json_decode(json_encode((array) simplexml_load_string($xmlsource)), 1);
+	$newarraytest = array();
+	$last_subarray_found = "";
+	$array3 = flatten_array($array, 2, $newarraytest, $last_subarray_found);
+	// print_r($array3 );
+	$apiusername = $_POST["apiusername"];
+	$apipassword = $_POST["apipassword"];
+	$apikey      = $_POST["apikey"];
+
+	$username = mysql_real_escape_string($_POST['apiusername']);
+	$password = hash('sha512', $_POST['apipassword']);
+	// see 1. above
+	$result = $member->getOneByUsernameAndPassword($username, $password);
+	$row = $result->fetch_array();
+	$memberId = $row['id'];
+		
+	if($result->num_rows > 0) {
+		$leadproviderid = $row['LeadProviderID_Default'];
+		$_SESSION['username'] = htmlspecialchars($apiusername); // htmlspecialchars() sanitises XSS
+		$_SESSION['id'] = $memberId;
+		print_r('<code> 0 </code><msg>(Authorized), Authentication Successfull </msg>');
+		$result_rules = $rules->getRulesByUsername($username);
+		echo "Results returned: ", $result_rules->num_rows;
+
+		$rules_Array = array();
+		while($row=$result_rules->fetch_array()) {
+			$rules_Array[] = $row;
+		}
+		//print_r($rules_Array);
+		$bbcore = new BBCORE($array3, $rules_Array, $dbDataArr);
+	} else {
+		$bolUnAuth = true;
+	}
+}
+
+if($bolUnAuth == true) {
+	print_r('<code> 401 </code><msg>(Not Authorized), Authentication Failed, Failure with 1 or more API Authentication Elements Supplied </msg>');
+}
+
+print_r("</result>");
+
+
+
 /****************************************\
 print_r("<header>");
 print_r("<apititle>BLACK BOX</apititle>");
@@ -148,130 +242,3 @@ function ins2ary(&$ary, $element, $pos) {
 	$ar1=array_slice($ary, 0, $pos); $ar1[]=$element;
 	$ary=array_merge($ar1, array_slice($ary, $pos));
 }
-
-
-if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["apiusername"]) && isset($_GET["apipassword"]) && isset($_GET["apikey"]) ) {
-	$apiusername = $_GET["apiusername"];
-	$apipassword = $_GET["apipassword"];
-	$apikey      = $_GET["apikey"];
-	$apiId		 = $_GET["apiId"];
-	$apiKey		 = $_GET["apiKey"];
-	
-/*
-$host = 'localhost'; // Host name Normally 'LocalHost'
-$user = 'root'; // MySQL login username
-$pass = 'Keyb0ard!'; // MySQL login password
-$database = 'BlackBox'; // Database name
-$table = 'member'; // Members name
-mysql_connect($host, $user, $pass);
-mysql_select_db($database);
-*/
-	
-	
-	$result = $leadProvider->getOneByAPIIdAndKey($apiId, $apiKey);
-	if($result->num_rows == 1) {
-		$result = $member->getOneByAPIRef($apiRef);
-		if($result->num_rows == 1) {
-			$row = $result->fetch_array();
-			$rules_result = $rules->getRulesByMemberId($row['id']);
-			$rules_Array = array();
-			while($row = $rules_result->fetch_array()) {
-				$rules_Array[] = $row;
-			}
-			$bbcore = new BBCORE($_GET, $rules_Array, $dbDataArr);
-		}
-/*	
-	$table = 'member'; // Members name
-	$username = mysql_real_escape_string($apiusername);
-	$password = hash('sha512', $apipassword);
-	// 1. change this so that it gets the data using username and apikey, little more secure
-	$result = $member->getOneByUsernameAndPassword($username, $password);
-	if($result->num_rows == 1) {
-		$row = $result->fetch_array();
-		$memberId = $row['id'];
-		$leadproviderid = $row['leadProviderId'];
-		$_SESSION['username'] = htmlspecialchars($apiusername); // htmlspecialchars() sanitises XSS
-		print_r('<code> 0 </code><msg>(Authorized), Authentication Successful </msg>');
-		$rules_result = $rules->getRulesByMemberId($memberId);
-		$rules_Array = array();
-		while($row = $rules_result->fetch_array()) {
-			$rules_Array[] = $row;
-		}
-		$bbcore = new BBCORE($_GET, $rules_Array, $dbDataArr);
-		
-		*/
-	} else {
-		// Invalid username/password
-		print_r('<code> 401 </code><msg>(Not Authorized), Authentication Failed, Failure with 1 or more API Authentication Elements Supplied </msg>');
-		//echo $password;
-		//header('Location: http://20ae-fscbb-primary.hgsitebuilder.comindex.php');
-	}
-} elseif($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST["apiusername"]) && isset($_POST["apipassword"]) ) {
-			$xmlsource = $_POST['revere'];
-//			$array = XML2Array::createArray($xmlsource);
-//echo $xmlsource;
-
-			$array = json_decode(json_encode((array) simplexml_load_string($xmlsource)), 1);
-			$newarraytest = array();
-			$last_subarray_found = "";
-			$array3 = flatten_array($array, 2, $newarraytest, $last_subarray_found);
-			// print_r($array3 );
-			$apiusername = $_POST["apiusername"];
-			$apipassword = $_POST["apipassword"];
-			$apikey      = $_POST["apikey"];
-			/*
-			$host = 'localhost'; // Host name Normally 'LocalHost'
-			$user = 'root'; // MySQL login username
-			$pass = 'Keyb0ard!'; // MySQL login password
-			$database = 'BlackBox'; // Database name
-			$table = 'member'; // Members name
-			mysql_connect($host, $user, $pass);
-			mysql_select_db($database);
-			*/
-			$username = mysql_real_escape_string($_POST['apiusername']);
-			$password = hash('sha512', $_POST['apipassword']);
-			// see 1. above
-			$result = $member->getOneByUsernameAndPassword($username, $password);
-			$row = $result->fetch_array();
-			$memberId = $row['id'];
-			
-			if($result->num_rows > 0) {
-				$leadproviderid = $row['LeadProviderID_Default'];
-				$_SESSION['username'] = htmlspecialchars($apiusername); // htmlspecialchars() sanitises XSS
-				$_SESSION['id'] = $memberId;
-				print_r('<code> 0 </code><msg>(Authorized), Authentication Successfull </msg>');
-				$result_rules = $rules->getRulesByUsername($username);
-				echo "Results returned: ", $result_rules->num_rows;
-				/*
-				mysql_connect($host, $user, $pass);
-				$result_rules = "SELECT rl.PHPLocation, rl.value, rl.FieldName FROM  `member` m LEFT JOIN  `RulesManagementSet` rm ON rm.`memberID` =  `m`.`id` LEFT JOIN  `rules` rl ON  `rl`.`rulesID` =  `rm`.`rulesID` WHERE username =  '".$username."' AND rm.Active = 1";
-				echo $result_rules;
-				die();
-				$result_rl =  mysql_query($result_rules);
-				//echo '<sql>';
-				//print_r($result_rules);
-				//echo '</sql>';
-				 */
-				$rules_Array = array();
-				while($row=$result_rules->fetch_array()) {
-					$rules_Array[] = $row;
-				}
-				//print_r($rules_Array);
-				$bbcore = new BBCORE($array3, $rules_Array, $dbDataArr);
-		}
-		/*
-	} else {
-		// Invalid username/password
-		print_r('<code> 401 </code><msg>(Not Authorized), Authentication Failed, Failure with 1 or more API Authentication Elements Supplied </msg>');
-		//echo $password;
-		//header('Location: http://20ae-fscbb-primary.hgsitebuilder.comindex.php');
-	}
-	*/
-} else {
-		// Invalid username/password
-		print_r('<code> 401 </code><msg>(Not Authorized), Authentication Failed, Failure with 1 or more API Authentication Elements Supplied </msg>');
-		//echo $password;
-		//header('Location: http://20ae-fscbb-primary.hgsitebuilder.comindex.php');
-}
-print_r("</result>");
-?>
