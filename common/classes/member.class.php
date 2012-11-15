@@ -14,7 +14,7 @@ class Member extends BB_Data {
 	
 	public function save($data) {
 		if(isset($data['id'])) {
-			$qry = sprintf(" UPDATE %s  SET
+			$this->lastSQL = sprintf(" UPDATE %s  SET
 				`username` = '%s',
 				`password` = '%s',
 				`cookie` = '%s',
@@ -40,9 +40,8 @@ class Member extends BB_Data {
 					$data['cellPhoneNumber'],
 					$data['leadProviderId'],
 					$data['id']);
-			echo $qry;
 		} else {
-			$qry = sprintf("INSERT INTO %s
+			$this->lastSQL = sprintf("INSERT INTO %s
 					(`username`, `password`, `cookie`, `session`, `ip`, `FirstName`, `LastName`, `EmailAddress`, `Cellphone`, `LeadProviderID_Default`)
 				VALUES
 					('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
@@ -57,14 +56,15 @@ class Member extends BB_Data {
 					$data['emailAddress'],
 					$data['cellPhoneNumber'],
 					$data['leadProviderId'] );
-			echo $qry;			
 		}
-		$this->dbConnection->query($qry);
+		$this->dbConnection->query($this->lastSQL);
 	}
 	
 	public function getOneByUsernameAndPassword($username, $password){
-		$qry = sprintf("SELECT * FROM %s WHERE username = '%s' AND password = '%s'", $this->self, $username, $password);
-		return $this->dbConnection->query($qry);
+		$this->lastSQL = sprintf("SELECT * FROM %s WHERE username = '%s' AND password = '%s'", $this->self, $username, $password);
+		$result = $this->dbConnection->query($this->lastSQL);
+		$this->checkErrorList();
+		return $result;
 	}
 	
 	public function resetPassword() {
@@ -73,11 +73,13 @@ class Member extends BB_Data {
 	
 	
 	public function getOneByID($id) {
-		return $this->dbConnection->query(sprintf("SELECT * FROM %s WHERE id = %s", $this->self, $id));
+		$this->lastSQL = sprintf("SELECT * FROM %s WHERE id = %s", $this->self, $id);
+		return $this->dbConnection->query($this->lastSQL);
 	}
 	
 	public function getOneByAPIRef($apiRef) {
-		return $this->dbConnection->query(sprintf("SELECT * FROM %s WHERE APIref = '%s'", $this->self, $apiRef));
+		$this->lastSQL = sprintf("SELECT * FROM %s WHERE APIref = '%s'", $this->self, $apiRef);
+		return $this->dbConnection->query($this->lastSQL);
 	}	
 
 }

@@ -15,7 +15,7 @@ class Rules extends BB_Data {
 	public function save($data) {
 		$returnId = null;
 		if(isset($data['id'])) {
-			$qry = sprintf(" UPDATE %s SET
+			$this->lastSQL = sprintf(" UPDATE %s SET
 				`title` = '%s',
 				`ruleDescription` = '%s',
 				`phpLocation` = '%s',
@@ -32,7 +32,7 @@ class Rules extends BB_Data {
 			$this->dbConnection->query($qry);
 			$returnId = $data['id'];
 		} else {
-			$qry = sprintf("INSERT INTO %s
+			$this->lastSQL = sprintf("INSERT INTO %s
 					(`Title`, `RuleDescription`, `PHPLocation`, `value`, `FieldName`)
 					VALUES
 					('%s', '%s', '%s', '%s', '%s')",
@@ -42,7 +42,7 @@ class Rules extends BB_Data {
 					$this->dbConnection->real_escape_string($data['phpLocation']),
 					$this->dbConnection->real_escape_string($data['value']),
 					$this->dbConnection->real_escape_string($data['fieldName']));
-			$this->dbConnection->query($qry);
+			$this->dbConnection->query($this->lastSQL);
 			// check for error
 			if(!$this->dbConnection->errno) {
 				// return the new id
@@ -55,27 +55,28 @@ class Rules extends BB_Data {
 	}
 	
 	public function getRulesByMemberId($memberId) {
-		$qry = sprintf("SELECT rl.* FROM rules rl
-				INNER JOIN RulesManagementSet ON rules.RulesID = RulesManagementSet.rulesID
-				WHERE memberID = %s AND active = 1;", $memberId);
-		return $this->dbConnection->query($qry);	
+		$this->lastSQL = sprintf("SELECT rl.* FROM rules rl
+				INNER JOIN RulesManagementSet rms ON rl.RulesID = rms.rulesID
+				WHERE rms.memberID = %s AND rms.active = 1;", $memberId);
+		return $this->dbConnection->query($this->lastSQL);	
 	}
 
 	public function getRulesByMemberIdAndTitle($memberId, $RMSTitle) {
-		$qry = sprintf("SELECT rl.* FROM rules rl
+		$this->lastSQL = sprintf("SELECT rl.* FROM rules rl
 				INNER JOIN RulesManagementSet ON rules.RulesID = RulesManagementSet.rulesID
 				WHERE memberID = %s AND active = 1 AND RulesManagementSet.title = '%s';", $memberId, $RMSTitle);
-		return $this->dbConnection->query($qry);
+		return $this->dbConnection->query($this->lastSQL);
 	}
 	
 	public function getRulesByUsername($username) {
-		$qry = sprintf("SELECT rl.PHPLocation, rl.value, rl.FieldName 
+		$this->lastSQL = sprintf("SELECT rl.PHPLocation, rl.value, rl.FieldName 
 				FROM `member` m LEFT JOIN  `RulesManagementSet` rm ON rm.`memberID` = `m`.`id` LEFT JOIN `rules` rl ON  `rl`.`rulesID` =  `rm`.`rulesID` 
 				WHERE username = '%s' AND rm.Active = 1", $username);
-		return $this->dbConnection->query($qry);
+		return $this->dbConnection->query($this->lastSQL);
 	}
 	
 	public function getOneByID($id) {
-		return $this->dbConnection->query(sprintf("SELECT * FROM %s WHERE rulesID = %s", $this->self, $id));
+		$this->lastSQL = sprintf("SELECT * FROM %s WHERE rulesID = %s", $this->self, $id);
+		return $this->dbConnection->query($this->lastSQL);
 	}
 }

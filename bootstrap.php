@@ -8,10 +8,10 @@
 *
 * Mike Browne - phelandhu@gmail.com
 ***********************************************/
-include ("common/include/site_setup.php");
-include ("common/include/db_login.php");
-include("common/classes/bbData.class.php");
-$dbData = new DBData($host, $user, $pass, $database);
+require_once("common/include/site_setup.php");
+require_once("common/include/db_login.php");
+require_once("common/classes/bbData.class.php");
+// $dbData = new DBData($host, $user, $pass, $database);
 
 //$dbDataArr = $dbData->getDBData();
 $dbDataArr = array("hostName"=>$host, "userName"=>$user, "passWord"=>$pass, "dataBase"=>$database);

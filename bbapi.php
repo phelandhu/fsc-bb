@@ -13,9 +13,11 @@ $leadProvider = new LeadProvider($dbDataArr);
 
 $bolUnAuth = true;
 
-header("Content-type: text/xml\n");
-print_r("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n");
-print_r("<result>\n");
+//header("Content-type: text/xml\n");
+/* 
+echo "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n"; 
+ */
+//echo "<result>\n";
 
 if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["apiusername"]) && isset($_GET["apipassword"]) && isset($_GET["apikey"]) ) {
 	$bolUnAuth = false;
@@ -25,16 +27,18 @@ if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["apiusername"]) && isset($
 	$apiId		 = $_GET["apiId"];
 	$apiKey		 = $_GET["apiKey"];
 
-	$result = $leadProvider->getOneByAPIIdAndKey($apiId, $apiKey);
-	if($result->num_rows == 1) {
-		$result = $member->getOneByAPIRef($apiRef);
-		if($result->num_rows == 1) {
-			$row = $result->fetch_array();
+	$resultLP = $leadProvider->getOneByAPIIdAndKey($apiId, $apiKey);
+	echo ('<code> 0 </code><msg>(Authorized), Authentication Successfull </msg>');
+	if($resultLP->num_rows == 1) {
+		$resultMem = $member->getOneByAPIRef($apiRef);
+		if($resultMem->num_rows == 1) {
+			$row = $resultMem->fetch_array();
 			$rules_result = $rules->getRulesByMemberId($row['id']);
 			$rules_Array = array();
 			while($row = $rules_result->fetch_array()) {
 				$rules_Array[] = $row;
 			}
+			
 			$bbcore = new BBCORE($_GET, $rules_Array, $dbDataArr);
 		}
 		/*
@@ -74,19 +78,41 @@ if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["apiusername"]) && isset($
 	$apiusername = $_POST["apiusername"];
 	$apipassword = $_POST["apipassword"];
 	$apikey      = $_POST["apikey"];
+	$apiId		 = $_POST["apiId"];
+	$apiKey		 = $_POST["apiKey"];
 
+	$resultLP = $leadProvider->getOneByAPIIdAndKey($apiId, $apiKey);
+	echo ('<code> 0 </code><msg>(Authorized), Authentication Successful </msg>');
+	if($resultLP->num_rows == 1) {
+		$resultMem = $member->getOneByAPIRef($apiRef);
+		if($resultMem->num_rows == 1) {
+			$row = $resultMem->fetch_array();
+			$rules_result = $rules->getRulesByMemberId($row['id']);
+			$rules_Array = array();
+			while($row = $rules_result->fetch_array()) {
+				$rules_Array[] = $row;
+			}
+			$bbcore = new BBCORE($array3, $rules_Array, $dbDataArr);
+		}
+	} else { // fail
+		$bolUnAuth = true;
+	}
+	
+	
+/*	
 	$username = mysql_real_escape_string($_POST['apiusername']);
 	$password = hash('sha512', $_POST['apipassword']);
 	// see 1. above
 	$result = $member->getOneByUsernameAndPassword($username, $password);
 	$row = $result->fetch_array();
 	$memberId = $row['id'];
+	print("test me");
 		
 	if($result->num_rows > 0) {
 		$leadproviderid = $row['LeadProviderID_Default'];
 		$_SESSION['username'] = htmlspecialchars($apiusername); // htmlspecialchars() sanitises XSS
 		$_SESSION['id'] = $memberId;
-		print_r('<code> 0 </code><msg>(Authorized), Authentication Successfull </msg>');
+		echo ('<code> 0 </code><msg>(Authorized), Authentication Successfull </msg>');
 		$result_rules = $rules->getRulesByUsername($username);
 		echo "Results returned: ", $result_rules->num_rows;
 
@@ -94,18 +120,20 @@ if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["apiusername"]) && isset($
 		while($row=$result_rules->fetch_array()) {
 			$rules_Array[] = $row;
 		}
+		die();
 		//print_r($rules_Array);
 		$bbcore = new BBCORE($array3, $rules_Array, $dbDataArr);
 	} else {
 		$bolUnAuth = true;
 	}
+	*/
 }
 
 if($bolUnAuth == true) {
-	print_r('<code> 401 </code><msg>(Not Authorized), Authentication Failed, Failure with 1 or more API Authentication Elements Supplied </msg>');
+	echo "<code> 401 </code><msg>(Not Authorized), Authentication Failed, Failure with 1 or more API Authentication Elements Supplied </msg>";
 }
 
-print_r("</result>");
+echo "</result>";
 
 
 

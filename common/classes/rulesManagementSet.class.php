@@ -17,7 +17,7 @@ class RulesManagementSet extends BB_Data {
 		// I am creating a xover table between this and rules.
 		$returnId = null;
 		if(isset($data['id'])) {
-			$qry = sprintf(" UPDATE %s  SET
+			$this->lastSQL = sprintf(" UPDATE %s  SET
 					`name` = '%s',
 					`comment` = '%s',
 					`title` = '%s',
@@ -34,7 +34,7 @@ class RulesManagementSet extends BB_Data {
 			$this->dbConnection->query($qry);
 			$returnId = $data['id'];
 		} else {
-			$qry = sprintf("INSERT INTO %s
+			$this->lastSQL = sprintf("INSERT INTO %s
 					(`dateCreated`, `name`, `comment`, `title`, `active`, `memberId`)
 					VALUES
 					(now(), '', '', '%s', %s, %s)",
@@ -42,7 +42,7 @@ class RulesManagementSet extends BB_Data {
 					$this->dbConnection->real_escape_string($data['title']),
 					$this->dbConnection->real_escape_string($data['active']),
 					$this->dbConnection->real_escape_string($data['memberId']));
-			$this->dbConnection->query($qry);
+			$this->dbConnection->query($this->lastSQL);
 			// check for error
 			if(!$this->dbConnection->errno) {
 				// return the new id
@@ -58,8 +58,8 @@ class RulesManagementSet extends BB_Data {
 		$rule = null;
 		if(isset($rulesManagementSetId) && isset($rulesId)) {
 			// find and delete all references to the RMS ID
-			$qry = sprintf("DELETE FROM %s WHERE rulesManagementSetId = %s", $this->xOver, $rulesManagementSetId);
-			$this->dbConnection->query($qry);
+			$this->lastSQL = sprintf("DELETE FROM %s WHERE rulesManagementSetId = %s", $this->xOver, $rulesManagementSetId);
+			$this->dbConnection->query($this->lastSQL);
 			// Walk through the Rules Id and create and insert
 			$stmt = $this->dbConnection->prepare("INSERT INTO xRules_RulesManagementSet (rulesManagementSetId, rulesId) VALUES (?, ?)");
 			$stmt->bind_param("ii", $rulesManagementSetId, $rule);
@@ -70,8 +70,8 @@ class RulesManagementSet extends BB_Data {
 	}
 	
 	public function getSet($rulesManagementSetId) {
-		$qry = sprintf("SELECT rulesId FROM %s WHERE rulesManagementSetId = %s", $this->xOver, $rulesManagementSetId);
-		$result = $this->dbConnection->query($qry);
+		$this->lastSQL = sprintf("SELECT rulesId FROM %s WHERE rulesManagementSetId = %s", $this->xOver, $rulesManagementSetId);
+		$result = $this->dbConnection->query($this->lastSQL);
 				
 		if(isset($result)) {
 			return $result;

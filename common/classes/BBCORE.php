@@ -74,23 +74,23 @@ class BBCORE
 	private $subject;
 	private $value;
 
-	public function __construct($LeadPacket, $RuleSet, $connectData) 
+	public function __construct($leadPacket, $ruleSet, $connectData) 
 	{
-		$this->configure( 'localhost' , 'root' , 'Keyb0ard!' , 'BlackBox' , 0 );
+//		$this->configure( 'localhost' , 'root' , 'Keyb0ard!' , 'BlackBox' , 0 );
 		
 		$this->configure($connectData["hostName"], $connectData["userName"], $connectData["passWord"], $connectData["dataBase"], 0);
 		
-		include("keypairs_Fields_Required.php");
 		include("keypairs_Fields.php");
 		include("keypairs_length.php");
 		include("Field_RuleSet.php");
-		
-		$this->LeadPacket           = $LeadPacket;              //POST | GET DATA
-		$this->RuleSet              = $RuleSet;                 //ACTIVE RULE SET SCUBED FROM DATA BASE
-		$this->Field               = $Field;                   //LIST OF REQUIRED AND OPTION FIELDS
-		$this->Field_length        = $Field_length;            //MAXIMUM FIELD(S) LENGTH ;
-		$this->Field_rules         = $Field_rules;
-		$this->Field_Required      = $Field_Required;
+		include("keypairs_Fields_Required.php");
+
+		$this->LeadPacket          = $leadPacket;              //POST | GET DATA
+		$this->RuleSet             = $ruleSet;                 //ACTIVE RULE SET SCUBED FROM DATA BASE Handed over in the construct
+		$this->Field               = $Field;                   //LIST OF REQUIRED AND OPTION FIELDS from keypairs_Fields.php
+		$this->Field_length        = $Field_length;            //MAXIMUM FIELD(S) LENGTH ;  from keypairs_length.php
+		$this->Field_rules         = $Field_rules;				// Field_RuleSet.php
+		$this->Field_Required      = $Field_Required;			// From keypairs_Field_Required.php
 		
 		$this->RequirementCheck_FieldsLength( $this->Field_length, $this->LeadPacket );
 		// $this->RequirementCheck_Fields( $this->Field ,$this->LeadPacket );
@@ -209,8 +209,8 @@ class BBCORE
 		// print_r("<fieldlength>");
 		// print_r($array_Fields);
 		//  print_r("</fieldlength>");
-		print_r($array_Fields);
-		foreach($array_GETPOST as $key) {
+		//print_r($array_Fields);
+		foreach($array_GETPOST as $key => $value) {
 			if(  strlen($array_GETPOST[strtoupper($key) ]) > intval($array_Fields[strtoupper ($key)] ) ) {
 				// $this->Errors_Logged("0","Field Execeeds maximum length allowed for ".$key.intval($array_Fields[strtoupper ($key)] ));
 				$this->Field_Errors .= "<error><code>0</code><msg>"."Field Execeeds maximum length allowed for ".$key.intval($array_Fields[strtoupper ($key)] )."</msg></error>";

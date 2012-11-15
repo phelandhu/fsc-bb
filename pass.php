@@ -30,7 +30,7 @@ function post_xml($url, $xml) {
   curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
   curl_setopt($ch, CURLOPT_USERPWD, 'test:test');
   curl_setopt($ch, CURLOPT_POST, 1);
-  curl_setopt($ch, CURLOPT_POSTFIELDS, array('apipassword'=>'test','apiusername'=>'test','apikey'=>'I5uHFVhfKGWpdXOr','apiId'=>'jjOku930uroLJKsdur093ioprjekpkfe923i','apiKey'=>'JJFIOJIEjioej9089I90FKDKKLDSKkldks','revere'=>$xml));
+  curl_setopt($ch, CURLOPT_POSTFIELDS, array('apipassword'=>'test','apiusername'=>'test','apikey'=>'I5uHFVhfKGWpdXOr','apiId'=>'jjOku930uroLJKsdur093ioprjekpkfe923i','apiKey'=>'JJFIOJIEjioej9089I90FKDKKLDSKkldks','apiRef'=>'c4ca4238a0b923820dcc509a6f75849b', 'revere'=>$xml));
   curl_setopt($ch, CURLOPT_VERBOSE, 0);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);

@@ -4,7 +4,7 @@
 	$pass = 'Keyb0ard!'; // MySQL login password
 //	$database = 'BlackBoxDev'; // Database name
 	$database = 'BB_Dev'; // Database name
-	
+/*	
 	class DBData {
 		private $hostName = null;
 		private $userName = null;
@@ -39,5 +39,5 @@
 			return $this->dataBase;
 		}
 	}
-
+*/
 ?>

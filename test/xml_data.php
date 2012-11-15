@@ -4,7 +4,7 @@
 * Created:            Nov 6, 2012 4:49:21 PM
 * Last Modified:      Nov 6, 2012 4:49:21 PM
 *
-* [LEFT BLANK FOR PROGRAM DISCRIPTION]
+* [LEFT BLANK FOR PROGRAM DESCRIPTION]
 *
 * Mike Browne - phelandhu@gmail.com
 ***********************************************/
@@ -47,6 +47,7 @@ $xml_data = <<<XML
 <ISCITIZEN>1</ISCITIZEN>
 <OTHEROFFERS>0</OTHEROFFERS>
 <EMAIL>Jonathan@ColumbiaOutdoorWear.gov</EMAIL>
+<BANKRUPTCY>0</BANKRUPTCY>
 </PERSONAL>
 <EMPLOYMENT>
 <INCOMETYPE>E</INCOMETYPE>

@@ -1,5 +1,10 @@
 <?php
-	include("common/include/db_login.php");
+	require_once("bootstrap.php");
+	require_once("common/classes/rules.class.php");
+	require_once("common/classes/rulesManagementSet.class.php");
+	$rules = new Rules($dbDataArr);
+	$rulesManagementSet = new RulesManagementSet($dbDataArr);
+//include("common/include/db_login.php");
 	$table      =   'rules'; // Members name
 	$row        =   "";
 	mysql_connect($host, $user, $pass);
@@ -19,11 +24,12 @@
                 Rule Set Title:<input type="text" size="32" name="RuleSetTitle" id="RuleSetTitle"/>
                 <select id="RulesManagementSetListing" name="RulesManagementSetListing" ONCHANGE="selectrule();">
                 
-                <option value="">-- Select Rule Set --</option>");
+                <option value="">-- Select Rule Set --</option>
                 <?php
-					$sql = "SELECT DISTINCT title FROM rulesManagementSet RMS, member m WHERE RMS.memberId = m.id AND username = '" . $_SESSION['username'] . "'";
-					print_r($_SESSION);
-					$result_rules = $mysqli->query($sql);
+                	$result_rules = $rules->getRulesByMemberId($_SESSION["memberId"]);
+//					$sql = "SELECT DISTINCT title FROM rulesManagementSet RMS, member m WHERE RMS.memberId = m.id AND username = '" . $_SESSION['username'] . "'";
+	//				print_r($_SESSION);
+		//			$result_rules = $mysqli->query($sql);
 					print_r($result_rules);
 					//echo $sql;
 					while($rows = mysql_fetch_array($result_rules))

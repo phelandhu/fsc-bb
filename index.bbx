@@ -1,6 +1,5 @@
 <?php
-	include("common/include/site_setup.php");
-	include("common/include/db_login.php");
+	require_once("bootstrap.php");
 
 	if(isset($_GET["logout"])):
 	    session_start();
