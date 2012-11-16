@@ -13,8 +13,8 @@ class LeadProvider extends BB_Data {
 	protected $self = "LeadProvider";
 
 	public function getOneByUsernameAndId($userName, $id) {
-		$qry = sprintf("SELECT * FROM %s WHERE CompanyName = '%s' AND id = %s", $this->self, $userName, $id);
-		return $this->dbConnection->query($qry);
+		$this->lastSQL = sprintf("SELECT * FROM %s WHERE CompanyName = '%s' AND LeadProviderID = %s", $this->self, $userName, $id);
+		return $this->dbConnection->query($this->lastSQL);
 	}
 	
 	public function save($data) {

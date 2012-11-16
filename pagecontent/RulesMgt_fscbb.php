@@ -9,6 +9,8 @@
 	$row        =   "";
 	mysql_connect($host, $user, $pass);
 	mysql_select_db($database);
+	$result_rules = $rules->getRulesByMemberId($_SESSION["memberId"]);
+	$result_rms = $rulesManagementSet->getAllNamesByMemberId($_SESSION["memberId"]);
 ?>
 <script>
 
@@ -23,22 +25,26 @@
             <form name="editrule" id="editrule">
                 Rule Set Title:<input type="text" size="32" name="RuleSetTitle" id="RuleSetTitle"/>
                 <select id="RulesManagementSetListing" name="RulesManagementSetListing" ONCHANGE="selectrule();">
-                
                 <option value="">-- Select Rule Set --</option>
                 <?php
-                	$result_rules = $rules->getRulesByMemberId($_SESSION["memberId"]);
+
 //					$sql = "SELECT DISTINCT title FROM rulesManagementSet RMS, member m WHERE RMS.memberId = m.id AND username = '" . $_SESSION['username'] . "'";
 	//				print_r($_SESSION);
 		//			$result_rules = $mysqli->query($sql);
-					print_r($result_rules);
+				
 					//echo $sql;
-					while($rows = mysql_fetch_array($result_rules))
+					
+					while($row = $result_rms->fetch_array())
 					{
-						echo("<option value='" . $rows["rulesID"] . "'>".$rows["Title"]."</option>");
+//						echo("<option value='" . $rows["rulesID"] . "'>".$rows["Title"]."</option>");
+						echo("<option >" . $row["Title"] . "</option>");
 						
 					}
+					
                 ?>
+                
                 </select>Make Default <input type="checkbox" id="defaultrule" name="defaultrule" />
+                <?php print_r($row);?>
                 </p>
                 <table id="ruleslistHeader" CELLSPACING=5  style="height:20px;padding: 3px; width:630px">
                 	<tr>
@@ -48,19 +54,19 @@
                 <div  id="rulesmanager" name="rulesmanager" > 
                     <table id="ruleslist" CELLSPACING=5  style="height:480px;padding: 10px; width:630px">                        
                         <?php
-							$sql = "SELECT * FROM `rules`";
-							$result_rules = mysql_query($sql);
+							//$sql = "SELECT * FROM `rules`";
+							//$result_rules = mysql_query($sql);
 							//echo $sql;
 							$ruleNumber = 0;
-							while($rows = mysql_fetch_array($result_rules))
+							while($row = $result_rules->fetch_array())
 							{
 								$ruleNumber += 1;
 								print_r("
 								<tr> 
 									<td>" . $rulenumber . "</td>
-									<td><input type=\"checkbox\" class=\"selsts\" name=\"rulesID[" . $ruleNumber . "]\"  id=\"" . $rows["rulesID"] . "\"  /></td> 	
+									<td><input type=\"checkbox\" class=\"selsts\" name=\"rulesID[" . $ruleNumber . "]\"  id=\"" . $row["rulesID"] . "\"  /></td> 	
 									<td></td> 
-									<td>".$rows["Title"]."</td>  
+									<td>".$row["Title"]."</td>  
 								</tr>");
 							}
 							/*

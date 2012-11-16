@@ -80,15 +80,24 @@ class RulesManagementSet extends BB_Data {
 		} 
 	}
 	
-	public function getNamesByMemberId($memberId) {
+	public function getNamesByMemberId($id) {
 		// get the names of the sets from the table
 		// where the id is equal to $memberId
 		
-//		$qry = sprintf("SELECT * FROM %s WHERE ")
+//		$qry = sprintf("SELECT * FROM %s WHERE %s", $this->self, $id);
 	}
 	
 	
 	public function getOneByID($id) {
 		return $this->dbConnection->query(sprintf("SELECT * FROM %s WHERE RulesManagementSetID = %s", $this->self, $id));
+	}
+	
+	public function getAll() {
+		$this->lastSQL = sprintf("SELECT * FROM");
+	}
+	
+	public function getAllNamesByMemberId($memberId) {
+		$this->lastSQL = sprintf("SELECT DISTINCT Title FROM %s WHERE memberID = %s", $this->self, $memberId );
+		return $this->dbConnection->query($this->lastSQL);
 	}
 }

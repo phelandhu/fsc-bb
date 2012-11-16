@@ -28,7 +28,7 @@ abstract class BB_Data {
 	}
 */
 	public function __construct($dbDataArr) {
-		$connectData = $dbData;
+		$connectData = $dbDataArr;
 		//$this->dbConnection = new mysqli($connectData["hostName"], $connectData["userName"], $connectData["passWord"], $connectData["dataBase"]);
 		$this->dbConnection = new mysqli('localhost', 'bb_user', 'Keyb0ard!', 'BB_Dev');
 		
@@ -40,7 +40,7 @@ abstract class BB_Data {
 	protected function checkErrorList() {
 		$this->lastErrNo = $this->dbConnection->errno;
 		$this->lastError = $this->dbConnection->error;
-		$this->lastErrorList = $this->dbConnection->error_list;
+//		$this->lastErrorList = $this->dbConnection->error_list;
 	}
 	
 	public function getOneByID($id) {
@@ -66,6 +66,11 @@ abstract class BB_Data {
 	
 	public function getSelf() {
 		return $this->self;
+	}
+	
+	public function getAll() {
+		$this->lastSQL = sprintf("SELECT * FROM %s", $this->self);
+		return $this->dbConnection->query($this->lastSQL);
 	}
 	
 	public function getLastSQL() {

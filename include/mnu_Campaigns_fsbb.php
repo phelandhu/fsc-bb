@@ -2,22 +2,16 @@
 <?php
 	include('bootstrap.php');
 	include('include/ctrl_CRUD.php');
+	require_once("common/classes/campaign.class.php");
 	
+	$campaign = new Campaign($dbDataArr);
+	$result = $campaign->getAll();
 	
-	$table = 'Campaigns'; // Members name
-	$row ="";
-	mysql_connect($host, $user, $pass);
-	mysql_select_db($database);
-	
-	$LeadProvider = mysql_real_escape_string($_GET['Campaigns']);
-	 
-	$result = mysql_query("SELECT * FROM $table ");
-	
-	if(mysql_num_rows($result)) {
+	if($result->num_rows) {
 		print_r("<select name=\"leadprovider\" size=\"6\" style=\"width:165px\"  ONCHANGE=\"location = this.options[this.selectedIndex].value;\">");
 	
-		while($row = mysql_fetch_array($result)) {
-			print_r("<option value=\"index.bbx?page=Campaigns&Campaigns=".$row["Name"]."\">".$row["Name"]."</option>");
+		while($row = $result->fetch_array()) {
+			print_r("<option value=\"index.bbx?page=Campaigns&Campaigns=".$row["CampaingnID"]."\">".$row["Name"]."</option>");
 		}	
 		//print_r($row);
 	

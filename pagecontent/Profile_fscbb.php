@@ -1,7 +1,10 @@
 <?php
-include("common/include/db_login.php");
-$table = 'member'; // Members name
-$result = $mysqli->query("SELECT * FROM " . $table ."  WHERE username = '" . $_SESSION["username"] . "' AND id = " . $_SESSION['id']);
+require_once("bootstrap.php");
+require_once("common/classes/member.class.php");
+$member = new Member($dbDataArr);
+
+$result = $member->getOneByID($_SESSION['memberId']);
+
 if($result) {
 	$row = $result->fetch_array();
 }
@@ -14,19 +17,19 @@ if($result) {
         <table style="height:250px;padding: 10px; width:670px">
             <tr>
                 <td width="100px">First Name</td>
-                <td><input type="text" id="firstName" name="firstName" value="<?php echo $row["firstName"] ?>"/></td>
+                <td><input type="text" id="firstName" name="firstName" value="<?php echo $row["FirstName"] ?>"/></td>
             </tr>
             <tr>
                 <td>Last Name</td>
-                <td><input type="text" id="lastName" name="lastName" value="<?php echo $row["lastName"] ?>"/></td>
+                <td><input type="text" id="lastName" name="lastName" value="<?php echo $row["LastName"] ?>"/></td>
             </tr>
             <tr>
                 <td>Email Address</td>
-                <td><input type="text" id="EmailAddress" name="EmailAddress"  value="<?php echo $row["emailAddress"] ?>"/></td>
+                <td><input type="text" id="EmailAddress" name="EmailAddress"  value="<?php echo $row["EmailAddress"] ?>"/></td>
             </tr>
             <tr>
                 <td>Cell phone</td>
-                <td><input type="text" id="CellPhone" name="CellPhone" value="<?php echo $row["cellPhoneNumber"] ?>"/></td>
+                <td><input type="text" id="CellPhone" name="CellPhone" value="<?php echo $row["Cellphone"] ?>"/></td>
             </tr>
             <tr>
                 <td>Username</td>

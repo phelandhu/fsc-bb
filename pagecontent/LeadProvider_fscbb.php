@@ -5,12 +5,11 @@ $leadProvider = new LeadProvider($dbDataArr);
 
 if(isset($_GET["leadProvider"]))
 {
+	
 	$result = $leadProvider->getOneByUsernameAndId($mysqli->real_escape_string($_GET['leadProvider']), $_GET['id']);
 	if($result->num_rows > 0) {
 		$row = $result->fetch_array();
-		print_r($row);
-	} else {
-	}
+	} 
 /*
 	$sql = "UPDATE `BlackBox`.`member` SET `LeadProviderID_Default` = '".$row["LeadProviderID"]."' WHERE `member`.`username` = '".$_SESSION["username"]."';";
 	mysql_query($sql);
@@ -48,12 +47,12 @@ if(isset($_GET["leadProvider"]))
             </tr>
             <tr>
                 <td>
-                    <input intermediateChanges="true"  type="text" name="LeadProvider" value="<?php if(isset($row["technicalPocName"])) { echo $row["companyName"]; } ?>" required="true" data-dojo-type="dijit.form.ValidationTextBox"  data-dojo-props="trim:true, propercase:true" id="LeadProvider"/>
+                    <input intermediateChanges="true"  type="text" name="LeadProvider" value="<?php if(isset($row["TechnicalPOCName"])) { echo $row["CompanyName"]; } ?>" required="true" data-dojo-type="dijit.form.ValidationTextBox"  data-dojo-props="trim:true, propercase:true" id="LeadProvider"/>
                 </td>
                 <td> 
                     <input type="hidden" name="phone" id="phone" value="<?php if(isset($row["TechnicalPOCName"])) { echo $row["id"]; } ?>"  />
                     <label for="phone">Phone number, no spaces:</label>
-                    <input type="text" name="phone" id="phone" value="<?php if(isset($row["TechnicalPOCName"])) { echo $row["primaryPhoneNumber"]; } ?>" required="true"
+                    <input type="text" name="phone" id="phone" value="<?php if(isset($row["TechnicalPOCName"])) { echo $row["PrimaryPhoneNumebr"]; } ?>" required="true"
                     data-dojo-type="dijit.form.ValidationTextBox"
                     data-dojo-props="regExp:'[\\d{10}][\\dw]+', invalidMessage:'Invalid Non-Space Text.'" />
                 </td>

@@ -1,9 +1,9 @@
 <?php
-	include("bootstrap.php");
-	include("common/classes/member.class.php");
+	require_once("bootstrap.php");
+//	include("common/classes/member.class.php");
 	include("common/classes/rules.class.php");
 	include("common/classes/rulesManagementSet.class.php");
-	$member = new Member($dbDataArr);
+//	$member = new Member($dbDataArr);
 	$rules = new Rules($dbDataArr);
 	$rulesManagementSet = new RulesManagementSet($dbDataArr);
 	$table      =   'rules'; // Members name

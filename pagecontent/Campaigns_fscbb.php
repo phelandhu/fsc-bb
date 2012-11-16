@@ -1,27 +1,35 @@
 <?php
 session_start();
-include("common/include/db_login.php");
+#include("common/include/db_login.php");
 include("include/inc.countryCurrency.php");
+require_once("common/classes/campaign.class.php");
+require_once("common/classes/leadProvider.class.php");
+$campaign = new Campaign($dbDataArr);
+$leadProvider = new LeadProvider($dbDataArr);
+
+/*
 $table = 'Campaigns'; // Members name
 $row ="";
 mysql_connect($host, $user, $pass);
 mysql_select_db($database);
+
+
 $result = mysql_query("SELECT LeadProviderID_Default FROM member WHERE username = '" . $_SESSION["username"] . "'");
 $leadprov = mysql_fetch_array($result);
 
 $sql = "SELECT * FROM  `LeadProvider` WHERE `LeadProviderID` = '" . $leadprov["LeadProviderID_Default"]."';";
-$sqlLeadProvider = "SELECT * FROM  `LeadProvider`;";
-$resultLeadProvider = mysql_query($sqlLeadProvider);
-$leadprovName = mysql_fetch_array($leadprovNameResult);
+*/
+$resultLeadProvider = $leadProvider->getAll();
+
+//$leadprovName = mysql_fetch_array($leadprovNameResult);
+
 if(isset($_GET["Campaigns"])) {
-	$Campaigns = mysql_real_escape_string($_GET['Campaigns']);
-	$resultcamp = mysql_query("SELECT * FROM $table WHERE Name = '$Campaigns'");
-	if(mysql_num_rows($resultcamp )) {
-		$row = mysql_fetch_array($resultcamp ) ;
+
+	$resultcamp = $campaign->getOneByID($_GET['Campaigns']);
+	if($resultcamp->num_rows) {
+		$row = $resultcamp->fetch_array();
 		$_SESSION["CampaignName"] = $row["Name"];
-	} else {
 	}
-} else {
 }
 ?>
 <div> 
@@ -72,7 +80,7 @@ if(isset($_GET["Campaigns"])) {
                 <td>
                     <select id="leadProvider">
 						<?php
-							while($resultRow = mysql_fetch_array($resultLeadProvider)) {
+							while($resultRow = $resultLeadProvider->fetch_array()) {
 								if($leadprov["LeadProviderID_Default"] == $resultRow["LeadProviderID"]) {
 									echo "<option selected=\"selected\" value=\"" . $resultRow["LeadProviderID"] . "\">" . $resultRow["CompanyName"] . "</option><br />";
 								} else {
@@ -101,7 +109,7 @@ if(isset($_GET["Campaigns"])) {
                     data-dojo-props="regExp:'[\\d{10}][\\dw]+', invalidMessage:'Integer Amounts only'" />
                 </td>
                 <td>
-                    <input type="text" name="IntegrationDate" id="IntegrationDate" value="<?php echo $row["StartDate"] ?>"       dojoType="dijit.form.DateTextBox" required="true" />
+                    <input type="text" name="IntegrationDate" id="IntegrationDate" value="<?php echo $row["StartDate"] ?>"dojoType="dijit.form.DateTextBox" required="true" />
                 </td>
             </tr>
             <tr>
