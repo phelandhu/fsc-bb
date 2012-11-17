@@ -11,6 +11,7 @@
 require_once("common/include/site_setup.php");
 require_once("common/include/db_login.php");
 require_once("common/classes/bbData.class.php");
+require_once("common/external/logger.class.php");
 // $dbData = new DBData($host, $user, $pass, $database);
 
 //$dbDataArr = $dbData->getDBData();

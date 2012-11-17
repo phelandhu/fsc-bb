@@ -10,6 +10,7 @@ include ("common/external/xml2Array.php");
 $member = new Member($dbDataArr);
 $rules = new Rules($dbDataArr);
 $leadProvider = new LeadProvider($dbDataArr);
+$logger = new Logger("/tmp/log.log");
 
 $bolUnAuth = true;
 
@@ -19,7 +20,17 @@ echo "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n";
  */
 //echo "<result>\n";
 
-if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["apiusername"]) && isset($_GET["apipassword"]) && isset($_GET["apikey"]) ) {
+
+// Log the request
+if($_SERVER['REQUEST_METHOD'] == 'GET') {
+	$logger->logWrite("GET Data:\n" . print_r($_GET, true));
+} elseif($_SERVER['REQUEST_METHOD'] == 'POST') {
+	$logger->logWrite("POST Data:\n" . print_r($_POST, true));
+} else {
+	$logger->logWrite("Nothing was submitted");
+}
+
+if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["apiId"]) && isset($_GET["apiKey"])) {
 	$bolUnAuth = false;
 	$apiusername = $_GET["apiusername"];
 	$apipassword = $_GET["apipassword"];
@@ -64,7 +75,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["apiusername"]) && isset($
 	} else {
 		$bolUnAuth = true;
 	}
-} elseif($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST["apiusername"]) && isset($_POST["apipassword"])   ) {
+} elseif($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST["apiId"]) && isset($_POST["apiKey"])   ) {
 	$bolUnAuth = false;
 	$xmlsource = $_POST['revere'];
 	//			$array = XML2Array::createArray($xmlsource);
@@ -75,9 +86,9 @@ if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["apiusername"]) && isset($
 	$last_subarray_found = "";
 	$array3 = flatten_array($array, 2, $newarraytest, $last_subarray_found);
 	// print_r($array3 );
-	$apiusername = $_POST["apiusername"];
-	$apipassword = $_POST["apipassword"];
-	$apikey      = $_POST["apikey"];
+//	$apiusername = $_POST["apiusername"];
+//	$apipassword = $_POST["apipassword"];
+//	$apikey      = $_POST["apikey"];
 	$apiId		 = $_POST["apiId"];
 	$apiKey		 = $_POST["apiKey"];
 

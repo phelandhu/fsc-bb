@@ -1,4 +1,4 @@
 RewriteEngine On
 #Look for the word "api" followed by slash, product title, slash, client number, slash, pw
-RewriteRule  ^api/.*/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)$   api.php?action=detail&fh_first=$0&client_id=$1&client_pw=$2 [NC,QSA,L]
+RewriteRule  ^api/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)$   api.php?action=$1&apiId=$2&apiKey=$3&apiRef=$4 [NC,QSA,L]
 DirectoryIndex index.html index.htm index.php index.bbx
