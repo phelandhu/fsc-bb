@@ -69,6 +69,13 @@ class RulesManagementSet extends BB_Data {
 		}
 	}
 	
+	public function saveNewSet($data) {
+		file_put_contents("/tmp/storSaveNewSet.txt", print_r($_GET, true));
+//		$rulesId = $data[];
+		$rulesManagementSetId = $this->save($data);
+//		$result = saveSet($rulesManagementSetId, $rulesId);
+	}
+	
 	public function getSet($rulesManagementSetId) {
 		$this->lastSQL = sprintf("SELECT rulesId FROM %s WHERE rulesManagementSetId = %s", $this->xOver, $rulesManagementSetId);
 		$result = $this->dbConnection->query($this->lastSQL);

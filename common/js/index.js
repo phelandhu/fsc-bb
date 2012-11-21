@@ -132,7 +132,7 @@
 				}
 			}
 		} 
-		alert(str);
+//		alert(str);
 		makeRequest( "formprocessor.php" , str );
 	}
 
