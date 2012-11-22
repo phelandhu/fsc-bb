@@ -4,13 +4,15 @@
 	require_once("common/classes/rulesManagementSet.class.php");
 	$rules = new Rules($dbDataArr);
 	$rulesManagementSet = new RulesManagementSet($dbDataArr);
+	
 //include("common/include/db_login.php");
 	$table      =   'rules'; // Members name
 	$row        =   "";
 	mysql_connect($host, $user, $pass);
 	mysql_select_db($database);
-	$result_rules = $rules->getRulesByMemberId($_SESSION["memberId"]);
+	$result_rules = $rules->getAll();
 	$result_rms = $rulesManagementSet->getAllNamesByMemberId($_SESSION["memberId"]);
+	$log->trace(print_r($result_rms, true));
 ?>
 <script>
 
@@ -27,24 +29,14 @@
                 <select id="RulesManagementSetListing" name="RulesManagementSetListing" ONCHANGE="selectrule();">
                 <option value="">-- Select Rule Set --</option>
                 <?php
-
-//					$sql = "SELECT DISTINCT title FROM rulesManagementSet RMS, member m WHERE RMS.memberId = m.id AND username = '" . $_SESSION['username'] . "'";
-	//				print_r($_SESSION);
-		//			$result_rules = $mysqli->query($sql);
-				
-					//echo $sql;
-					
 					while($row = $result_rms->fetch_array())
 					{
-//						echo("<option value='" . $rows["rulesID"] . "'>".$rows["Title"]."</option>");
-						echo("<option >" . $row["Title"] . "</option>");
-						
+						printf("<option value=\"%s\">%s</option>", $row["RulesManagementSetID"], $row["Title"]);						
 					}
 					
                 ?>
                 
                 </select>Make Default <input type="checkbox" id="defaultrule" name="defaultrule" />
-                <?php print_r($row);?>
                 </p>
                 <table id="ruleslistHeader" CELLSPACING=5  style="height:20px;padding: 3px; width:630px">
                 	<tr>
@@ -54,9 +46,6 @@
                 <div  id="rulesmanager" name="rulesmanager" > 
                     <table id="ruleslist" CELLSPACING=5  style="height:480px;padding: 10px; width:630px">                        
                         <?php
-							//$sql = "SELECT * FROM `rules`";
-							//$result_rules = mysql_query($sql);
-							//echo $sql;
 							$ruleNumber = 0;
 							while($row = $result_rules->fetch_array())
 							{

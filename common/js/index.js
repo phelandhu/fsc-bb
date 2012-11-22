@@ -77,23 +77,22 @@
 		resetForm($('#editrule')); // by id, recommended
 		$(".selsts").attr('checked', false);
 		var selectedvalue = document.getElementById("RulesManagementSetListing");
-		//alert(selectedvalue.options[selectedvalue.selectedIndex].text);
-
 		document.getElementById("RuleSetTitle").value = selectedvalue.options[selectedvalue.selectedIndex].text;
-			
-		$.ajax({ url: '/ajax.php',
-			data: {method: 'getRulesList', 
-			userId: '1',
-			rulesId : selectedvalue.options[selectedvalue.selectedIndex].text},
-			type: 'post',
-			success: function(output) {
-				var strArray = output.split(",");
-				var i;
-				for (i = 0; i < strArray.length; i++) {
-					$('#' + strArray[i]).attr('checked', true);
+		var rulesId = selectedvalue.options[selectedvalue.selectedIndex].value;
+		if(rulesId > 0) {
+			$.ajax({ url: '/ajax.php',
+				data: {method: 'getRulesList', 
+				userId: '1',
+				rulesId : rulesId},
+				type: 'post',
+				success: function(output) {
+					var strArray = output.split(",");
+					for (var i = 0; i < strArray.length; i++) {
+						$('input[name=rulesID[' + strArray[i] + ']]').attr('checked', true);
+					}
 				}
-			}
-		});
+			});
+		}
 
 	}
 
@@ -132,7 +131,7 @@
 				}
 			}
 		} 
-//		alert(str);
+		alert(str);
 		makeRequest( "formprocessor.php" , str );
 	}
 

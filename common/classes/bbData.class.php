@@ -22,6 +22,7 @@ abstract class BB_Data {
 	protected $lastErrNo;
 	protected $lastError;
 	protected $lastErrorList;
+	protected $log;
 		/*
 	public function __construct($host, $user, $pass, $database) {
 		$this->dbConnection = new mysqli($host, $user, $pass, $database);
@@ -29,6 +30,7 @@ abstract class BB_Data {
 */
 	public function __construct($dbDataArr) {
 		$connectData = $dbDataArr;
+		global $log;
 		//$this->dbConnection = new mysqli($connectData["hostName"], $connectData["userName"], $connectData["passWord"], $connectData["dataBase"]);
 		$this->dbConnection = new mysqli('localhost', 'bb_user', 'Keyb0ard!', 'BB_Dev');
 		
@@ -89,5 +91,7 @@ abstract class BB_Data {
 		return $this->lastErrorList;
 	}
 //	public abstract function save();
+
+	
 	
 }

@@ -131,7 +131,10 @@ if(isset($_GET["Campaigns"])) {
                         ?>    
                     </select>
                 </td>
-                <td><input type="hidden" name="form" id="form" value="Campaigns"/></td>
+                <td>
+                	<input type="hidden" name="form" id="form" value="Campaigns"/>
+                	<input type="hidden" name="campaignId" id="campaignId" value="<?php if(isset($_GET["Campaigns"])) { echo $_GET["Campaigns"]; } ?>" />
+                </td>
             </tr>
         </table>
     </div>

@@ -79,4 +79,9 @@ class Rules extends BB_Data {
 		$this->lastSQL = sprintf("SELECT * FROM %s WHERE rulesID = %s", $this->self, $id);
 		return $this->dbConnection->query($this->lastSQL);
 	}
+	
+	public function getAll() {
+		$this->lastSQL = sprintf("SELECT * FROM %s", $this->self);
+		return $this->dbConnection->query($this->lastSQL);
+	}
 }

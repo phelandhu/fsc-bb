@@ -1,13 +1,11 @@
 <?php
-	include("bootstrap.php");
+	require_once("bootstrap.php");
 	include("common/classes/rulesManagementSet.class.php");
-	$logger = new Logger();
-	$connection = mysql_connect($host, $user, $pass);
-	mysql_select_db($database);
+	$rulesManagementSet = new RulesManagementSet($dbDataArr);
 	
 	if(isset($_REQUEST["method"])) {
 		if($_REQUEST["method"] == "getRulesList") {
-			getRulesList($_REQUEST["rulesId"], $_REQUEST["userId"]);
+			getRulesList($_REQUEST["rulesId"], $rulesManagementSet);
 		} elseif ($_REQUEST["method"] == "setRulesList") {
 			// pass the posted information to the method to save the new Rules Set
 			
@@ -15,23 +13,16 @@
 	}
 	
 	
-	function getRulesList($rulesId, $userId)
+	function getRulesList($rulesId, $rulesManagementSet)
 	{
-		
-		// This query should be changed to using ID, rather than title.
-	$logger->logWrite("getRuleList");
-	$logger->logWrite($rulesId);
-	$logger->logWrite($userId);
-		$qry = "SELECT * FROM RulesManagementSet WHERE Active = 1 AND memberID = " . $userId . " AND Title = '" . $rulesId . "';";
-		
-		$result = $mysqli->query($qry);
-		$i = 0;
-		$return = '';
+		global $log;
+		$result = $rulesManagementSet->getSet($rulesId);
 		while($row = $result->fetch_array()) {
-			$return .= $row[rulesID] . ",";
+			$return .= $row[rulesId] . ",";
 			$i++;
 		}
-//		echo json_encode($return);
+		$return = substr ( $return , 0 , strlen($return) -1);
+
 		echo $return;
 	}		
 		function setRulesList($_REQUEST)

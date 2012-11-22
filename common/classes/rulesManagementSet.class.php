@@ -14,6 +14,7 @@ class RulesManagementSet extends BB_Data {
 	protected $xOver = "xRules_RulesManagementSet";
 	
 	public function save($data) { // not working yet.
+		global $log;
 		// I am creating a xover table between this and rules.
 		$returnId = null;
 		if(isset($data['id'])) {
@@ -35,13 +36,14 @@ class RulesManagementSet extends BB_Data {
 			$returnId = $data['id'];
 		} else {
 			$this->lastSQL = sprintf("INSERT INTO %s
-					(`dateCreated`, `name`, `comment`, `title`, `active`, `memberId`)
+					(`Title`, `Active`, `memberID`)
 					VALUES
-					(now(), '', '', '%s', %s, %s)",
+					('%s', %s, %s)",
 					$this->self,
 					$this->dbConnection->real_escape_string($data['title']),
 					$this->dbConnection->real_escape_string($data['active']),
 					$this->dbConnection->real_escape_string($data['memberId']));
+			$log->trace($this->lastSQL);
 			$this->dbConnection->query($this->lastSQL);
 			// check for error
 			if(!$this->dbConnection->errno) {
@@ -54,30 +56,43 @@ class RulesManagementSet extends BB_Data {
 		return $returnId;
 	}
 	
-	public function saveSet($rulesManagementSetId, $rulesId) {
+	public function updateSet($data) {
+		$this->save($data);
 		$rule = null;
-		if(isset($rulesManagementSetId) && isset($rulesId)) {
-			// find and delete all references to the RMS ID
-			$this->lastSQL = sprintf("DELETE FROM %s WHERE rulesManagementSetId = %s", $this->xOver, $rulesManagementSetId);
-			$this->dbConnection->query($this->lastSQL);
-			// Walk through the Rules Id and create and insert
-			$stmt = $this->dbConnection->prepare("INSERT INTO xRules_RulesManagementSet (rulesManagementSetId, rulesId) VALUES (?, ?)");
-			$stmt->bind_param("ii", $rulesManagementSetId, $rule);
-			foreach($rulesId as $rule) {
-				$stmt->execute();
+		// do some validation here, eh?
+		if(isset($data["rulesManagementSetId"])) {
+			// delete the rms entry
+			$qry = sprintf("DELETE FROM %s WHERE RulesManagementSetId = %s", $this->xOver, $data["rulesManagementSetId"]);
+			$this->dbConnection->query($qry);
+			foreach($rulesId as $key => $value) {
+				if($value == 1){
+					$qry = sprintf("INSERT INTO %s
+							(RulesManagementSetId, RulesId)
+							VALUES
+							(%s, %s)", $this->xOver, $rulesManagementSetId, $key);
+					$this->dbConnection->query($qry);
+				}
 			}
 		}
 	}
 	
 	public function saveNewSet($data) {
-		file_put_contents("/tmp/storSaveNewSet.txt", print_r($_GET, true));
-//		$rulesId = $data[];
+		$rulesId = $data["rulesId"];
 		$rulesManagementSetId = $this->save($data);
-//		$result = saveSet($rulesManagementSetId, $rulesId);
+		foreach($rulesId as $key => $value) {
+			if($value == 1){
+				$qry = sprintf("INSERT INTO %s
+					(RulesManagementSetId, RulesId)
+					VALUES
+					(%s, %s)", $this->xOver, $rulesManagementSetId, $key);
+				$this->dbConnection->query($qry);
+			}
+		}
+		file_put_contents("/tmp/storSaveNewSet.txt", print_r($_GET, true));
 	}
 	
 	public function getSet($rulesManagementSetId) {
-		$this->lastSQL = sprintf("SELECT rulesId FROM %s WHERE rulesManagementSetId = %s", $this->xOver, $rulesManagementSetId);
+		$this->lastSQL = sprintf("SELECT rulesId FROM %s WHERE rulesManagementSetID = %s", $this->xOver, $rulesManagementSetId);
 		$result = $this->dbConnection->query($this->lastSQL);
 				
 		if(isset($result)) {
@@ -104,7 +119,17 @@ class RulesManagementSet extends BB_Data {
 	}
 	
 	public function getAllNamesByMemberId($memberId) {
-		$this->lastSQL = sprintf("SELECT DISTINCT Title FROM %s WHERE memberID = %s", $this->self, $memberId );
+		$this->lastSQL = sprintf("SELECT RulesManagementSetID, Title FROM %s WHERE memberID = %s", $this->self, $memberId );
 		return $this->dbConnection->query($this->lastSQL);
 	}
+	
+	public function createNew($dataIn) {
+		$data = array();
+		$data["title"]	= $this->dbConnection->real_escape_string($dataIn["RuleSetTitle"]);
+		$data["active"]	= $this->dbConnection->real_escape_string($dataIn["defaultrule"]);
+		$data["rulesId"]= $dataIn["rulesID"];
+		return $data;
+	}
+
+	
 }

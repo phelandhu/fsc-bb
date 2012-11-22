@@ -30,7 +30,6 @@ class Campaign extends BB_Data {
 					$data['startDate'],
 					$data['currency'],
 					$data['id']);
-			echo $qry;
 		} else {
 			$qry = sprintf("INSERT INTO %s
 					(`Active`, `Name`, `LeadProviderID`, `PurchasePrice`, `StartDate`, `Currency`)
@@ -42,9 +41,9 @@ class Campaign extends BB_Data {
 					$data['leadProviderId'],
 					$data['purchasePrice'],
 					$data['startDate'],
-					$data['currency']);
-			echo $qry;			
+					$data['currency']);					
 		}
+		echo $qry;
 		$this->dbConnection->query($qry);
 	}
 	
@@ -69,5 +68,23 @@ class Campaign extends BB_Data {
 	public function getOneByID($id) {
 		
 		return $this->dbConnection->query(sprintf("SELECT * FROM %s WHERE CampaingnID = %s", $this->self, $id));
-	}	
+	}
+	
+	public function delete($id) {
+		if(isset($id)) {
+			$this->lastSQL = sprintf("DELETE FROM %s WHERE CampaingnID = %s", $this->self, $id);
+			$this->dbConnection->query($this->lastSQL);
+		}
+	}
+	
+	public function createNew($dataIn) {
+		$data = array();
+		$data["active"]			= $this->dbConnection->real_escape_string($dataIn["active"]);
+		$data["leadProviderId"]	= $this->dbConnection->real_escape_string($dataIn["leadProvider"]);
+		$data["purchasePrice"]	= $this->dbConnection->real_escape_string($dataIn["PurchasePrice"]);
+		$data["startDate"]		= $this->dbConnection->real_escape_string($dataIn["IntegrationDate"]);
+		$data["name"]			= $this->dbConnection->real_escape_string($dataIn["CampaignName"]);
+		$data["currency"]		= $this->dbConnection->real_escape_string($dataIn["Currency"]);
+		return $data;
+	}
 }

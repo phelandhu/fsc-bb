@@ -35,7 +35,9 @@
            
 </td><td></td></tr>
         
-        <tr><td>Name:&nbsp;<input type="text" id="name" size="30"/> POST URL:&nbsp;<input type="text" size="30"/></td><td></td><td></td></tr>
+        <tr><td>Name:&nbsp;</td><td><input type="text" id="name" size="30"/></td><td></td></tr>
+        <tr><td>POST URL:&nbsp;</td><td><input type="text" size="30"/></td><td></td></tr>
+       
         
         <tr><td>Portfolio Start Data</td><td></td><td> </td> </tr>
             <tr><td>    

@@ -23,14 +23,14 @@ $log = Logger::getLogger('Foo');
 
 
 // Start logging
-
+/*
 $log->trace("My first message.");   // Not logged because TRACE < WARN
 $log->debug("My second message.");  // Not logged because DEBUG < WARN
 $log->info("My third message.");    // Not logged because INFO < WARN
 $log->warn("My fourth message.");   // Logged because WARN >= WARN
 $log->error("My fifth message.");   // Logged because ERROR >= WARN
 $log->fatal("My sixth message.");   // Logged because FATAL >= WARN
-
+*/
 // $dbData = new DBData($host, $user, $pass, $database);
 
 //$dbDataArr = $dbData->getDBData();
