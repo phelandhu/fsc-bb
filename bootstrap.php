@@ -8,6 +8,10 @@
 *
 * Mike Browne - phelandhu@gmail.com
 ***********************************************/
+
+$path = __DIR__ . "/common";
+set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+
 require_once("common/include/site_setup.php");
 require_once("common/include/db_login.php");
 require_once("common/classes/bbData.class.php");

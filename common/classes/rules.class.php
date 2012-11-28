@@ -55,9 +55,12 @@ class Rules extends BB_Data {
 	}
 	
 	public function getRulesByMemberId($memberId) {
-		$this->lastSQL = sprintf("SELECT rl.* FROM rules rl
-				INNER JOIN RulesManagementSet rms ON rl.RulesID = rms.rulesID
-				WHERE rms.memberID = %s AND rms.active = 1;", $memberId);
+		$this->lastSQL = sprintf("SELECT rl.* 
+FROM rules rl
+JOIN xRules_RulesManagementSet xrms ON xrms.rulesID = rl.rulesID
+JOIN RulesManagementSet rms ON xrms.RulesManagementSetId = rms.RulesManagementSetID
+WHERE rms.memberID = %s
+AND rms.active = 1;", $memberId);
 		return $this->dbConnection->query($this->lastSQL);	
 	}
 

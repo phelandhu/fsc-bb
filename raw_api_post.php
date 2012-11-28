@@ -76,7 +76,7 @@ if (!empty($_POST)) {
 </head>
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
 	URL: <input size="100" type="text" name="urlPostXML"
-		value="<?php echo $urlPostXML; ?>" /> <input
+		value="<?php echo $default_urlPostXML; ?>" /> <input
 		<?php echo $debug_checked?> type="checkbox" name="debug" value="1" />
 	Debug<br /> 
 	<div align="left"><br>

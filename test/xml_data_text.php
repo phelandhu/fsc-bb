@@ -1,17 +1,3 @@
-<?php
-// xml_data.php
-/***********************************************
-* Created:            Nov 6, 2012 4:49:21 PM
-* Last Modified:      Nov 6, 2012 4:49:21 PM
-*
-* [LEFT BLANK FOR PROGRAM DESCRIPTION]
-*
-* Mike Browne - phelandhu@gmail.com
-***********************************************/
-/*
-/ <?xml version="1.0"?>
-*/
-$xml_data = <<<XML
 <REQUEST>
 <REFERRAL>
 <STOREKEY>I5uHFVhfKGWpdXOr</STOREKEY>
@@ -73,7 +59,7 @@ $xml_data = <<<XML
 <PAYFREQUENCY>B</PAYFREQUENCY>
 <NETMONTHLY>1012</NETMONTHLY>
 <GROSSMONTHLY>1308</GROSSMONTHLY>
-<LASTPAYDATE>06-29-2012</LASTPAYDATE>
+<LASTPAYDATE>07-29-2012</LASTPAYDATE>
 <NEXTPAYDATE>07-13-2012</NEXTPAYDATE>
 <SECONDPAYDATE>07-27-2012</SECONDPAYDATE>
 </EMPLOYMENT>
@@ -110,4 +96,3 @@ $xml_data = <<<XML
 </REFERENCES>
 </CUSTOMER>
 </REQUEST>
-XML;

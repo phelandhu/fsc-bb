@@ -1,4 +1,4 @@
-<?
+<?php
 	/**
 	* Holiday CLASS
 	*
@@ -64,6 +64,7 @@
 		*/
 		
 		function isHoliday($date="") {
+			$holiday = null;
 			if(!$date) {
 				$date=$this->date;
 			}
@@ -92,7 +93,7 @@
 			}
 			
 			//Good Friday
-			if(array_search($this->GoodFriday,$options)!==false) {
+			if(array_search($this::GoodFriday,$options)!==false) {
 				$goodFriday=date("Y-m-d",strtotime(date("Y-m-d",$easter)." -2 days"));
 				if($goodFriday=="$year-$month-$day") {
 					$holiday="Good Friday";
