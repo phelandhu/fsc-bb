@@ -18,6 +18,7 @@ function validate_Data_Exist($value, $fieldName, $data) {
 }
 
 function validate_date_isHoliday($value, $fieldName, $data) {
+	$result = 0;
 	$date = $data[$fieldName];
 	list($m, $d, $y) = preg_split('/\-/', $date);
 	$mydate = sprintf('%4d-%02d-%02d', $y, $m, $d);
@@ -76,6 +77,7 @@ function validate_date_isWeekEnd($value, $fieldName, $data) {
 	$date1 = strtotime($date);
 	$date2 = date("l", $date1);
 	$date3 = strtolower($date2);
+	$result = 0;
 	if(($date3 == "saturday" )|| ($date3 == "sunday")){
 		$result = 0;
 	} else {
@@ -98,24 +100,23 @@ function validate_date_xdaysGreater($value, $fieldName, $data) {
 }
 // @todo finish this stub
 function validate_isFalse($value) {
-	$this->value = 0;
-	if($this->value == '1') {
-		$value = 1;
+	$result = 0;
+	if($value == '1') {
+		$result = 1;
 	} else {
-		$value = 0;
+		$result = 0;
 	}
-	return( $value );
+	return( $result );
 }
 // @todo finish this stub
 function validate_isTrue($value, $fieldName, $data) {
-	
-	$this->value = $value;
+	$result = "0";
 	if($value == '1') {
-		$value = '0';
+		$result = '0';
 	} else {
-		$value = '1';
+		$result = '1';
 	}
-	return( $value );
+	return( $result );
 }
 // @todo finish this stub
 function validate_numeric_equalEqualTo_CharCount($value, $fieldName, $data) {

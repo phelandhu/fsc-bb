@@ -30,9 +30,9 @@ class CommHTTP {
 		curl_setopt($this->serverRequest, CURLOPT_URL, $uri);
 	}
 	
-	public function setSecurity($security = UNSECURED) {
+	public function setSecurity($security = CommHTTP::UNSECURED) {
 		// later look at adding FTP, and other protocols.
-		if($security == SECURED) {
+		if($security == CommHTTP::SECURED) {
 			$protocol = "https://";
 		} else {
 			$protocol = "http://";
@@ -41,7 +41,7 @@ class CommHTTP {
 	
 	public function setData($data, $post = true) {
 		if($post == true) {
-			curl_setopt($c, CURLOPT_POSTFIELDS, $data);
+			curl_setopt($this->serverRequest, CURLOPT_POSTFIELDS, $data);
 		} // no else I don't need it.
 
 	}

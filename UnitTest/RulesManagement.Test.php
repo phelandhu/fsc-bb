@@ -25,12 +25,13 @@ class RulesManagementSetTest extends PHPUnit_Framework_TestCase {
 	{
 		unset($this->_rulesManagementSet);
 	}
-	
+/*	
 	public function testGetOneById() {
 		$result = $this->_rulesManagementSet->getOneById(284);
 		$row = $result->fetch_array();
 		$this->assertEquals("Sample Rule Set D",$row['Title']);
 	}
+	*/
 /*	
 	public function testSave() {
 		$data['companyName'] = "Test Co.";
@@ -48,6 +49,7 @@ class RulesManagementSetTest extends PHPUnit_Framework_TestCase {
 		$result = $this->_rulesManagementSet->save($data);
 	}
 */	
+	/*
 	public function testSave() {
 		$data['title'] = "Test group five";
 		$data['active'] = 1;
@@ -55,7 +57,7 @@ class RulesManagementSetTest extends PHPUnit_Framework_TestCase {
 		$result = $this->_rulesManagementSet->save($data);
 		echo "New RMS ID: ", $result, "\n";
 	}
-	
+*/	
 	/*
 	public function testUpdateSave() {
 		$result = $this->_rulesManagementSet->getOneById(284);
@@ -64,13 +66,20 @@ class RulesManagementSetTest extends PHPUnit_Framework_TestCase {
 		$result = $this->_rulesManagementSet->save($data);
 	}
 	*/
-	/*
-	public function testSaveSet() {
-		$rulesId = array(1, 2, 3, 4, 6, 10);
-		$rulesManagementSetId = 284;
-		$this->_rulesManagementSet->saveSet($rulesManagementSetId, $rulesId);
+
+	public function testSaveNewSet() {
+		$data = array('RuleSetTitle' => 'Test eight',
+    				  'RulesManagementSetListing' => '', 
+    				  'defaultrule' => 0,
+					  'memberID' => 1,
+					  'rulesID' => array(
+					  		1=>1, 2=>1, 3=>1, 4=>1, 6=>1, 10=>0
+					  		)
+					   );
+		
+		$this->_rulesManagementSet->saveNewSet($data);
 	}
-*/	
+/*	
 	public function testGetSet () {
 		$arrResult = array();
 		$rulesManagementSetId = 284;
@@ -81,4 +90,5 @@ class RulesManagementSetTest extends PHPUnit_Framework_TestCase {
 		}
 		print_r($arrResult);
 	}
+	*/
 }

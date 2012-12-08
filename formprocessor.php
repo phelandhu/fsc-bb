@@ -47,6 +47,7 @@ if(isset($_GET["form"]) && $_GET["form"] == "Campaigns" && $_GET["intention"] ==
 	handlememberSave();
 } elseif (isset($_GET["form"]) && $_GET["form"] == "rulesmanagement" && $_GET["intention"] == "save") {
 	$log->trace("Going to the save for the rulesSet");
+	$log->trace(print_r($_GET, true));
 	handleruleSetSave($_GET, $rulesManagementSet);
 } elseif (isset($_GET["form"]) && $_GET["form"] == "rulesmanagement" && $_GET["intention"] == "update") {
 	$log->trace("Going to the update for the rulesSet");
@@ -116,9 +117,11 @@ function handleMemberDelete() {
 }
 
 function handleRuleSetSave($dataIn, $rulesManagementSet) {
-	$data = $rulesManagementSet->createNew($dataIn);
-	$data["memberId"] = $_SESSION["memberId"];
-	$rulesManagementSet->saveNewSet($data);
+	global $log;
+	$dataIn["memberId"] = $_SESSION["memberId"];
+	$log->trace(print_r($dataIn, true));
+	//$data = $rulesManagementSet->createNew($dataIn);
+	$rulesManagementSet->saveNewSet($dataIn);
 }
 
 function handleRuleSetUpdate($dataIn, $rulesManagementSet) {

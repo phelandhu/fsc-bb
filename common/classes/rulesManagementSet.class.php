@@ -32,7 +32,7 @@ class RulesManagementSet extends BB_Data {
 					$this->dbConnection->real_escape_string($data['active']),
 					$this->dbConnection->real_escape_string($data['memberId']),
 					$data['id']);
-			$this->dbConnection->query($qry);
+			$this->dbConnection->query($this->lastSQL);
 			$returnId = $data['id'];
 		} else {
 			$this->lastSQL = sprintf("INSERT INTO %s
@@ -52,12 +52,15 @@ class RulesManagementSet extends BB_Data {
 			} else {
 				$returnId = 0;
 			}
+			
 		}
 		return $returnId;
 	}
 	
 	public function updateSet($data) {
+		/*
 		$this->save($data);
+		echo "Hello\n\n\n";
 		$rule = null;
 		// do some validation here, eh?
 		if(isset($data["rulesManagementSetId"])) {
@@ -74,21 +77,46 @@ class RulesManagementSet extends BB_Data {
 				}
 			}
 		}
+		*/
+		$rulesId = $data["rulesID"];
+		$rmsData = $this->createNew($data);
+		$this->deleteSet($data[]);
+		if($rulesManagementSetId = $this->save($rmsData)) {
+			$this->saveSet($rulesManagementSetId, $rulesId);
+		}		
+	}
+	
+	public function deleteSet($rulesManagementSetId) {
+		if(isset($rulesManagementSetId)) {
+			$qry = sprintf("DELETE FROM %s WHERE RulesManagementSetId = %s", $this->xOver, $data["rulesManagementSetId"]);
+			$this->dbConnection->query($qry);
+		}
 	}
 	
 	public function saveNewSet($data) {
-		$rulesId = $data["rulesId"];
-		$rulesManagementSetId = $this->save($data);
+		$rulesId = $data["rulesID"];
+		$rmsData = $this->createNew($data);
+		if($rulesManagementSetId = $this->save($rmsData)) {
+			$this->saveSet($rulesManagementSetId, $rulesId);
+		}
+	}
+	
+	public function saveSet($rulesManagementSetId, $rulesId) {
+		global $log;
+		$log->trace("saveSet");
+		$log->trace(print_r($rulesId, true));
+		$i = 0;
 		foreach($rulesId as $key => $value) {
 			if($value == 1){
 				$qry = sprintf("INSERT INTO %s
-					(RulesManagementSetId, RulesId)
-					VALUES
-					(%s, %s)", $this->xOver, $rulesManagementSetId, $key);
+						(RulesManagementSetId, RulesId, ruleOrder)
+						VALUES
+						(%s, %s, %s)", $this->xOver, $rulesManagementSetId, $key, $i);
 				$this->dbConnection->query($qry);
+				$log->trace($qry);
+				$i++;
 			}
 		}
-		file_put_contents("/tmp/storSaveNewSet.txt", print_r($_GET, true));
 	}
 	
 	public function getSet($rulesManagementSetId) {
@@ -128,6 +156,7 @@ class RulesManagementSet extends BB_Data {
 		$data["title"]	= $this->dbConnection->real_escape_string($dataIn["RuleSetTitle"]);
 		$data["active"]	= $this->dbConnection->real_escape_string($dataIn["defaultrule"]);
 		$data["rulesId"]= $dataIn["rulesID"];
+		$data["memberId"]= $dataIn["memberId"];
 		return $data;
 	}
 

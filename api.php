@@ -16,6 +16,9 @@ include_once("common/classes/leadProvider.class.php");
 include_once("common/include/rulesDefinitions.php");
 include_once("common/classes/BBCORE.php");
 include_once("common/external/xml2Array.php");
+include_once("common/classes/postEpic.class.php");
+include_once("common/classes/postLbmc.class.php");
+
 $member = new Member($dbDataArr);
 $rules = new Rules($dbDataArr);
 $leadProvider = new LeadProvider($dbDataArr);
@@ -23,7 +26,7 @@ $leadProvider = new LeadProvider($dbDataArr);
 //print_r(get_class_methods($logger));
 
 $bolUnAuth = true;
-
+/*
 // Log the request
 if($_SERVER['REQUEST_METHOD'] == 'GET') {
 	$log->trace("GET Data:\n" . print_r($_GET, true));
@@ -32,7 +35,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 } else {
 	$log->trace("Nothing was submitted");
 }
-
+*/
 if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["apiId"]) && isset($_GET["apiKey"])) {
 	$bolUnAuth = false;
 	$apiusername = $_GET["apiusername"];
@@ -83,11 +86,12 @@ if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["apiId"]) && isset($_GET["
 		if($resultMem->num_rows == 1) {
 			$row = $resultMem->fetch_array();
 			$rules_result = $rules->getRulesByMemberId($row['id']);
-			$rules_Array = array();
+			$rulesArray = array();
 //			print_r($array3);
 			while($row = $rules_result->fetch_array()) {
 				// instead of copying to a new array simply run the rules test now
-				call_user_func($row["PHPLocation"], $row["value"], strtoupper ($row["FieldName"]), $array3);
+				$rulesArray[] = call_user_func($row["PHPLocation"], $row["value"], strtoupper ($row["FieldName"]), $array3);
+				
 				//$rules_Array[] = $row;
 			}
 			//$bbcore = new BBCORE($array3, $rules_Array, $dbDataArr);
@@ -95,7 +99,16 @@ if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["apiId"]) && isset($_GET["
 	} else { // fail
 		$bolUnAuth = true;
 	}
-
+	print_r($rulesArray);
+	if(in_array ( 1, $rulesArray )){ // Rules failed
+		echo "Rules Failed";
+		$epic = new PostEPIC();
+		echo $epic->post2EPIC($xmlsource);
+	} else { // Rules passed
+		echo "Rules Passed";
+		$epic = new PostEPIC();
+		$epic->post2EPIC($xmlsource);
+	}
 }
 
 if($bolUnAuth == true) {
