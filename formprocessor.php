@@ -3,10 +3,11 @@ session_start();
 require_once("bootstrap.php");
 require_once("common/classes/rulesManagementSet.class.php");
 require_once("common/classes/campaign.class.php");
+/*
 include("common/include/db_login.php");
 mysql_connect($host, $user, $pass);
 mysql_select_db($database);
-
+*/
 $rulesManagementSet = new RulesManagementSet($dbDataArr);
 $campaign = new Campaign($dbDataArr);
 
@@ -126,35 +127,9 @@ function handleRuleSetSave($dataIn, $rulesManagementSet) {
 
 function handleRuleSetUpdate($dataIn, $rulesManagementSet) {
 	global $log;
+	$dataIn["memberId"] = $_SESSION["memberId"];
 	$log->trace(print_r($dataIn, true));
-	$data = $rulesManagementSet->createNew($dataIn);
-	$data["rulesManagementSetId"] = $dataIn["rulesManagementSetId"];
-	$rulesManagementSet->updateSet($data);
-	
-	
-/*	
-	
-	
-	$result_memberid = mysql_query("SELECT * FROM member WHERE username = '" . $_SESSION["username"] . "'");
-	$row_member = mysql_fetch_array($result_memberid);
-	if( $_GET["intention"] == "update" && $_GET["RuleSetTitle"] != "" )
-	{
-		$result_memberid    = mysql_query( "SELECT * FROM member WHERE username = '" . $_SESSION["username"] . "'" );
-		$row_member         = mysql_fetch_array( $result_memberid );
-		$array      = $_GET["rulesID"];
-		$ruletitle  = $_GET["RuleSetTitle"];
-		//	RulesManagementSetID	Title	rulesID	Active	memberID
-		$sql ="";
-		foreach ($array as $key => $value)
-		{
-			$sql = "UPDATE RulesManagementSet SET ";
-			$sql .= "Active = ".$value." WHERE Title = '".$ruletitle."' AND rulesID = ".$key ."; \n";
-			mysql_query($sql);
-		}
-		// print_r($sql);
-	}
-	
-	*/
+	$rulesManagementSet->updateSet($dataIn);
 }
 
 function handleRuleSetDelete($dataIn, $rulesManagementSet) {

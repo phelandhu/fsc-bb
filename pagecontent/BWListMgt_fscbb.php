@@ -4,13 +4,12 @@
 	require_once("common/classes/rulesManagementSet.class.php");
 	$rules = new Rules($dbDataArr);
 	$rulesManagementSet = new RulesManagementSet($dbDataArr);
-	/*
+	
 //include("common/include/db_login.php");
 	$table      =   'rules'; // Members name
 	$row        =   "";
 	mysql_connect($host, $user, $pass);
 	mysql_select_db($database);
-	*/
 	$result_rules = $rules->getAll();
 	$result_rms = $rulesManagementSet->getAllNamesByMemberId($_SESSION["memberId"]);
 	$log->trace(print_r($result_rms, true));
@@ -20,7 +19,7 @@
 </script>
     <div>
     <div style="color:#FF8C19;font-size: 2em">
-    	Rules Management
+    	Black White List
     </div>
     <div style="color:#555;font-size: 1em;padding: 10px; ">
         <div id="rules">
@@ -65,7 +64,6 @@
                         ?>
                     </table>
                 </div>
-                <input type="hidden" name="RuleSetId" id="rulesManagementSetId" />
                 <input type="hidden" name="form" id="form" value="rulesmanagement" />
             </form>
         </div>

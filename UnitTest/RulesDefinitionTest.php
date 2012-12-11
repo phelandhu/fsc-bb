@@ -43,7 +43,23 @@ class RulesTest extends PHPUnit_Framework_TestCase {
 		print_r($this->xml_data_in);
 	}
 */	
+	public function testResultsAreZero() {
+//		validate_data_Exist($value, $fieldName, $data)
+		validate_date_isHoliday($value, $fieldName, $data)
+		validate_date_isWeekEnd($value, $fieldName, $data)
+		validate_date_xdaysGreater($value, $fieldName, $data) 
+		validate_isFalse($value)
+		validate_isTrue($value, $fieldName, $data)
+		validate_numeric_equalEqualTo_CharCount($value, $fieldName, $data)
+		validate_numeric_greaterThanEqualTo($value, $fieldName, $data)
+		validate_numeric_lesser($value, $fieldName, $data) {
+		$this->assertEquals(0, validate_text_contains(".mil", strtoupper("personal_email"), $this->arr_xml_data));
+		$this->assertEquals(0, validate_text_does_not_contain(".gov", strtoupper("personal_email"), $this->arr_xml_data));		
+		
+	}
+	/*
 	public function testValidateTextContains() {
+	
 		$result = validate_text_contains(".mil", strtoupper("personal_email"), $this->arr_xml_data);
 		echo $result;
 	}
@@ -69,6 +85,7 @@ class RulesTest extends PHPUnit_Framework_TestCase {
 		$result = validate_date_isHoliday("Errors", "LOANDUEDATE", $data);
 		$this->assertEquals(0, $result);
 	}
+	*/
 /*
 	public function testValidateDueDateIsWeekendTrue() {
 		$data = array("LOANDUEDATE" => "11-24-2012");

@@ -79,6 +79,8 @@
 		var selectedvalue = document.getElementById("RulesManagementSetListing");
 		document.getElementById("RuleSetTitle").value = selectedvalue.options[selectedvalue.selectedIndex].text;
 		var rulesId = selectedvalue.options[selectedvalue.selectedIndex].value;
+		document.getElementById("rulesManagementSetId").value = rulesId;
+
 		if(rulesId > 0) {
 			$.ajax({ url: '/ajax.php',
 				data: {method: 'getRulesList', 

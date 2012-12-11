@@ -13,6 +13,7 @@
             <li><a href="?page=Campaigns">Campaigns </a></li> 
             <li><a href="?page=PortfolioMgt">Portfolio Mgt</a></li>
             <li><a href="?page=RulesMgt">Baseline Rules</a></li> 
+            <li><a href="?page=BWListMgt">Black/White List</a></li> 
             <li><a href="?page=Reports">Reports</a></li> 
             <li><a href="?page=AccountHelp">Help</a></li>
         </ul>

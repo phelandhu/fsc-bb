@@ -17,23 +17,20 @@ class RulesManagementSet extends BB_Data {
 		global $log;
 		// I am creating a xover table between this and rules.
 		$returnId = null;
-		if(isset($data['id'])) {
+		$log->error(print_r($data, true));
+		if(isset($data['rulesManagementSetId'])) {
 			$this->lastSQL = sprintf(" UPDATE %s  SET
-					`name` = '%s',
-					`comment` = '%s',
 					`title` = '%s',
 					`active` = %s,
 					`memberId` = %s,
 					WHERE id = %s",
 					$this->self,
-					$this->dbConnection->real_escape_string($data['name']),
-					$this->dbConnection->real_escape_string($data['comment']),
 					$this->dbConnection->real_escape_string($data['title']),
 					$this->dbConnection->real_escape_string($data['active']),
 					$this->dbConnection->real_escape_string($data['memberId']),
-					$data['id']);
+					$data['rulesManagementSetId']);
 			$this->dbConnection->query($this->lastSQL);
-			$returnId = $data['id'];
+			$returnId = $data['rulesManagementSetId'];
 		} else {
 			$this->lastSQL = sprintf("INSERT INTO %s
 					(`Title`, `Active`, `memberID`)
@@ -58,37 +55,23 @@ class RulesManagementSet extends BB_Data {
 	}
 	
 	public function updateSet($data) {
-		/*
-		$this->save($data);
-		echo "Hello\n\n\n";
-		$rule = null;
-		// do some validation here, eh?
-		if(isset($data["rulesManagementSetId"])) {
-			// delete the rms entry
-			$qry = sprintf("DELETE FROM %s WHERE RulesManagementSetId = %s", $this->xOver, $data["rulesManagementSetId"]);
-			$this->dbConnection->query($qry);
-			foreach($rulesId as $key => $value) {
-				if($value == 1){
-					$qry = sprintf("INSERT INTO %s
-							(RulesManagementSetId, RulesId)
-							VALUES
-							(%s, %s)", $this->xOver, $rulesManagementSetId, $key);
-					$this->dbConnection->query($qry);
-				}
-			}
-		}
-		*/
+		global $log;
 		$rulesId = $data["rulesID"];
 		$rmsData = $this->createNew($data);
-		$this->deleteSet($data[]);
+		$rmsData["rulesManagementSetId"] = $data["rulesManagementSetId"];
+		$log->trace(print_r($data, true));
+		$this->deleteSet($data);
 		if($rulesManagementSetId = $this->save($rmsData)) {
 			$this->saveSet($rulesManagementSetId, $rulesId);
 		}		
 	}
 	
-	public function deleteSet($rulesManagementSetId) {
+	public function deleteSet($data) {
+		global $log;
 		if(isset($rulesManagementSetId)) {
 			$qry = sprintf("DELETE FROM %s WHERE RulesManagementSetId = %s", $this->xOver, $data["rulesManagementSetId"]);
+			$log->trace($qry);
+			file_put_contents("/tmp/sql_log.txt", $qry);
 			$this->dbConnection->query($qry);
 		}
 	}
@@ -102,9 +85,6 @@ class RulesManagementSet extends BB_Data {
 	}
 	
 	public function saveSet($rulesManagementSetId, $rulesId) {
-		global $log;
-		$log->trace("saveSet");
-		$log->trace(print_r($rulesId, true));
 		$i = 0;
 		foreach($rulesId as $key => $value) {
 			if($value == 1){
@@ -113,7 +93,6 @@ class RulesManagementSet extends BB_Data {
 						VALUES
 						(%s, %s, %s)", $this->xOver, $rulesManagementSetId, $key, $i);
 				$this->dbConnection->query($qry);
-				$log->trace($qry);
 				$i++;
 			}
 		}

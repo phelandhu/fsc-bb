@@ -43,6 +43,7 @@ class TransactionLeadsTest extends PHPUnit_Framework_TestCase {
 		$result = $this->_transactionLeads->save($data);
 	}
 */
+
 	public function testSave() {
 		$data['apiUserName'] = "TestunAPI";
 		$data['apiPassWord'] = "TestpwAPI";
@@ -119,10 +120,21 @@ class TransactionLeadsTest extends PHPUnit_Framework_TestCase {
 		$data['code'] = "123456";
 		
 		$resultId = $this->_transactionLeads->save($data);
+		echo $this->_transactionLeads->getLastSQL();
 		$result = $this->_transactionLeads->getOneById($resultId);
 		$row = $result->fetch_array();
+		
 		$this->assertEquals("sd56f4",$row['STOREKEY']);
+		
 	}
 
+	public function testConvertLengthToYearMonth() {
+		$length = 25;
+		$year = 0;
+		$month = 0;
+		$this->_transactionLeads->convertLengthToYearMonth($length, $year, $month);
+		$this->assertEquals(2,$year);
+		$this->assertEquals(1,$month);
+	}
 	
 }

@@ -11,10 +11,12 @@
 require_once("external/class.holiday.php");
 
 
+// for all of these true=1, false=0
+
 
 // @todo finish this stub
-function validate_Data_Exist($value, $fieldName, $data) {
-	print("validate_Data_Exist\n");
+function validate_data_Exist($value, $fieldName, $data) {
+	print("validate_data_Exist\n");
 }
 
 function validate_date_isHoliday($value, $fieldName, $data) {
@@ -158,6 +160,16 @@ function validate_numeric_lesser($value, $fieldName, $data) {
 }
 // @todo finish this stub
 function validate_text_contains($value, $fieldName, $data) {
+	$result = 0;
+	if (preg_match("/\b".$value."\b/i", $data[$fieldName])) {
+		$result = 1;
+	} else {
+		$result = 0;
+	}
+	return $result;
+}
+
+function validate_text_does_not_contain($value, $fieldName, $data) {
 	$result = 0;
 	if (preg_match("/\b".$value."\b/i", $data[$fieldName])) {
 		$result = 0;

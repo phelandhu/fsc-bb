@@ -18,10 +18,13 @@ include_once("common/classes/BBCORE.php");
 include_once("common/external/xml2Array.php");
 include_once("common/classes/postEpic.class.php");
 include_once("common/classes/postLbmc.class.php");
+include_once("common/classes/transactionLeads.class.php");
 
 $member = new Member($dbDataArr);
 $rules = new Rules($dbDataArr);
 $leadProvider = new LeadProvider($dbDataArr);
+$transactionLeads = new TransactionLeads($dbDataArr);
+
 //$logger = new Logger("/tmp/log.log");
 //print_r(get_class_methods($logger));
 
@@ -37,6 +40,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 }
 */
 if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["apiId"]) && isset($_GET["apiKey"])) {
+	/*
 	$bolUnAuth = false;
 	$apiusername = $_GET["apiusername"];
 	$apipassword = $_GET["apipassword"];
@@ -62,6 +66,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["apiId"]) && isset($_GET["
 	} else {
 		$bolUnAuth = true;
 	}
+	*/
 } elseif($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST["apiId"]) && isset($_POST["apiKey"])   ) {
 	$bolUnAuth = false;
 	$xmlsource = $_POST['revere'];
@@ -78,12 +83,14 @@ if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["apiId"]) && isset($_GET["
 	//	$apikey      = $_POST["apikey"];
 	$apiId		 = $_POST["apiId"];
 	$apiKey		 = $_POST["apiKey"];
+	$apiRef		= $_POST["apiRef"];
 
 	$resultLP = $leadProvider->getOneByAPIIdAndKey($apiId, $apiKey);
-	echo ('<code> 0 </code><msg>(Authorized), Authentication Successful Post received</msg>');
 	if($resultLP->num_rows == 1) {
+		echo ('<code> 0 </code><msg>(Authorized), Authentication Successful Post received</msg>');
 		$resultMem = $member->getOneByAPIRef($apiRef);
 		if($resultMem->num_rows == 1) {
+			echo "Checking vs Ruleset";
 			$row = $resultMem->fetch_array();
 			$rules_result = $rules->getRulesByMemberId($row['id']);
 			$rulesArray = array();
@@ -95,20 +102,33 @@ if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["apiId"]) && isset($_GET["
 				//$rules_Array[] = $row;
 			}
 			//$bbcore = new BBCORE($array3, $rules_Array, $dbDataArr);
+		} else {
+			echo "Error in Ruleset";
 		}
 	} else { // fail
 		$bolUnAuth = true;
 	}
-	print_r($rulesArray);
+	//print_r($rulesArray);
+//	$log->error(print_r($xmlsource, true));
+
+	$data = $transactionLeads->cleanData($array3);
+
+
+
 	if(in_array ( 1, $rulesArray )){ // Rules failed
-		echo "Rules Failed";
-		$epic = new PostEPIC();
-		echo $epic->post2EPIC($xmlsource);
+		echo "<rules_result>Rules Failed</rules_result>";
+		$lbmc = new PostLBMC();
+		$lbmc->post2LBMC($xmlsource);
+		$data["results"] = 0;
+		// post to LP URL
 	} else { // Rules passed
-		echo "Rules Passed";
+		echo "<rules_result>Rules Passed</rules_result>";
 		$epic = new PostEPIC();
 		$epic->post2EPIC($xmlsource);
+		$data["results"] = 1;
+		// post to LP URL
 	}
+		$transactionLeads->save($data);
 }
 
 if($bolUnAuth == true) {
