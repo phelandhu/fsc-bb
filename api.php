@@ -112,23 +112,24 @@ if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["apiId"]) && isset($_GET["
 //	$log->error(print_r($xmlsource, true));
 
 	$data = $transactionLeads->cleanData($array3);
-
+	$transactionLeadId = $transactionLeads->save($data);
+	$data['id'] = $transactionLeadId;
 
 
 	if(in_array ( 1, $rulesArray )){ // Rules failed
 		echo "<rules_result>Rules Failed</rules_result>";
 		$lbmc = new PostLBMC();
-		$lbmc->post2LBMC($xmlsource);
+		$lbmc->post2LBMC($xmlsource, $transactionLeadId);
 		$data["results"] = 0;
 		// post to LP URL
 	} else { // Rules passed
 		echo "<rules_result>Rules Passed</rules_result>";
 		$epic = new PostEPIC();
-		$epic->post2EPIC($xmlsource);
+		$epic->post2EPIC($xmlsource, $transactionLeadId);
 		$data["results"] = 1;
 		// post to LP URL
 	}
-		$transactionLeads->save($data);
+	$transactionLeadId = $transactionLeads->save($data);
 }
 
 if($bolUnAuth == true) {

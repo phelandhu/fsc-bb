@@ -23,13 +23,14 @@ class PostEPIC extends CommHTTP{
 		$this->setURL($this->uri);
 	}
 	
-	public function post2EPIC($data) {
+	public function post2EPIC($data, $transactionLeadId) {
 		$this->setSecurity();
 		$this->setData("postData=" . $data);
 		$result = $this->sendMessage(true);
 		$data = array('vendorPostTo' => $this->vendor, 
 					'response' => $result, 
-					'urlPostedTo' => $this->uri
+					'urlPostedTo' => $this->uri,
+					'transactionLeadId' => $transactionLeadId
 				);
 		$this->_vendorPostTo->save($data);
 	}

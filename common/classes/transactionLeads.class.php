@@ -21,16 +21,16 @@ class TransactionLeads extends BB_Data {
 		if(isset($data['id'])) {
 			$this->lastSQL = sprintf("UPDATE %s  SET
 						`name` = '%s', `comment` = '%s',
-`apiUserName` = '%s', `apiPassWord` = '%s', `storeKey` = '%s', `refUrl` = '%s', `ipAddress` = '%s',
-`tierKey` = '%s', `affId` = '%s', `subId` = '%s', `test` = '%s', `requestedAmount` = '%s', `ssn` = '%s', `dob` = '%s', `gender` = '%s',
-`firstName` = '%s', `lastName` = '%s', `address` = '%s', `city` = '%s', `state` = '%s', `homePhone` = '%s', `otherPhone` = '%s', `dlState` = '%s',
-`dlNumber` = '%s', `contactTime` = '%s', `addressMonths` = '%s', `addressYears` = '%s', `rentOrOwn` = '%s', `isMilitary` = '%s', `isCitizen` = '%s', `otherOffers` = '%s',
-`email` = '%s', `incomeType` = '%s', `payType` = '%s', `empMonths` = '%s', `empYears` = '%s', `empName` = '%s', `empAddress` = '%s', `empAddress2` = '%s',
-`empCity` = '%s', `empState` = '%s', `empZip` = '%s', `empPhone` = '%s', `empPhoneExt` = '%s', `empFax` = '%s', `supervisorName` = '%s', `supervisorPhone` = '%s',
-`supervisorPhoneExt` = '%s', `hireDate` = '%s', `empType` = '%s', `jobTitle` = '%s', `workShift` = '%s', `payFrequency` = '%s', `netMonthly` = '%s', `grossMonthly` = '%s',
-`lastPayDate` = '%s', `nextPayDate` = '%s', `secondPayDate` = '%s', `accountHolder` = '%s', `bankName` = '%s', `bankPhone` = '%s', `accountType` = '%s', `routingNumber` = '%s',
-`accountNumber` = '%s', `bankMonths` = '%s', `bankYears` = '%s', `outStandingAmt` = '%s', `activeChecking` = '%s', `refFirstName` = '%s', `refLastName` = '%s', `phone` = '%s',
-`relationship` = '%s', `flag` = '%s', `results` = '%s', `code` = '%s'
+`apiUserName` = '%s', `apiPassWord` = '%s', `STOREKEY` = '%s', `REFURL` = '%s', `IPADDRESS` = '%s',
+`TIERKEY` = '%s', `AFFID` = '%s', `SUBID` = '%s', `TEST` = '%s', `REQUESTEDAMOUNT` = '%s', `SSN` = '%s', `DOB` = '%s', `GENDER` = '%s',
+`FIRSTNAME` = '%s', `LASTNAME` = '%s', `ADDRESS` = '%s', `CITY` = '%s', `STATE` = '%s', `HOMEPHONE` = '%s', `OTHERPHONE` = '%s', `DLSTATE` = '%s',
+`DLNUMBER` = '%s', `CONTACTTIME` = '%s', `ADDRESSMONTHS` = '%s', `ADDRESSYEARS` = '%s', `RENTOROWN` = '%s', `ISMILITARY` = '%s', `ISCITIZEN` = '%s', `OTHEROFFERS` = '%s',
+`EMAIL` = '%s', `INCOMETYPE` = '%s', `PAYTYPE` = '%s', `EMPMONTHS` = '%s', `EMPYEARS` = '%s', `EMPNAME` = '%s', `EMPADDRESS` = '%s', `EMPADDRESS2` = '%s',
+`EMPCITY` = '%s', `EMPSTATE` = '%s', `EMPZIP` = '%s', `EMPPHONE` = '%s', `EMPPHONEEXT` = '%s', `EMPFAX` = '%s', `SUPERVISORNAME` = '%s', `SUPERVISORPHONE` = '%s',
+`SUPERVISORPHONEEXT` = '%s', `HIREDATE` = '%s', `EMPTYPE` = '%s', `JOBTITLE` = '%s', `WORKSHIFT` = '%s', `PAYFREQUENCY` = '%s', `NETMONTHLY` = '%s', `GROSSMONTHLY` = '%s',
+`LASTPAYDATE` = '%s', `NEXTPAYDATE` = '%s', `SECONDPAYDATE` = '%s', `ACCOUNTHOLDER` = '%s', `BANKNAME` = '%s', `BANKPHONE` = '%s', `ACCOUNTTYPE` = '%s', `ROUTINGNUMBER` = '%s',
+`ACCOUNTNUMBER` = '%s', `BANKMONTHS` = '%s', `BANKYEARS` = '%s', `OUTSTANDINGAMT` = '%s', `ACTIVECHECKING` = '%s', `REFFIRSTNAME` = '%s', `REFLASTNAME` = '%s', `PHONE` = '%s',
+`RELATIONSHIP` = '%s', `FLAG` = '%s', `RESULTS` = '%s', `CODE` = '%s'
 					WHERE LeadsTransaction_PASSID = %s",
 					$this->self,
 $this->dbConnection->real_escape_string($data['name']), $this->dbConnection->real_escape_string($data['comment']),
@@ -46,7 +46,7 @@ $this->dbConnection->real_escape_string($data['accountNumber']), $this->dbConnec
 $this->dbConnection->real_escape_string($data['relationship']), $this->dbConnection->real_escape_string($data['flag']), $this->dbConnection->real_escape_string($data['results']), $this->dbConnection->real_escape_string($data['code'])  ,
 					$data['id']);
 			//echo $qry;
-			$this->dbConnection->query($qry);
+			$this->dbConnection->query($this->lastSQL);
 			$returnId = $data['id'];
 		} else {
 			$this->lastSQL = sprintf("INSERT INTO %s

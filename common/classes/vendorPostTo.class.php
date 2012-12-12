@@ -14,13 +14,14 @@ class VendorPostTo extends BB_Data {
 	
 	public function save($data) {
 		$this->lastSQL = sprintf("INSERT INTO %s
-				(`dateCreated`, `vendorPostTo`, `response`, `urlPostedTo`)
+				(`dateCreated`, `vendorPostTo`, `response`, `urlPostedTo`, `transactionLeadId`)
 				VALUES
-				(now(), '%s', '%s', '%s')",
+				(now(), '%s', '%s', '%s', %s)",
 				$this->self,
 				$this->dbConnection->real_escape_string($data['vendorPostTo']),
 				$this->dbConnection->real_escape_string($data['response']),
-				$this->dbConnection->real_escape_string($data['urlPostedTo']));
+				$this->dbConnection->real_escape_string($data['urlPostedTo']),
+				$data['transactionLeadId']);
 		$this->dbConnection->query($this->lastSQL);
 	}
 }
