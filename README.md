@@ -23,4 +23,6 @@ $log->warn("My fourth message.");   // Logged because WARN >= WARN
 $log->error("My fifth message.");   // Logged because ERROR >= WARN
 $log->fatal("My sixth message.");   // Logged because FATAL >= WARN
 
-
+New stuff 2012-12-11
+http://phpfileuploader.com/
+http://www.tizag.com/phpT/fileupload.php
