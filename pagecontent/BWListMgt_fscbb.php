@@ -64,6 +64,41 @@
 						<td></td><td>Active</td><td></td><td>Rule Title</td>  
 					</tr>
                 </table>
+                
+                <div id="bwMaker" name="bwMaker">
+                	<table id="BWlist" CELLSPACING=5  style="padding: 10px; width:630px">
+                		<tr>
+                			<td>name</td>
+                			<td>data location</td>
+                			<td>rule</td>
+                			<td>value</td>
+                		</tr>
+                		<tr>
+                			<td><input type="text" name="BWName"/></td>
+                			<td>
+                				<select>
+                					<option>First Name</option>
+                					<option>Last Name</option>
+                					<option>SSN</option>
+                				</select>
+                			</td>
+                			<td>
+                				<select>
+                					<option>Not present</option>
+                					<option>Must be</option>
+                					<option>SSN</option>
+                				</select>
+                			</td>
+                			<td><input type="text" name="BWCompValue"/></td>
+                		</tr>
+                		<tr>
+                			<td></td>
+                			<td></td>
+                			<td><input type=submit name="naughty" value="Black List"/></td>
+                			<td><input type=submit name="nice" value="White List"/></td>
+                		</tr>
+                	</table>
+                </div>
                 <div  id="rulesmanager" name="rulesmanager" > 
                     <table id="ruleslist" CELLSPACING=5  style="height:480px;padding: 10px; width:630px">                        
                         <?php
