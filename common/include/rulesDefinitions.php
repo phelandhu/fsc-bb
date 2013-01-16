@@ -20,7 +20,7 @@ function validate_data_Exist($value, $fieldName, $data) {
 }
 
 function validate_date_isHoliday($value, $fieldName, $data) {
-	$result = 0;
+	$validate = 0;
 	$date = $data[$fieldName];
 	list($m, $d, $y) = preg_split('/\-/', $date);
 	$mydate = sprintf('%4d-%02d-%02d', $y, $m, $d);
@@ -29,49 +29,49 @@ function validate_date_isHoliday($value, $fieldName, $data) {
 	$holidayToday = $holiday->isHoliday();
 	echo "Is holiday: ", $holidayToday, "\n";
 	if($holidayToday) {
-		$result = 0;
-		echo $result;
+		$validate = 0;
+		echo $validate;
 	} else {
-		$result = 1;
+		$validate = 1;
 	}
 /*
 	
 	switch($date) {
 		case $year.'-01-01':
-			$result = '0';
+			$validate = '0';
 			break;
 		case $year.'-01-16':
-			$result = '0';
+			$validate = '0';
 			break;
 		case $year.'-02-20':
-			$result = '0';
+			$validate = '0';
 			break;
 		case $year.'-05-28':
-			$result = '0';
+			$validate = '0';
 			break;
 		case $year.'-07-04':
-			$result = '0';
+			$validate = '0';
 			break;
 		case $year.'-09-03':
-			$result = '0';
+			$validate = '0';
 			break;
 		case $year.'-10-08':
-			$result = '0';
+			$validate = '0';
 			break;
 		case $year.'-11-12':
-			$result = '0';
+			$validate = '0';
 			break;
 		case $year.'-07-22':
-			$result = '0';
+			$validate = '0';
 			break;
 		case $year.'-12-25':
-			$result = '0';
+			$validate = '0';
 			break;
 		default:
-			$result = '1';
+			$validate = '1';
 	}
 	*/
-	return $result;
+	return $validate;
 }
 
 function validate_date_isWeekEnd($value, $fieldName, $data) {
@@ -79,102 +79,99 @@ function validate_date_isWeekEnd($value, $fieldName, $data) {
 	$date1 = strtotime($date);
 	$date2 = date("l", $date1);
 	$date3 = strtolower($date2);
-	$result = 0;
+	$validate = 0;
 	if(($date3 == "saturday" )|| ($date3 == "sunday")){
-		$result = 0;
+		$validate = 0;
 	} else {
-		$result = 1;
+		$validate = 1;
 	}
-	return $result;
+	return $validate;
 }
 // @todo finish this stub
 function validate_date_xdaysGreater($value, $fieldName, $data) {
-	$result = "0";
+	$validate = "0";
 	$year2days =  30*$subject ;
 	 
 	//print_r(" ".$year2days);
 	if( intval($str) < intval($year2days) ) {
-		$result = "1";
+		$validate = "1";
 	} else {
-		$result = "0";
+		$validate = "0";
 	}
-	return $result;
+	return $validate;
 }
-// @todo finish this stub
-function validate_isFalse($value) {
-	$result = 0;
-	if($value == '1') {
-		$result = 1;
+
+function validate_isFalse($fieldName, $data) {
+	$validate = 0;
+	$testVal = $data[$fieldName];
+	if($testVal == "1") {
+		$validate = 0;
 	} else {
-		$result = 0;
+		$validate = 1;
 	}
-	return( $result );
+	return( $validate );
 }
-// @todo finish this stub
-function validate_isTrue($value, $fieldName, $data) {
-	$result = "0";
-	if($value == '1') {
-		$result = '0';
+
+function validate_isTrue($fieldName, $data) {
+	$validate = 0;
+	$testVal = $data[$fieldName];
+	if($testVal == "0") {
+		$validate = 0;
 	} else {
-		$result = '1';
+		$validate = 1;
 	}
-	return( $result );
+	return( $validate );
 }
-// @todo finish this stub
+
 function validate_numeric_equalEqualTo_CharCount($value, $fieldName, $data) {
-	$result = "0";
-	if(  $str == strlen($subject) ) {
-		$result = "1";
+	$validate = "0";
+	$testVal = $data[$fieldName];
+	if( ctype_digit($testVal) && $value == strlen($testVal) ) {
+		$validate = "0";
 	} else {
-		$result = "0";
+		$validate = "1";
 	}
-	return $result;
+	return $validate;
 }
-// @todo finish this stub
+
 function validate_numeric_greaterThanEqualTo($value, $fieldName, $data) {
-	$result = "0";
-	print_r("<teststuff>");
-	print_r("str is:".$str);
-	print_r("||");
-	print_r("subject is:".$this->value);
-	print_r("</teststuff>");
-	 
-	if(  $this->value  >= $str  )
-	{
-		$result = "1";
-	}else{
-		$result = "0";
+	$validate = "0";
+	$testVal = $data[$fieldName];
+	if( ctype_digit( $testVal ) && intval( $value ) <= intval( $testVal ) ) {
+		$validate = "0";
+	} else {
+		$validate = "1";
 	}
-	return $result;
+	return $validate;
 }
 // @todo finish this stub
 function validate_numeric_lesser($value, $fieldName, $data) {
-	$result = "0";
-	if( intval( $str ) < intval( $subject ) && intval( $str ) == intval( $subject ) )
-	{	
-		$result = "1";
-	}else{
-		$result = "0";
+	$validate = "0";
+	$testVal = $data[$fieldName];
+	if( ctype_digit( $testVal ) && intval( $value ) > intval( $testVal ) ) {
+		$validate = "0";
+	} else {
+		$validate = "1";
 	}
-	return $result;
+	return $validate;
 }
 // @todo finish this stub
 function validate_text_contains($value, $fieldName, $data) {
-	$result = 0;
-	if (preg_match("/\b".$value."\b/i", $data[$fieldName])) {
-		$result = 1;
+	$validate = 0;
+	if (preg_match("/\b" . $value . "\b/i", $data[$fieldName])) {
+		$validate = 1;
 	} else {
-		$result = 0;
+		$validate = 0;
 	}
-	return $result;
+	return $validate;
 }
 
 function validate_text_does_not_contain($value, $fieldName, $data) {
-	$result = 0;
-	if (preg_match("/\b".$value."\b/i", $data[$fieldName])) {
-		$result = 0;
+	$validate = 0;
+	if (preg_match("/\b" . $value . "\b/i", $data[$fieldName])) {
+		$validate = 0;
 	} else {
-		$result = 1;
+		$validate = 1;
 	}
-	return $result;
+	return $validate;
 }

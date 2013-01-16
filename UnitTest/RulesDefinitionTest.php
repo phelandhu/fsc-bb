@@ -45,17 +45,39 @@ class RulesTest extends PHPUnit_Framework_TestCase {
 */	
 	public function testResultsAreZero() {
 //		validate_data_Exist($value, $fieldName, $data)
+/*
 		validate_date_isHoliday($value, $fieldName, $data)
 		validate_date_isWeekEnd($value, $fieldName, $data)
-		validate_date_xdaysGreater($value, $fieldName, $data) 
-		validate_isFalse($value)
-		validate_isTrue($value, $fieldName, $data)
-		validate_numeric_equalEqualTo_CharCount($value, $fieldName, $data)
-		validate_numeric_greaterThanEqualTo($value, $fieldName, $data)
-		validate_numeric_lesser($value, $fieldName, $data) {
+		validate_date_xdaysGreater($value, $fieldName, $data)
+*/ 
+		$this->assertEquals(0, validate_isFalse('value', array("value"=>"1")));
+		$this->assertEquals(0, validate_isTrue('value', array("value"=>"0")));
+		$this->assertEquals(0, validate_numeric_equalEqualTo_CharCount(5, 'value', array("value"=>"89113")));
+		$this->assertEquals(0, validate_numeric_greaterThanEqualTo(5, 'value', array("value"=>"6")));
+		$this->assertEquals(0, validate_numeric_lesser(5, 'value', array("value"=>"4")));
+	
 		$this->assertEquals(0, validate_text_contains(".mil", strtoupper("personal_email"), $this->arr_xml_data));
 		$this->assertEquals(0, validate_text_does_not_contain(".gov", strtoupper("personal_email"), $this->arr_xml_data));		
 		
+	}
+	
+	public function testResultsAreOne() {
+//		validate_data_Exist($value, $fieldName, $data)
+/*
+		validate_date_isHoliday($value, $fieldName, $data)
+		validate_date_isWeekEnd($value, $fieldName, $data)
+		validate_date_xdaysGreater($value, $fieldName, $data)
+*/
+		$this->assertEquals(1, validate_isFalse('value', array("value"=>"0")));
+		$this->assertEquals(1, validate_isTrue('value', array("value"=>"1")));
+		$this->assertEquals(1, validate_numeric_equalEqualTo_CharCount(5, 'value', array("value"=>"8911A")));
+		$this->assertEquals(1, validate_numeric_equalEqualTo_CharCount(5, 'value', array("value"=>"891135")));
+		$this->assertEquals(1, validate_numeric_greaterThanEqualTo(5, 'value', array("value"=>"4")));
+		$this->assertEquals(1, validate_numeric_lesser(5, 'value', array("value"=>"6")));
+	
+		$this->assertEquals(1, validate_text_contains(".gov", strtoupper("personal_email"), $this->arr_xml_data));
+		$this->assertEquals(1, validate_text_does_not_contain(".mil", strtoupper("personal_email"), $this->arr_xml_data));
+	
 	}
 	/*
 	public function testValidateTextContains() {
