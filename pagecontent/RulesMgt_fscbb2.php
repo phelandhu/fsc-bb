@@ -4,7 +4,13 @@
 	require_once("common/classes/rulesManagementSet.class.php");
 	$rules = new Rules($dbDataArr);
 	$rulesManagementSet = new RulesManagementSet($dbDataArr);
-
+	/*
+//include("common/include/db_login.php");
+	$table      =   'rules'; // Members name
+	$row        =   "";
+	mysql_connect($host, $user, $pass);
+	mysql_select_db($database);
+	*/
 	$result_rules = $rules->getAll();
 	$result_rms = $rulesManagementSet->getAllNamesByMemberId($_SESSION["memberId"]);
 	$log->trace(print_r($result_rms, true));
