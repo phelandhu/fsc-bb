@@ -39,6 +39,8 @@ class Member extends BB_Data {
 					$data['emailAddress'],
 					$data['cellPhoneNumber'],
 					$data['leadProviderId'],
+					$data['authLevel'],
+					$data['pagePermission'],
 					$data['id']);
 		} else {
 			$this->lastSQL = sprintf("INSERT INTO %s
@@ -55,7 +57,9 @@ class Member extends BB_Data {
 					$data['lastName'],
 					$data['emailAddress'],
 					$data['cellPhoneNumber'],
-					$data['leadProviderId'] );
+					$data['leadProviderId'],
+					$data['authLevel'],
+					$data['pagePermission'] );
 		}
 		$this->dbConnection->query($this->lastSQL);
 	}

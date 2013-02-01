@@ -10,6 +10,18 @@
 
 session_start();
 	include("common/include/inc.login_check.php");
+		$pageRequest = $_GET["page"];
+
+		$userPagePermission = $_SESSION['userPagePermission'];
+		$userPagePermission = '2,3,4';
+		$pages = "";
+		if(!checkIfPageAllowed($userPagePermission, $pageRequest, $pages)) {
+//			echo "Page Failed loading";
+			$location = "Location: http://" . $_SERVER["SERVER_NAME"] . "/index.bbx";
+//			echo $location;			
+			header($location) ;
+		}
+		
 ?>
 
 <!DOCTYPE html>
@@ -83,6 +95,8 @@ $(function(){
 			include("include/navigation_account.php");
 		}
 		include("include/center_contentcontainer.php");
+
+		
 	?>
 	
 	<div id="center_content" class="center_content">
@@ -103,3 +117,49 @@ $(function(){
 	?>
 	</body>
 </html>
+
+<?php
+	/**
+	* @param $user, user information
+	* @param $page, page information, at this time it will just be the page name handed over for navigation 
+	* @param $pages, page information
+	*  
+	**/
+	function checkIfPageAllowed($userPagePermission, $pageRequest, $pages) {
+		$pagePermission = explode(",", $userPagePermission);
+		$pageId = getPageBynavName($pageRequest);
+		return in_array( $pageId, $pagePermission);
+	}
+	
+	function getPageByNavName($pageRequest) {
+		$response = null;
+		switch($pageRequest) {
+			case "Profile":
+				$response = 1;
+				break;
+			case "LeadProvider":
+				$response = 2;
+				break;
+			case "Campaigns":
+				$response = 3;
+				break;
+			case "PortfolioMgt":
+				$response = 4;
+				break;
+			case "RulesMgt":
+				$response = 5;
+				break;
+			case "BWListMgt":
+				$response = 6;
+				break;
+			case "Reports":
+				$response = 7;
+				break;
+			case "AccountHelp":
+				$response = 8;
+				break;
+		}
+		return $response;
+	}
+	
+?>

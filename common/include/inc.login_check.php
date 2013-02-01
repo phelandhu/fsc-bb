@@ -8,6 +8,7 @@
 		if($result) {
 			$_SESSION['username'] = htmlspecialchars($data['username']); // htmlspecialchars() sanitises XSS
 			$_SESSION['memberId'] = $data['id'];
+			$_SESSION['userPagePermission'] = $data['userPagePermissions'];
 			header('Location: index.bbx'); 
 			exit; 
 		} else {
