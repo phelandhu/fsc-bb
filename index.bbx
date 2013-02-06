@@ -17,7 +17,7 @@ session_start();
 		$pages = "";
 		if(!checkIfPageAllowed($userPagePermission, $pageRequest, $pages)) {
 //			echo "Page Failed loading";
-			$location = "Location: http://" . $_SERVER["SERVER_NAME"] . "/index.bbx";
+			$location = "Location: index.bbx";
 //			echo $location;			
 			header($location) ;
 		}
