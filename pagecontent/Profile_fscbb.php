@@ -3,7 +3,11 @@ require_once("bootstrap.php");
 require_once("common/classes/member.class.php");
 $member = new Member($dbDataArr);
 
-$result = $member->getOneByID($_SESSION['memberId']);
+if(isset($_GET["Profiles"])) {
+	$result = $member->getOneByID($_GET["Profiles"]);
+} else {
+	$result = $member->getOneByID($_SESSION['memberId']);
+}
 
 if($result) {
 	$row = $result->fetch_array();
@@ -33,7 +37,7 @@ if($result) {
             </tr>
             <tr>
                 <td>Username</td>
-                <td><input type="text" disabled="disabled" id="Username_New" name="Username_New" value="<?php print_r($_SESSION["username"])?>"></td>
+                <td><input type="text" disabled="disabled" id="Username_New" name="Username_New" value="<?php echo $row["username"] ?>"></td>
             </tr>
             <tr>
                 <td>Old Password</td>
@@ -48,6 +52,26 @@ if($result) {
                 <td><input type="password" id="Password_New_Confirmation" name="Password_New_Confirmation"/></td>
             </tr>
         </table>
+        <?php
+ //       $admin = 1;
+        if(isset($admin)):
+        ?>
+        Page Authorization
+        <table>
+        	<tr>
+        		<td><input type="checkbox" name="pagePermission[]" />Profile</td>
+        		<td><input type="checkbox" name="pagePermission[]" />Lead Provider</td>
+        		<td><input type="checkbox" name="pagePermission[]" />Campaigns</td>
+        		<td><input type="checkbox" name="pagePermission[]" />Portfolio Management</td>
+        		<td><input type="checkbox" name="pagePermission[]" />Rules</td>
+        		<td><input type="checkbox" name="pagePermission[]" />B/W List</td>
+        		<td><input type="checkbox" name="pagePermission[]" />Reports</td>
+        	</tr>
+        </table>
+        <?php
+        endif;
+        
+        ?>
         <input type="hidden" name="form" id="form" value="member"/>
     </div>
 </div>

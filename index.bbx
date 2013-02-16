@@ -8,18 +8,18 @@
 			header('Location: index.bbx');
 	endif;
 
-session_start();
+	session_start();
 	include("common/include/inc.login_check.php");
 		$pageRequest = $_GET["page"];
 
 		$userPagePermission = $_SESSION['userPagePermission'];
-		$userPagePermission = '2,3,4';
+		$userPagePermission = '2,3,4,8';
 		$pages = "";
 		if(!checkIfPageAllowed($userPagePermission, $pageRequest, $pages)) {
 //			echo "Page Failed loading";
-			$location = "Location: index.bbx";
+			$location = "Location: index.bbx?page=AccountHelp";
 //			echo $location;			
-			header($location) ;
+			header($location);
 		}
 		
 ?>
