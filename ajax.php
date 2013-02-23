@@ -12,7 +12,6 @@
 		} 
 	}
 	
-	
 	function getRulesList($rulesId, $rulesManagementSet)
 	{
 		global $log;
@@ -25,22 +24,22 @@
 
 		echo $return;
 	}		
-		function setRulesList($_REQUEST)
-		{
+	function setRulesList($_REQUEST)
+	{
 		
-			// This query should be changed to using ID, rather than title.
+		// This query should be changed to using ID, rather than title.
 /*				
-			$qry = "SELECT * FROM RulesManagementSet WHERE Active = 1 AND memberID = " . $userId . " AND Title = '" . $rulesId . "';";
-		
-			$result = $mysqli->query($qry);
-			$i = 0;
-			$return = '';
-			while($row = $result->fetch_array()) {
-				$return .= $row[rulesID] . ",";
-				$i++;
-			}
-			*/
+		$qry = "SELECT * FROM RulesManagementSet WHERE Active = 1 AND memberID = " . $userId . " AND Title = '" . $rulesId . "';";
+	
+		$result = $mysqli->query($qry);
+		$i = 0;
+		$return = '';
+		while($row = $result->fetch_array()) {
+			$return .= $row[rulesID] . ",";
+			$i++;
 		}
+*/
+	}
 
     class ServiceResult {
 
