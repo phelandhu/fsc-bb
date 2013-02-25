@@ -8,5 +8,5 @@
   	</div>
         
     <div id="footer" class="footer">
-      <div style="color: #fff;"> Ver. 0.6b  08/13/12<div>
+      <div style="color: #fff;"> Ver. 0.7b  2013-02-28<div>
     </div>

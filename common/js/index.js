@@ -99,7 +99,7 @@
 	}
 
 
-	function sendform(Obj)
+	function saveForm(Obj)
 	{
 		var oform =  document.forms["form"];
 		oform.elements.length;
@@ -137,11 +137,66 @@
 		makeRequest( "formprocessor.php" , str );
 	}
 
+
+	function sendform(Obj)
+	{
+		var oform =  document.forms["form"];
+		oform.elements.length;
+		var str = '?intention='+Obj+'&';
+		var elem = oform.elements;
+		for(var i = 0; i <  elem.length; i++) {
+			if(elem[i].id !='' ) {
+				//str += "||  Type:" + elem[i].type + "";
+				if(elem[i].type == "checkbox" || elem[i].type == "radio" && elem[i].checked == true) {
+					str += "" + elem[i].name + "";
+					if(elem[i].checked) {
+						if(i !=  elem.length - 1) {
+							str += "=" + "1" + "&";
+						} else {
+							str += "=" + "1" ;
+						}
+					} else {
+						if(i !=  elem.length - 1) {
+							str += "=" + "0" + "&";
+						} else {
+							str += "=" + "0" ;
+						}
+					}
+				} else {
+					str += "" + elem[i].id + "";
+					if(i !=  elem.length - 1) {
+						str += "=" + elem[i].value + "&";
+					} else {
+						str += "=" + elem[i].value ;
+					}
+				}
+			}
+		} 
+		alert(str);
+		foo("active");
+		makeRequest( "formprocessor.php" , str );
+	}
+
 	function gatherFormElements()
 	{
 	
 	}
 
+	function foo(listID) {
+	    var list = document.getElementById(listID);
+	    var items = list.getElementsByTagName("li");
+	    var itemsString = "";
+	    for (var i = 0; i < items.length; i++) {
+	        if (itemsString.length > 0) itemsString += ":";
+	        itemsString += items[i].title;
+	    }
+	    alert(itemsString);
+	}
+
+	function test() {
+		foo("active");
+	}
+	
 	function Get_TechnicalPOCName()
 	{
 		var TechnicalPOCName = document.getElementById("TechnicalPOCName").value;

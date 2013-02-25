@@ -59,21 +59,6 @@
 		list.onDragOver = function() { this.style["border"] = "1px dashed #AAA"; };
 		list.onDragOut = function() {this.style["border"] = "1px solid white"; };
 	};
-
-	function foo(listID) {
-	    var list = document.getElementById(listID);
-	    var items = list.getElementsByTagName("li");
-	    var itemsString = "";
-	    for (var i = 0; i < items.length; i++) {
-	        if (itemsString.length > 0) itemsString += ":";
-	        itemsString += items[i].title;
-	    }
-	    alert(itemsString);
-	}
-
-	function test() {
-		foo("active");
-	}
 	
 	//-->
 </script>
