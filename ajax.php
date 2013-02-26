@@ -26,6 +26,7 @@
 	}		
 	function setRulesList($_REQUEST)
 	{
+		file_put_contents("/tmp/rules.txt", print_r($_REQUEST, true));
 		
 		// This query should be changed to using ID, rather than title.
 /*				

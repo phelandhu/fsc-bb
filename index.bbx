@@ -13,7 +13,7 @@
 		$pageRequest = $_GET["page"];
 
 		$userPagePermission = $_SESSION['userPagePermission'];
-		$userPagePermission = '2,3,4,8';
+		$userPagePermission = '0,1,2,3,4,5,6,7,8';
 		$pages = "";
 		if(!checkIfPageAllowed($userPagePermission, $pageRequest, $pages)) {
 //			echo "Page Failed loading";

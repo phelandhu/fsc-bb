@@ -59,11 +59,27 @@
 		list.onDragOver = function() { this.style["border"] = "1px dashed #AAA"; };
 		list.onDragOut = function() {this.style["border"] = "1px solid white"; };
 	};
+
+	function foo(listID) {
+	    var list = document.getElementById(listID);
+	    var items = list.getElementsByTagName("li");
+	    var itemsString = "";
+	    for (var i = 0; i < items.length; i++) {
+	        if (itemsString.length > 0) itemsString += ":";
+	        itemsString += items[i].title;
+	    }
+	    alert(itemsString);
+	}
+
+	function test() {
+		foo("active");
+	}
+	
 	//-->
 </script>
     <div>
     <div style="color:#FF8C19;font-size: 2em">
-    	Rules Management
+    	Rules Management<a href="#" onclick="test();">#</a>
     </div>
     <div style="color:#555;font-size: 1em;padding: 10px; ">
         <div id="rules">
@@ -91,7 +107,7 @@
 								while($row = $resultRules->fetch_array())
 								{
 									$ruleNumber += 1;
-									print_r("<li title=\"" . $row["Title"] . "\">" . $row["ruleShortName"] . "</li>");
+									print_r("<li title=\"" . $row["rulesID"] . "\">" . $row["ruleShortName"] . "</li>");
 								}
 	                        ?>
 						</ul>
