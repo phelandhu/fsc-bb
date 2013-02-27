@@ -29,6 +29,7 @@ function selectrule()
 				alert(output);	
 				var strArray = output.split(",");
 				for (var i = 0; i < strArray.length; i++) {
+					myRule(strArray[i]);
 					$('input[name=rulesID[' + strArray[i] + ']]').attr('checked', true);
 				}
 			}
@@ -36,6 +37,29 @@ function selectrule()
 	}
 
 }
+
+function myRule(ruleId)
+{
+//	alert(ruleId);
+	var listItem = $('#' + ruleId);
+//	var actitem = 
+	alert (listItem.html());
+	
+	/*
+	$('#active').append('<li id=' + id + '>' + $item.html() + '</li>');
+	$item.remove();
+	*/
+	
+	var list = document.getElementById(listID);
+	var items = list.getElementsByTagName("li");
+	var itemsString = "";
+	for (var i = 0; i < items.length; i++) {
+		if (itemsString.length > 0) itemsString += ":";
+		itemsString += items[i].value;
+	}
+	return itemsString;
+}
+
 
 </script>
 <style type="text/css">
@@ -118,7 +142,7 @@ function selectrule()
 								while($row = $resultRules->fetch_array())
 								{
 									$ruleNumber += 1;
-									print_r("<li value=\"" . $row["rulesID"] . "\" title=\"" . $row["rulesID"] . "\">" . $row["ruleShortName"] . "</li>");
+									echo("<li value=\"" . $row["rulesID"] . "\" title=\"" . $row["rulesID"] . "\">" . $row["ruleShortName"] . "</li>");
 								}
 	                        ?>
 						</ul>

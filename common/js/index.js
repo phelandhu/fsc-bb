@@ -24,8 +24,7 @@
 	} 
 
 
-	function makeRequest(url, parameters) 
-	{
+	function makeRequest(url, parameters) {
 		http_request = false;
 		if (window.XMLHttpRequest) { // Mozilla, Safari,...
 			http_request = new XMLHttpRequest();
@@ -53,8 +52,8 @@
 		}else{
 		}
 	}
-	function formresults()
-	{
+	
+	function formresults() {
 		if (http_request.readyState == 4) {
 			if (http_request.status == 200) {
 				//alert(http_request.responseText);
@@ -72,8 +71,7 @@
 			 .removeAttr('checked').removeAttr('selected');
 	}
 
-	function selectrule()
-	{
+	function selectrule() {
 		
 alert("test");		
 		resetForm($('#editrule')); // by id, recommended
@@ -101,9 +99,7 @@ alert("test");
 
 	}
 
-
-	function saveForm(Obj)
-	{
+	function saveForm(Obj) {
 		var oform =  document.forms["form"];
 		oform.elements.length;
 		var str = '?intention='+Obj+'&';
@@ -141,8 +137,7 @@ alert("test");
 	}
 
 
-	function sendform(Obj)
-	{
+	function sendform(Obj) {
 		var oform =  document.forms["form"];
 		oform.elements.length;
 		var str = '?intention='+Obj+'&';
@@ -175,17 +170,16 @@ alert("test");
 				}
 			}
 		}
-		str = str + "&rulesId=" + foo("active");
+		str = str + "&rulesId=" + getActiveItems("active");
 //		alert(str);		
 		makeRequest( "formprocessor.php" , str );
 	}
 
-	function gatherFormElements()
-	{
+	function gatherFormElements() {
 	
 	}
 
-	function foo(listID) {
+	function getActiveItems(listID) {
 	    var list = document.getElementById(listID);
 	    var items = list.getElementsByTagName("li");
 	    var itemsString = "";
@@ -196,8 +190,7 @@ alert("test");
 	    return itemsString;
 	}
 	
-	function Get_TechnicalPOCName()
-	{
+	function Get_TechnicalPOCName() {
 		var TechnicalPOCName = document.getElementById("TechnicalPOCName").value;
 		if(TechnicalPOCName != "")
 		{
@@ -207,8 +200,7 @@ alert("test");
 		}
 	}
 	
-	function Get_TechnicalPOCEmailAddress()
-	{
+	function Get_TechnicalPOCEmailAddress() {
 		var TechnicalPOCEmailAddress = document.getElementById("TechnicalPOCEmailAddress").value;
 		if(TechnicalPOCEmailAddress  != "")
 		{
