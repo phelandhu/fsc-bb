@@ -162,7 +162,7 @@ var DragDrop = {
 			tempParent.parentNode.removeChild( tempParent );
 			return;
 		}
-alert(this.id);
+//alert(this.id);
 		this.parentNode.onDragOut();
 		this.style["top"] = "0px";
 		this.style["left"] = "0px";
