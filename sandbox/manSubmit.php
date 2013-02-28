@@ -4,22 +4,40 @@
  * Created:            Mar 1, 2013 10:46:02 AM
 * Last Modified:      Mar 1, 2013 10:46:02 AM
 *
-* [LEFT BLANK FOR PROGRAM DESCRIPTION]
+* This is the manual submission page to do rule testing
 *
 * Mike Browne - phelandhu@gmail.com
 ***********************************************/
+require_once("../bootstrap.php");
+require_once("../common/classes/rulesManagementSet.class.php");
+$rulesManagementSet = new RulesManagementSet($dbDataArr);
+$resultRms = $rulesManagementSet->getAllNamesByMemberId(1);
 // Step 1 - steal underpants
 
 $apiId = 'jjOku930uroLJKsdur093ioprjekpkfe923i';
 $apiKey = 'JJFIOJIEjioej9089I90FKDKKLDSKkldks';
 $apiRef = 'c4ca4238a0b923820dcc509a6f75849b';
+/*
+if(isset($_POST)) {
+	print_r($_POST);
+} else {
+*/
 ?>
-<form>
+
+<head>
+<style type="text/css">
+	.required:after { content:" *"; }
+</style>
+
+</head>
+
+<form method="post">
 	<table>
 		<tr>
-			<th>API Data</th>
+			<th>Rule Set Data</th>
 			<th></th>
 		</tr>
+<!--
 		<tr>
 			<td class="inputLabel">API ID:</td>
 			<td class="inputValue"><input type="text" value="<?php if(isset($_POST['apiId'])) { echo $_POST['apiId'];} else { echo $apiId; } ?>" cols="100" name="apiId"></td>
@@ -28,17 +46,30 @@ $apiRef = 'c4ca4238a0b923820dcc509a6f75849b';
 			<td class="inputLabel">API Key:</td>
 			<td class="inputValue"><input type="text" value="<?php if(isset($_POST['apiKey'])) { echo $_POST['apiKey'];} else { echo $apiKey; } ?>" cols="100" name="apiKey"></td>
 		</tr>
+-->
 		<tr>
-			<td class="inputLabel">API Ref:</td>
-			<td class="inputValue"><input type="text" value="<?php if(isset($_POST['apiRef'])) { echo $_POST['apiRef'];} else { echo $apiRef; } ?>" cols="100" name="apiRef"></td>
+			<td class="inputLabel">Rule Set to test</td>
+			<td class="inputValue">
+                <select id="RulesManagementSetListing" name="RulesManagementSetListing" ONCHANGE="selectrule();">
+                <option value="">-- Select Rule Set --</option>
+                <?php
+					while($row = $resultRms->fetch_array())
+					{
+						printf("<option value=\"%s\">%s</option>", $row["RulesManagementSetID"], $row["Title"]);        
+					}
+                ?>
+                </select>
+            </td>
 		</tr>
+<!--
 		<tr>
 			<td class="inputLabel">URL to submit to:</td>
 			<td class="inputValue"><input type="text" value="<?php if(isset($urlPostXML)) { echo $urlPostXML;} else { echo ""; } ?>" cols="100" size="120" ></td>
 		</tr>
+-->
 	</table>
 
-
+<!--
 	<table>
 		<tr>
 			<th>REFERRAL</th>
@@ -76,7 +107,7 @@ $apiRef = 'c4ca4238a0b923820dcc509a6f75849b';
 				<input type="radio" name="TEST" value="no" default>No</td>
 		</tr>
 	</table>
-
+-->
 
 	<h3>CUSTOMER</h3>
 	<table>
@@ -86,15 +117,15 @@ $apiRef = 'c4ca4238a0b923820dcc509a6f75849b';
 		</tr>
 		<tr>
 			<td class="inputLabel">REQUESTEDAMOUNT</td>
-			<td class="inputValue"><input type=text name="REQUESTEDAMOUNT"></td>
+			<td class="inputValue"><div class="required"><input type=text name="REQUESTEDAMOUNT"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">SSN</td>
-			<td class="inputValue"><input type=text name="SSN"></td>
+			<td class="inputValue"><div class="required"><input type=text name="SSN"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">DOB</td>
-			<td class="inputValue"><input type=text name="DOB"></td>
+			<td class="inputValue"><div class="required"><input type=text name="DOB"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">GENDER</td>
@@ -102,7 +133,7 @@ $apiRef = 'c4ca4238a0b923820dcc509a6f75849b';
 		</tr>
 		<tr>
 			<td class="inputLabel">FIRSTNAME</td>
-			<td class="inputValue"><input type=text name="FIRSTNAME"></td>
+			<td class="inputValue"><div class="required"><input type=text name="FIRSTNAME"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">MIDDLEINITIAL</td>
@@ -110,11 +141,11 @@ $apiRef = 'c4ca4238a0b923820dcc509a6f75849b';
 		</tr>
 		<tr>
 			<td class="inputLabel">LASTNAME</td>
-			<td class="inputValue"><input type=text name="LASTNAME"></td>
+			<td class="inputValue"><div class="required"><input type=text name="LASTNAME"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">ADDRESS</td>
-			<td class="inputValue"><input type=text name="ADDRESS"></td>
+			<td class="inputValue"><div class="required"><input type=text name="ADDRESS"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">ADDRESS2</td>
@@ -122,72 +153,93 @@ $apiRef = 'c4ca4238a0b923820dcc509a6f75849b';
 		</tr>
 		<tr>
 			<td class="inputLabel">CITY</td>
-			<td class="inputValue"><input type=text name="CITY"></td>
+			<td class="inputValue"><div class="required"><input type=text name="CITY"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">STATE</td>
-			<td class="inputValue"><input type=text name="STATE"></td>
+			<td class="inputValue"><div class="required"><input type=text name="STATE"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">ZIP</td>
-			<td class="inputValue"><input type=text name="ZIP"></td>
+			<td class="inputValue"><div class="required"><input type=text name="ZIP"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">HOMEPHONE</td>
-			<td class="inputValue"><input type=text name="HOMEPHONE"></td>
+			<td class="inputValue"><div class="required"><input type=text name="HOMEPHONE"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">OTHERPHONE</td>
-			<td class="inputValue"><input type=text name="OTHERPHONE"></td>
+			<td class="inputValue"><div class="required"><input type=text name="OTHERPHONE"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">DLSTATE</td>
-			<td class="inputValue"><input type=text name="DLSTATE"></td>
+			<td class="inputValue"><div class="required"><input type=text name="DLSTATE"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">DLNUMBER</td>
-			<td class="inputValue"><input type=text name="DLNUMBER"></td>
+			<td class="inputValue"><div class="required"><input type=text name="DLNUMBER"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">CONTACTTIME</td>
 			<td class="inputValue"><input type=text name="CONTACTTIME"></td>
 		</tr>
 		<tr>
-			<td class="inputLabel">LENGTHATRESIDENCE</td>
-			<td class="inputValue"><input type=text name="LENGTHATRESIDENCE"></td>
+			<td class="inputLabel">ADDRESSMONTHS</td>
+			<td class="inputValue"><input type=text name="ADDRESSMONTHS"></td>
+		</tr>
+		<tr>
+			<td class="inputLabel">ADDRESSYEARS</td>
+			<td class="inputValue"><input type=text name="ADDRESSYEARS"></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">RENTOROWN</td>
-			<td class="inputValue"><input type=text name="RENTOROWN"></td>
+			<td class="inputValue"><div class="required"><input type=text name="RENTOROWN"></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">ISMILITARY</td>
-			<td class="inputValue"><input type="radio" name="ISMILITARY"
-				value="yes">Yes<br> <input type="radio" name="ISMILITARY" value="no"
-				default>No</td>
+			<td class="inputValue">
+            <div class="required">
+            <select name="ISMILITARY">
+                <option value="Y">Yes</option>
+                <option value="N">No</option>
+            </select>
+            </div>
+			</td>
 		</tr>
 		<tr>
 			<td class="inputLabel">ISCITIZEN</td>
-			<td class="inputValue"><input type="radio" name="ISCITIZEN"
-				value="yes">Yes<br> <input type="radio" name="ISCITIZEN" value="no"
-				default>No</td>
+			<td class="inputValue">
+            <div class="required">
+            <select name="ISCITIZEN">
+                <option value="Y">Yes</option>
+                <option value="N">No</option>
+            </select>
+            </div>
+            </td>
 		</tr>
 		<tr>
 			<td class="inputLabel">OTHEROFFERS</td>
-			<td class="inputValue"><input type="radio" name="OTHEROFFERS"
-				value="yes">Yes<br> <input type="radio" name="OTHEROFFERS"
-				value="no" default>No</td>
+			<td class="inputValue">
+            <div class="required">
+            <select name="OTHEROFFERS">
+                <option value="Y">Yes</option>
+                <option value="N">No</option>
+            </select>
+            </div>
+            </td>
 		</tr>
 		<tr>
 			<td class="inputLabel">EMAIL</td>
-			<td class="inputValue"><input type=text name="EMAIL"></td>
+			<td class="inputValue"><div class="required"><input type=text name="EMAIL"></div></td>
 		</tr>
+        <!--
 		<tr>
-			<td class="inputLabel">BANKRUPTCY</td>
+			<td class="inputLabel"><div class="required">BANKRUPTCY</div></td>
 			<td class="inputValue"><input type="radio" name="BANKRUPTCY"
 				value="yes">Yes<br> <input type="radio" name="BANKRUPTCY" value="no">No
 			</td>
 		</tr>
+        -->
 	</table>
 
 
@@ -198,23 +250,42 @@ $apiRef = 'c4ca4238a0b923820dcc509a6f75849b';
 		</tr>
 		<tr>
 			<td class="inputLabel">INCOMETYPE</td>
-			<td class="inputValue"><input type=text name="INCOMETYPE"></td>
+			<td class="inputValue">
+            <div class="required">
+            <select name="INCOMETYPE">
+            	<option value="E">Employed</option>
+                <option value="D">Disability</option>
+                <option value="S">Social Security</option>
+                <option value="U">Unemployed</option>
+                <option value="P">Pension</option>
+                <option value="O">Other</option>
+            </select>
+            </div>
+			</td>
+
 		</tr>
 		<tr>
 			<td class="inputLabel">PAYTYPE</td>
-			<td class="inputValue"><input type=text name="PAYTYPE"></td>
+			<td class="inputValue">
+            <div class="required">
+            <select name="PAYTYPE">
+                <option value="D">Direct Deposit</option>
+                <option value="P">Paper Check</option>
+            </select>
+            </div>
+            </td>
 		</tr>
 		<tr>
 			<td class="inputLabel">EMPMONTHS</td>
-			<td class="inputValue"><input type=text name="EMPMONTHS"></td>
+			<td class="inputValue"><div class="required"><input type=text name="EMPMONTHS"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">EMPYEARS</td>
-			<td class="inputValue"><input type=text name="EMPYEARS"></td>
+			<td class="inputValue"><div class="required"><input type=text name="EMPYEARS"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">EMPNAME</td>
-			<td class="inputValue"><input type=text name="EMPNAME"></td>
+			<td class="inputValue"><div class="required"><input type=text name="EMPNAME"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">EMPADDRESS</td>
@@ -238,7 +309,7 @@ $apiRef = 'c4ca4238a0b923820dcc509a6f75849b';
 		</tr>
 		<tr>
 			<td class="inputLabel">EMPPHONE</td>
-			<td class="inputValue"><input type=text name="EMPPHONE"></td>
+			<td class="inputValue"><div class="required"><input type=text name="EMPPHONE"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">EMPPHONEEXT</td>
@@ -262,11 +333,11 @@ $apiRef = 'c4ca4238a0b923820dcc509a6f75849b';
 		</tr>
 		<tr>
 			<td class="inputLabel">HIREDATE</td>
-			<td class="inputValue"><input type=text name="HIREDATE"></td>
+			<td class="inputValue"><div class="required"><input type=text name="HIREDATE"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">EMPTYPE</td>
-			<td class="inputValue"><input type=text name="EMPTYPE"></td>
+			<td class="inputValue"><div class="required"><input type=text name="EMPTYPE"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">JOBTITLE</td>
@@ -278,11 +349,11 @@ $apiRef = 'c4ca4238a0b923820dcc509a6f75849b';
 		</tr>
 		<tr>
 			<td class="inputLabel">PAYFREQUENCY</td>
-			<td class="inputValue"><input type=text name="PAYFREQUENCY"></td>
+			<td class="inputValue"><div class="required"><input type=text name="PAYFREQUENCY"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">NETMONTHLY</td>
-			<td class="inputValue"><input type=text name="NETMONTHLY"></td>
+			<td class="inputValue"><div class="required"><input type=text name="NETMONTHLY"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">GROSSMONTHLY</td>
@@ -290,15 +361,15 @@ $apiRef = 'c4ca4238a0b923820dcc509a6f75849b';
 		</tr>
 		<tr>
 			<td class="inputLabel">LASTPAYDATE</td>
-			<td class="inputValue"><input type=text name="LASTPAYDATE"></td>
+			<td class="inputValue"><div class="required"><input type=text name="LASTPAYDATE"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">NEXTPAYDATE</td>
-			<td class="inputValue"><input type=text name="NEXTPAYDATE"></td>
+			<td class="inputValue"><div class="required"><input type=text name="NEXTPAYDATE"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">SECONDPAYDATE</td>
-			<td class="inputValue"><input type=text name="SECONDPAYDATE"></td>
+			<td class="inputValue"><div class="required"><input type=text name="SECONDPAYDATE"></div></td>
 		</tr>
 	</table>
 
@@ -313,7 +384,7 @@ $apiRef = 'c4ca4238a0b923820dcc509a6f75849b';
 		</tr>
 		<tr>
 			<td class="inputLabel">BANKNAME</td>
-			<td class="inputValue"><input type=text name="BANKNAME"></td>
+			<td class="inputValue"><div class="required"><input type=text name="BANKNAME"></div></td>
 		</tr>
 		<td class="inputLabel">BANKPHONE</td>
 		<td class="inputValue"><input type=text name="BANKPHONE"></td>
@@ -321,18 +392,28 @@ $apiRef = 'c4ca4238a0b923820dcc509a6f75849b';
 		<tr>
 			<td class="inputLabel">ACCOUNTTYPE</td>
 			<td class="inputValue">
-			<input type="radio" name="ACCOUNTTYPE" value="Checking">Checking<br> 
-			<input type="radio" name="ACCOUNTTYPE" value="Savings">Savings</td>
+            <div class="required">
+            <select name="ACCOUNTTYPE">
+                <option value="C">Checking</option>
+                <option value="S">Savings</option>
+            </select>
+            </div>
+            </td>
 		</tr>
 		<td class="inputLabel">ROUTINGNUMBER</td>
-		<td class="inputValue"><input type=text name="ROUTINGNUMBER"></td>
+		<td class="inputValue"><div class="required"><input type=text name="ROUTINGNUMBER"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">ACCOUNTNUMBER</td>
-			<td class="inputValue"><input type=text name="ACCOUNTNUMBER"></td>
+			<td class="inputValue"><div class="required"><input type=text name="ACCOUNTNUMBER"></div></td>
 		</tr>
-		<td class="inputLabel">LENGTHBANKING (months)</td>
-		<td class="inputValue"><input type=text name="LENGTHBANKING"></td>
+        <tr>
+			<td class="inputLabel">BANKMONTHS</td>
+			<td class="inputValue"><div class="required"><input type=text name="BANKMONTHS"></div></td>
+		</tr>
+        <tr>
+			<td class="inputLabel">BANKYEARS</td>
+			<td class="inputValue"><div class="required"><input type=text name="BANKYEARS"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">OUTSTANDINGAMT</td>
@@ -340,8 +421,12 @@ $apiRef = 'c4ca4238a0b923820dcc509a6f75849b';
 		</tr>
 		<td class="inputLabel">ACTIVECHECKING</td>
 		<td class="inputValue">
-			<input type="radio" name="ACTIVECHECKING" value="yes">Yes<br>
-			<input type="radio" name="ACTIVECHECKING" value="no">No
+            <div class="required">
+            <select name="ACTIVECHECKING">
+                <option value="Y">Yes</option>
+                <option value="N">No</option>
+            </select>
+            </div>
 		</td>
 		</tr>
 	</table>
@@ -353,47 +438,38 @@ $apiRef = 'c4ca4238a0b923820dcc509a6f75849b';
 		</tr>
 		<tr>
 			<td class="inputLabel">FIRSTNAME</td>
-			<td class="inputValue"><input type=text name="FIRSTNAME"></td>
+			<td class="inputValue"><div class="required"><input type=text name="FIRSTNAME"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">LASTNAME</td>
-			<td class="inputValue"><input type=text name="LASTNAME"></td>
+			<td class="inputValue"><div class="required"><input type=text name="LASTNAME"></div></td>
 		</tr>
 		<td class="inputLabel">PHONE</td>
-		<td class="inputValue"><input type=text name="PHONE"></td>
+		<td class="inputValue"><div class="required"><input type=text name="PHONE"></div></td>
 		</tr>
 		<tr>
 			<td class="inputLabel">RELATIONSHIP</td>
-			<td class="inputValue"><input type=text name="RELATIONSHIP"></td>
+			<td class="inputValue">
+            <div class="required">
+            <select name="RELATIONSHIP">
+                <option value="S">Spouse</option>
+                <option value="L">Sibling</option>
+                <option value="P">Parent</option>
+                <option value="C">Co-worker</option>
+                <option value="F">Friend</option>
+                <option value="B">Boyfriend</option>
+                <option value="G">Girlfriend</option>
+                <option value="R">Brother</option>
+                <option value="I">Sister</option>
+                <option value="O">Other</option>
+            </select>
+            </div>
+            </td>
 		</tr>
-		<tr>
-			<td class="inputLabel">FIRSTNAME</td>
-			<td class="inputValue"><input type=text name="FIRSTNAME"></td>
-		</tr>
-		<tr>
-			<td class="inputLabel">LASTNAME</td>
-			<td class="inputValue"><input type=text name="LASTNAME"></td>
-		</tr>
-		<td class="inputLabel">PHONE</td>
-		<td class="inputValue"><input type=text name="PHONE"></td>
-		</tr>
-		<tr>
-			<td class="inputLabel">RELATIONSHIP</td>
-			<td class="inputValue"><input type=text name="RELATIONSHIP"></td>
-		</tr>
-		<tr>
-			<td class="inputLabel">FIRSTNAME</td>
-			<td class="inputValue"><input type=text name="FIRSTNAME"></td>
-		</tr>
-		<tr>
-			<td class="inputLabel">LASTNAME</td>
-			<td class="inputValue"><input type=text name="LASTNAME"></td>
-		</tr>
-		<td class="inputLabel">PHONE</td>
-		<td class="inputValue"><input type=text name="PHONE"></td>
-		</tr>
-		<tr>
-			<td class="inputLabel">RELATIONSHIP</td>
-			<td class="inputValue"><input type=text name="RELATIONSHIP"></td>
-		</tr>
+
 	</table>
+    
+    <input type="submit" />
+    <?php
+//	}
+	?>

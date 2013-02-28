@@ -124,12 +124,13 @@ function myRule(ruleId)
                 <select id="RulesManagementSetListing" name="RulesManagementSetListing" ONCHANGE="selectrule();">
                 <option value="">-- Select Rule Set --</option>
                 <?php
-                                       while($row = $resultRms->fetch_array())
-                                        {
-                                                printf("<option value=\"%s\">%s</option>", $row["RulesManagementSetID"], $row["Title"]);                                
-                                        }
+					while($row = $resultRms->fetch_array())
+					{
+						printf("<option value=\"%s\">%s</option>", $row["RulesManagementSetID"], $row["Title"]);        
+					}
                 ?>
-                </select>Make Default <input type="checkbox" id="defaultrule" name="defaultrule" />
+                </select>
+                Make Default <input type="checkbox" id="defaultrule" name="defaultrule" />
                 </p>
 
                 <div  id="rulesmanager" name="rulesmanager" >
