@@ -31,6 +31,7 @@ abstract class BB_Data {
 	public function __construct($dbDataArr) {
 		$connectData = $dbDataArr;
 		global $log;
+		$this->log = $log;
 		//$this->dbConnection = new mysqli($connectData["hostName"], $connectData["userName"], $connectData["passWord"], $connectData["dataBase"]);
 		$this->dbConnection = new mysqli('localhost', 'bb_user', 'Keyb0ard!', 'BB_Dev');
 		

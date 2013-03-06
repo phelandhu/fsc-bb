@@ -10,6 +10,32 @@
 	$log->trace(print_r($result_rms, true));
 ?>
 <script>
+function selectrule()
+{	
+	resetForm($('#editrule')); // by id, recommended
+	$(".selsts").attr('checked', false);
+	var selectedvalue = document.getElementById("RulesManagementSetListing");
+	document.getElementById("RuleSetTitle").value = selectedvalue.options[selectedvalue.selectedIndex].text;
+	var rulesId = selectedvalue.options[selectedvalue.selectedIndex].value;
+	document.getElementById("rulesManagementSetId").value = rulesId;
+
+	if(rulesId > 0) {
+		$.ajax({ url: '/ajax.php',
+			data: {method: 'getRulesList', 
+			userId: '1',
+			rulesId : rulesId},
+			type: 'post',
+			success: function(output) {
+				alert(output);	
+				var strArray = output.split(",");
+				for (var i = 0; i < strArray.length; i++) {
+					$('input[name=rulesID[' + strArray[i] + ']]').attr('checked', true);
+				}
+			}
+		});
+	}
+
+}
 
 </script>
 <style type="text/css">
@@ -92,12 +118,12 @@
 								while($row = $resultRules->fetch_array())
 								{
 									$ruleNumber += 1;
-									print_r("<li title=\"" . $row["rulesID"] . "\">" . $row["ruleShortName"] . "</li>");
+									print_r("<li value=\"" . $row["rulesID"] . "\" title=\"" . $row["rulesID"] . "\">" . $row["ruleShortName"] . "</li>");
 								}
 	                        ?>
 						</ul>
 						<ul id="active" class="sortable boxier" style="margin-right: 1em;">
-							<li>One</li>
+							Active Rules List
 						</ul>
 					</div>
                 </div>

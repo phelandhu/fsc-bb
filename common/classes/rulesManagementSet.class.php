@@ -4,7 +4,7 @@
 * Created:            Oct 31, 2012 10:58:49 AM
 * Last Modified:      Oct 31, 2012 10:58:49 AM
 *
-* [LEFT BLANK FOR PROGRAM DESCRIPTION]
+* This handles the creation and management of the RulesManagementSets
 *
 * Mike Browne - phelandhu@gmail.com
 ***********************************************/
@@ -13,7 +13,7 @@ class RulesManagementSet extends BB_Data {
 	protected $self = "RulesManagementSet";
 	protected $xOver = "xRules_RulesManagementSet";
 	
-	public function save($data) { // not working yet.
+	public function save($data) { // mostly working.
 		global $log;
 		// I am creating a xover table between this and rules.
 		$returnId = null;
@@ -56,8 +56,7 @@ class RulesManagementSet extends BB_Data {
 	
 	public function updateSet($data) {
 		global $log;
-		$rulesId = $data["rulesID"];
-		$rmsData = $this->createNew($data);
+		$rulesId = $data["rulesId"];
 		$rmsData["rulesManagementSetId"] = $data["rulesManagementSetId"];
 		$log->trace(print_r($data, true));
 		$this->deleteSet($data);
@@ -77,7 +76,7 @@ class RulesManagementSet extends BB_Data {
 	}
 	
 	public function saveNewSet($data) {
-		$rulesId = $data["rulesID"];
+		$rulesId = $data["rulesId"];
 		$rmsData = $this->createNew($data);
 		if($rulesManagementSetId = $this->save($rmsData)) {
 			$this->saveSet($rulesManagementSetId, $rulesId);
@@ -85,16 +84,13 @@ class RulesManagementSet extends BB_Data {
 	}
 	
 	public function saveSet($rulesManagementSetId, $rulesId) {
-		$i = 0;
-		foreach($rulesId as $key => $value) {
-			if($value == 1){
+		$rulesIdArray = explode (":", $rulesId);
+		foreach($rulesIdArray as $key => $value) {
 				$qry = sprintf("INSERT INTO %s
 						(RulesManagementSetId, RulesId, ruleOrder)
 						VALUES
-						(%s, %s, %s)", $this->xOver, $rulesManagementSetId, $key, $i);
+						(%s, %s, %s)", $this->xOver, $rulesManagementSetId, $value, $key);
 				$this->dbConnection->query($qry);
-				$i++;
-			}
 		}
 	}
 	

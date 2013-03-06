@@ -74,6 +74,8 @@
 
 	function selectrule()
 	{
+		
+alert("test");		
 		resetForm($('#editrule')); // by id, recommended
 		$(".selsts").attr('checked', false);
 		var selectedvalue = document.getElementById("RulesManagementSetListing");
@@ -88,6 +90,7 @@
 				rulesId : rulesId},
 				type: 'post',
 				success: function(output) {
+					
 					var strArray = output.split(",");
 					for (var i = 0; i < strArray.length; i++) {
 						$('input[name=rulesID[' + strArray[i] + ']]').attr('checked', true);
@@ -171,9 +174,9 @@
 					}
 				}
 			}
-		} 
-		alert(str);
-		foo("active");
+		}
+		str = str + "&rulesId=" + foo("active");
+//		alert(str);		
 		makeRequest( "formprocessor.php" , str );
 	}
 
@@ -188,13 +191,9 @@
 	    var itemsString = "";
 	    for (var i = 0; i < items.length; i++) {
 	        if (itemsString.length > 0) itemsString += ":";
-	        itemsString += items[i].title;
+	        itemsString += items[i].value;
 	    }
-	    alert(itemsString);
-	}
-
-	function test() {
-		foo("active");
+	    return itemsString;
 	}
 	
 	function Get_TechnicalPOCName()
@@ -207,6 +206,7 @@
 			alert("Technical Point of contact field is empty");
 		}
 	}
+	
 	function Get_TechnicalPOCEmailAddress()
 	{
 		var TechnicalPOCEmailAddress = document.getElementById("TechnicalPOCEmailAddress").value;
