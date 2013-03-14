@@ -72,7 +72,11 @@ if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["apiId"]) && isset($_GET["
 	$xmlsource = $_POST['revere'];
 	//			$array = XML2Array::createArray($xmlsource);
 	//echo $xmlsource;
-
+	// Write it out to the database
+	$data = $transactionLeads->cleanData($array3);
+	$transactionLeadId = $transactionLeads->save($data);
+	$data['id'] = $transactionLeadId;
+	
 	$array = json_decode(json_encode((array) simplexml_load_string($xmlsource)), 1);
 	$newarraytest = array();
 	$last_subarray_found = "";
@@ -111,9 +115,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET["apiId"]) && isset($_GET["
 	//print_r($rulesArray);
 //	$log->error(print_r($xmlsource, true));
 
-	$data = $transactionLeads->cleanData($array3);
-	$transactionLeadId = $transactionLeads->save($data);
-	$data['id'] = $transactionLeadId;
+
 
 
 	if(in_array ( 1, $rulesArray )){ // Rules failed
