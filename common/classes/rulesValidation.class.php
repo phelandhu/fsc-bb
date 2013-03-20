@@ -8,6 +8,8 @@
 *
 * Mike Browne - phelandhu@gmail.com
 ***********************************************/
+include_once($path . "/include/rulesDefinitions.php");
+
 
 class RulesValidation {
 	/*
