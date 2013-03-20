@@ -70,10 +70,10 @@
 		$form.find('input:radio, input:checkbox')
 			 .removeAttr('checked').removeAttr('selected');
 	}
-
+/*
 	function selectrule() {
 		
-alert("test");		
+
 		resetForm($('#editrule')); // by id, recommended
 		$(".selsts").attr('checked', false);
 		var selectedvalue = document.getElementById("RulesManagementSetListing");
@@ -98,7 +98,7 @@ alert("test");
 		}
 
 	}
-
+*/
 	function saveForm(Obj) {
 		var oform =  document.forms["form"];
 		oform.elements.length;

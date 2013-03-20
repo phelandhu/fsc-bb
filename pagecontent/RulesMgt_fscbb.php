@@ -14,6 +14,7 @@
 	{
 		$strRowList .= "<li value=\"" . $row["rulesID"] . "\" title=\"" . $row["rulesID"] . "\" id=\"Rule_" . $row["rulesID"] . "\">" . $row["ruleShortName"] . "</li>\n";
 		$strRowJS .= "<li value=\\\"" . $row["rulesID"] . "\\\" title=\\\"" . $row["rulesID"] . "\\\" id=\\\"Rule_" . $row["rulesID"] . "\\\">" . $row["ruleShortName"] . "</li>";
+		$arrRowList[] = '<li value="' . $row["rulesID"] . '" title="' . $row["rulesID"] . '" id="Rule_' . $row["rulesID"] . '">' . $row["ruleShortName"] . '</li>';
 	}
 //	$strRowJS = "My major Test";
 ?>
@@ -31,7 +32,7 @@ function selectrule()
 	var rulesId = selectedvalue.options[selectedvalue.selectedIndex].value;
 	document.getElementById("rulesManagementSetId").value = rulesId;
 	// update the 'available' list
-//	$('#available').empty();
+	$('#available').empty();
 	populateRulesList();
 	// clear the 'selected' list
 	$('#active').empty();
@@ -56,7 +57,9 @@ function selectrule()
 function populateRulesList() {
 	$('#available').empty();
 	var rulesList = "<?php echo $strRowJS; ?>";
-	$('#available').append(rulesList);
+	var rulesListArr = <?php echo json_encode($arrRowList); ?>
+//	$('#available').append(rulesList);
+	$('#available').append(rulesListArr.join(''));
 }
 
 function clearActiveList() {
@@ -70,13 +73,29 @@ function myRule(ruleId)
 	$('#Rule_' + ruleId).remove();
 }
 
-function test() {
-	alert("Test Function");
-	//	var ruleId = 1;
-//	myRule(ruleId);
-	populateRulesList();
 
+function moveToActive() {
+	
 }
+
+function moveToAvailable() {
+	/*
+onDragEnd : function(nwPosition, sePosition, nwOffset, seOffset) {
+	// if the drag ends and we're still outside all containers
+	// it's time to remove ourselves from the document
+	if (this.isOutside) {
+		var tempParent = this.parentNode;
+		this.parentNode.removeChild( this );
+		tempParent.parentNode.removeChild( tempParent );
+		return;
+	}
+	this.parentNode.onDragOut();
+	this.style["top"] = "0px";
+	this.style["left"] = "0px";
+}	
+*/
+}
+
 
 </script>
 <style type="text/css">
