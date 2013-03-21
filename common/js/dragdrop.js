@@ -154,12 +154,15 @@ var DragDrop = {
 	onDragEnd : function(nwPosition, sePosition, nwOffset, seOffset) {
 		// if the drag ends and we're still outside all containers
 		// it's time to remove ourselves from the document
+//		alert(this.name);
+
 		if (this.isOutside) {
 			var tempParent = this.parentNode;
 			this.parentNode.removeChild( this );
 			tempParent.parentNode.removeChild( tempParent );
 			return;
 		}
+alert(this.id);
 		this.parentNode.onDragOut();
 		this.style["top"] = "0px";
 		this.style["left"] = "0px";

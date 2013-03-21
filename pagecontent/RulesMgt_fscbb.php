@@ -32,10 +32,7 @@ function selectrule()
 	var rulesId = selectedvalue.options[selectedvalue.selectedIndex].value;
 	document.getElementById("rulesManagementSetId").value = rulesId;
 	// update the 'available' list
-	$('#available').empty();
 	populateRulesList();
-	// clear the 'selected' list
-	$('#active').empty();
 	if(rulesId > 0) {
 		$.ajax({ url: '/ajax.php',
 			data: {method: 'getRulesList',
@@ -60,6 +57,8 @@ function populateRulesList() {
 	var rulesListArr = <?php echo json_encode($arrRowList); ?>
 //	$('#available').append(rulesList);
 	$('#available').append(rulesListArr.join(''));
+	// clear the 'selected' list
+	$('#active').empty();
 }
 
 function clearActiveList() {
