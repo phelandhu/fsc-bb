@@ -68,10 +68,11 @@ if(isset($_POST["RulesManagementSetListing"])) {
 
 <head>
 <style type="text/css">
-	.required:after { content:" *"; }
+	.required:after { content:" *"; color:red;}
 	.inputLabel {width:240px;}
 	.inputValue {width:240px;}
 	.tableHeader {text-align:right;}
+	.
 </style>
 
 </head>
@@ -156,6 +157,7 @@ if(isset($_POST["RulesManagementSetListing"])) {
 -->
 
 	<h3>CUSTOMER</h3>
+	<div class="required">denotes required fields</div>
 	<table>
 		<tr>
 			<th class="tableHeader">PERSONAL</th>
